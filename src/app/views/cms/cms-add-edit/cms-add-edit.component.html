@@ -1,0 +1,101 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <!-- <div class="card-header">
+          <strong>Edit CMS</strong>
+        </div> -->
+        <form (ngSubmit)="onCmsSave()" novalidate #f="ngForm">
+	        <div class="card-body">
+						<!-- [ngClass]="{ 'has-danger': page_title_en.invalid && (page_title_en.dirty || page_title_en.touched), 'has-success': page_title_en.valid && (page_title_en.dirty || page_title_en.touched)}" -->
+
+						
+						<!-- <div class="form-group" [ngClass]="{ 'has-danger': slug.invalid && (slug.dirty || slug.touched), 'has-success': slug.valid && (slug.dirty || slug.touched)}">
+								<label for="slug">Slug*</label>
+								<input [(ngModel)]="model.slug" name="slug" type="slug" class="form-control" placeholder="Slug" required #slug="ngModel">
+								<div class="form-control-feedback text-danger" *ngIf="slug.errors && (slug.dirty || slug.touched)">
+						<p *ngIf="slug.errors.required">Please enter slug</p>
+				</div>
+				<div class="devider">
+						<hr>
+					</div>	
+						</div> -->
+	            <div class="form-group" *ngFor="let lan of languages">
+									<label for="page_title_en">Content Page Title ({{lan.name}})*</label>
+									<ng-template #bind>title_{{lan.locale}}</ng-template>
+									
+									<input [(ngModel)]="model.translatable[lan.locale]['page_title']" [style.direction]="lan.text_direction" type="text" id="'page_title_'+{{lan.locale}}" name="'page_title_'+{{lan.locale}}"  class="form-control" placeholder="Content Page Title" required #bind="ngModel">
+									
+											<div class="form-control-feedback text-danger" *ngIf="bind?.errors && (bind?.dirty || bind?.touched)">
+												<p *ngIf="bind?.errors?.required">Please enter content page title</p>
+											</div>
+							</div>
+							<hr>
+								<div class="devider">
+							</div>
+	            <div *ngFor="let lan of languages" class="form-group" [ngClass]="{ 'has-danger': bind_desc?.invalid && (bind_desc?.dirty || bind_desc?.touched), 'has-success': bind_desc?.valid && (bind_desc?.dirty || bind_desc?.touched)}">
+	              	<label for="descri-ption_en">Description ({{lan.name}})*</label>
+									<ng-template #bind_desc>description_{{lan.locale}}</ng-template>
+								
+									<ck-editor (change)="getCKData(lan.locale,lan.text_direction)" [config]="config" [(ngModel)]="model.translatable[lan.locale]['description']" name="description_{{lan.locale}}" skin="moono-lisa" language="{{lan.locale}}" required #bind_desc="ngModel"></ck-editor>
+									<div class="form-control-feedback text-danger" *ngIf="ck_error[lan.locale]==true && (bind_desc.dirty || bind_desc.touched)">
+						  			<p >Please enter description</p>
+									</div>
+							</div>
+							<div class="devider">
+									<hr>
+								</div>
+							 <div *ngFor="let lan of languages" class="form-group" [ngClass]="{ 'has-danger': bind_meta_title.invalid && (bind_meta_title.dirty || bind_meta_title.touched), 'has-success': bind_meta_title.valid && (bind_meta_title.dirty || bind_meta_title.touched)}">
+									<label for="meta_title">Meta Keyword ({{lan.name}})*</label>
+									<ng-template #bind_meta_title>meta_title_{{lan.locale}}</ng-template>
+	              	<input [(ngModel)]="model.translatable[lan.locale]['meta_keywords']" [style.direction]="lan.text_direction" name="meta_title_{{lan.locale}}" type="text" class="form-control" placeholder="Meta Title" required #bind_meta_title="ngModel">
+	              	<div class="form-control-feedback text-danger" *ngIf="bind_meta_title?.errors && (bind_meta_title.dirty || bind_meta_title.touched)">
+			  			<p *ngIf="bind_meta_title?.errors.required">Please enter meta title</p>
+					</div>
+							</div>
+							<div class="devider">
+									<hr>
+								</div>
+							<div *ngFor="let lan of languages" class="form-group" [ngClass]="{ 'has-danger': bind_meta_desc.invalid && (bind_meta_desc.dirty || bind_meta_desc.touched), 'has-success': bind_meta_desc.valid && (bind_meta_desc.dirty || bind_meta_desc.touched)}">
+									<label>Meta Description ({{lan.name}})*</label>
+									<ng-template #bind_meta_desc>meta_desc_{{lan.locale}}</ng-template>
+	              	<input [(ngModel)]="model.translatable[lan.locale]['meta_description']" [style.direction]="lan.text_direction" name="meta_desc_{{lan.locale}}" type="text" class="form-control" placeholder="Meta Description" required #bind_meta_desc="ngModel">
+	              	<div class="form-control-feedback text-danger" *ngIf="bind_meta_desc?.errors && (bind_meta_desc.dirty || bind_meta_desc.touched)">
+			  			<p *ngIf="bind_meta_desc?.errors.required">Pleae enter meta description</p>
+					</div>
+							</div>
+							<div class="devider">
+									<hr>
+								</div>
+	            <!-- <div class="form-group" [ngClass]="{ 'has-danger': status.invalid && (status.dirty || status.touched), 'has-success': status.valid && (status.dirty || status.touched)}">
+	              	<label class="col-form-label" for="status">Status *</label>
+	              		<div class="col-form-label">
+			                <div class="form-check form-check-inline mr-1" id="inline-radios">
+		                  		<input [(ngModel)]="model.status" name="status" class="form-check-input" type="radio" id="active" value="Active" required #status="ngModel">
+			                  	<label class="form-check-label" for="active">Active</label>
+			                </div>
+			                <div class="form-check form-check-inline mr-1">
+		                  		<input class="form-check-input" name="status" [(ngModel)]="model.status" type="radio" id="inactive" value="Inactive" required #status="ngModel">
+			                  	<label class="form-check-label" for="inactive">Inactive</label>
+			                </div>
+		              	</div>
+		              	<div class="form-control-feedback text-danger" *ngIf="status.errors && (status.dirty || status.touched)">
+				  			<p *ngIf="status.errors.required">Please select status</p>
+						</div>
+		            </div>   -->
+					</div>
+	        <div class="card-footer">
+	          <button [disabled]="submitted || !f.form.valid || buttonDisable" type="submit" class="btn btn-primary"><i class="fa fa-check-circle-o fa-lg"></i> Save</button>&nbsp;
+	          <a class="btn btn-warning" [routerLink]="['/cms-management/list']"><i class="fa fa-exclamation-triangle "></i> Cancel</a>
+	        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-ui-loader
+[logoUrl]="loader.logoUrl"
+[logoSize]="loader.logoSize"
+[fgsType]="loader.spinnerType"
+[bgsType]="loader.spinnerType"
+></ngx-ui-loader>

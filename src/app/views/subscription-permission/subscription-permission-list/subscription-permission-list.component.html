@@ -1,0 +1,166 @@
+<div class="animated fadeIn">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card">
+				<!-- <div class="card-header">
+					<i class="fa fa-align-justify"></i> Listing
+				</div> -->
+				<div class="card-body">
+					<table datatable #a id="example" [(dtOptions)]="dtOptions" [dtTrigger]="dtTrigger" class="hover table table-bordered">
+						<thead class="text-center">
+							<tr>
+								<th>Title</th>
+								<th>Free User</th>
+								<th>Paid User</th>
+								<th>Status</th>
+								<th *ngxPermissionsOnly="['SUPER_ADMIN']">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let sub of subPermissionList; let i=index">
+								<td>{{ sub.title }}</td>
+								<td>{{ (sub.per_type) == '0' ? ((sub.allow_free) == '-1' ? 'Unlimited' : (sub.allow_free) == '0' ? 'No' : (sub.allow_free) == '1' ? 'Yes' : (sub.allow_free)) : ((sub.allow_free) == '-1' ? 'Unlimited' : (sub.allow_free)) }}</td>
+								<td>{{ (sub.per_type) == '0' ? ((sub.allow_paid) == '-1' ? 'Unlimited' : (sub.allow_paid) == '0' ? 'No' : (sub.allow_paid) == '1' ? 'Yes' : (sub.allow_paid)) : ((sub.allow_paid) == '-1' ? 'Unlimited' : (sub.allow_paid)) }}</td>
+								<td class="text-center"><span [ngClass]="{'badge-success': sub.status == 'Active', 'badge-danger': sub.status == 'Inactive'}" class="badge">{{ sub.status }}</span></td>
+								<td class="text-center" *ngxPermissionsOnly="['SUPER_ADMIN']">
+									<a title="Edit" (click)="openModal(templateEdit, sub.uuid, 'Edit', i)"><i class="fa fa-pencil-square-o fa-lg"></i></a> &nbsp;
+									<a title="Change Status" (click)="openModal(template, sub.uuid, sub.status, i)"><i [ngClass]="{'fa-toggle-on': sub.status == 'Active', 'fa-toggle-off': sub.status == 'Inactive'}" class="fa  fa-lg "></i></a>
+								</td>
+							</tr>
+							
+						</tbody>
+						<tfoot>
+								<tr  *ngIf="check()==true">
+										<td  colspan="5" class=" table_footer_border_none text-center">{{data_table_empty_msg}}</td>
+									</tr>
+						</tfoot>						
+					</table>
+					
+				</div>
+			</div>
+		</div>
+		<!--/.col-->
+	</div>
+</div>
+
+<ng-template #template>
+		<div class="modal-content">
+			<div class="modal-header bg-primary">
+				<h5 class="modal-title">Confirmation</h5>
+				<button type="button" class="close" (click)="decline()" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure you want to change status?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" (click)="changeStatus()">Yes</button>
+				<button type="button" class="btn btn-default" (click)="decline()">No</button>
+			</div>
+		</div>
+	</ng-template>
+
+	<ng-template #templateEdit>
+		<div class="modal-content">
+			<div class="modal-header bg-primary">
+				<h5 class="modal-title">Edit</h5>
+				<button type="button" class="close" (click)="decline()" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form (ngSubmit)="savePermission(subPermissionForm)" novalidate #subPermissionForm="ngForm">
+				<div class="modal-body">
+				<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="role">Title <span class="asterisk_input"></span></label>
+								<input type="text" [(ngModel)]="model.title" name="title" class="form-control" id="title" placeholder="Title" required #Title="ngModel">
+								<div class="form-control-feedback text-danger" *ngIf="Title.errors && (Title.dirty || Title.touched)">
+									<p *ngIf="Title.errors.required">Title is required</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="role">Key: </label>&nbsp;<span><i class="badge badge-info text-white">{{model.permission_key}}</i></span>
+							</div>
+						</div>
+						<div class="col-md-12" *ngIf="model.per_type == 1">
+							<div class="form-group">
+								<label for="status">Free User <span class="asterisk_input"></span></label>
+								<select class="form-control" [(ngModel)]="model.custom_free" name="allow_free" #Free="ngModel" required (change)="model.custom_free == 'custom' ? (model.allow_free = '') : (model.allow_free = -1)">
+									<option value="" selected>-- Select Free User --</option>
+									<option value="-1" >Unlimited</option>
+									<option value="custom" >Limited</option>
+									
+									
+								</select>
+								<div class="form-control-feedback text-danger" *ngIf="Free.errors && (Free.dirty || Free.touched)">
+									<span *ngIf="Free.errors.required" class="text-danger">
+										Please select free user
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12" *ngIf="model.custom_free == 'custom' && model.per_type == 1">
+							<div class="form-group">
+								<label for="status">Free Custom Range <span class="asterisk_input"></span></label>
+								<input type="number" min="0" [(ngModel)]="model.allow_free" name="custom_free" class="form-control" id="custom_free" placeholder="Free Custom Range" #customFree="ngModel" (keyup)="model.allow_free = avoidNegative(model.allow_free);">
+								
+							</div>
+						</div>
+						<div class="col-md-12" *ngIf="model.per_type == 1">
+							<div class="form-group">
+								<label for="status">Paid User <span class="asterisk_input"></span></label>
+								<select class="form-control" [(ngModel)]="model.custom_paid" name="custom_paid" #Paid="ngModel" required (change)="model.custom_paid == 'custom' ? (model.allow_paid = '') : (model.allow_paid = -1)">
+									<option value="" selected>-- Select Paid User --</option>
+									<option value="-1" >Unlimited</option>
+									<option value="custom" >Limited</option>
+									
+									
+								</select>
+								<div class="form-control-feedback text-danger" *ngIf="Paid.errors && (Paid.dirty || Paid.touched)">
+									<span *ngIf="Paid.errors.required" class="text-danger">
+										Please select paid user
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12" *ngIf="model.custom_paid == 'custom' && model.per_type == 1">
+							<div class="form-group">
+								<label for="status">Paid Custom Range <span class="asterisk_input"></span></label>
+								<input type="number" min="0" [(ngModel)]="model.allow_paid" name="allow_paid" class="form-control" id="allow_paid" placeholder="Paid Custom Range" #customPaid="ngModel" (keyup)="model.allow_paid = avoidNegative(model.allow_paid);">
+								
+							</div>
+						</div>
+						<div class="col-md-12" *ngIf="model.per_type == 0">
+							<div class="form-group">
+								<label for="status">Free User <span class="asterisk_input"></span></label> &nbsp;
+								<a title="Change Free User" (click)="toggleUser('free');"><i [ngClass]="{'fa-toggle-on': model.allow_free == 1, 'fa-toggle-off': model.allow_free == 0}" class="fa  fa-lg "></i></a>
+								
+							</div>
+						</div>
+						<div class="col-md-12" *ngIf="model.per_type == 0">
+							<div class="form-group">
+								<label for="status">Paid User <span class="asterisk_input"></span></label> &nbsp;
+								<a title="Change Paid User" (click)="toggleUser('paid');"><i [ngClass]="{'fa-toggle-on': model.allow_paid == 1, 'fa-toggle-off': model.allow_paid == 0}" class="fa  fa-lg "></i></a>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" (click)="decline()">Close</button>
+          			<button type="submit" class="btn btn-primary" >Submit</button>
+				</div>
+			</form>
+		</div>
+	</ng-template>
+
+	<ngx-ui-loader
+[logoUrl]="loader.logoUrl"
+[logoSize]="loader.logoSize"
+[fgsType]="loader.spinnerType"
+[bgsType]="loader.spinnerType"
+></ngx-ui-loader>

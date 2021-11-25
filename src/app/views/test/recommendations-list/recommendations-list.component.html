@@ -1,0 +1,87 @@
+<div class="animated fadeIn">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <!-- <div class="card-header">
+            <i class="fa fa-align-justify"></i> Listing
+          </div> -->
+          <div class="card-body">
+              <table id="recommendation_table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="hover table table-bordered">
+                  <thead class="text-center">
+                    <tr>
+                      <th>Sr. No</th>
+                      <th>Full Name</th>
+                      <th>Company Name</th>
+                      <th>Recommendation</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let data of DataList; let i=index">
+                          <td class="text-center"> {{ i+1 }}</td>
+                          <td>{{ data.first_name +' '+data.last_name}}</td>
+                          <td>{{ data.company_name }}</td>
+                          <td *ngIf="data.recommendation.length>=50" (click)="openModal(recommendationDataPopup,data.recommendation,data.uuid)">
+                              <div>{{  data.recommendation | slice:0:50  }}...<a><span class="badge badge-light">Show more</span></a></div> 
+                          </td> 
+                          <td *ngIf="data.recommendation.length<50">
+                            <div>{{  data.recommendation}}</div> 
+                          </td> 
+                          <td class="text-center" *ngxPermissionsOnly="['EMAIL_TEMP_UPDATE', 'SUPER_ADMIN']">     
+                          <a *ngxPermissionsOnly="['USER_DELETE', 'SUPER_ADMIN']" (click)="openModal(templateDelete,data.recommendation,data.uuid)" title="Delete"><i class="fa fa-trash-o fa-lg"></i> </a>&nbsp;
+                          </td>
+                        </tr>
+                  </tbody>
+                  <tfoot>
+                      <tr  *ngIf="check()==true">
+                          <td  colspan="8" class=" table_footer_border_none text-center">{{data_table_empty_msg}}</td>
+                        </tr>
+                  </tfoot>	
+                </table> 
+
+          </div>
+        </div>
+      </div>
+      <!--/.col-->
+    </div>
+  </div>
+  <ng-template #recommendationDataPopup>
+      <div class="modal-content">
+         <div class="modal-header bg-primary">
+          <h5 class="modal-title"><i class="fa fa-info-circle modal-icon"></i> Recommendation</h5>
+          <button type="button" class="close" (click)="decline()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div> 
+        <div class="modal-body">
+          <p>{{recommendation_modal_data}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="decline()">Close</button>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template #templateDelete>
+        <div class="modal-content">
+          <div class="modal-header bg-primary">
+            <h5 class="modal-title"><i class="fa fa-info-circle modal-icon"></i> Confirmation</h5>
+            <button type="button" class="close" (click)="decline()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body text-center">
+            <p>Are you sure you want to delete this record?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="deleteRecommendation()">Yes</button>
+            <button type="button" class="btn btn-default" (click)="decline()">No</button>
+          </div>
+        </div>
+      </ng-template>
+      <ngx-ui-loader
+      [logoUrl]="loader.logoUrl"
+      [logoSize]="loader.logoSize"
+      [fgsType]="loader.spinnerType"
+      [bgsType]="loader.spinnerType"
+      ></ngx-ui-loader>

@@ -1,0 +1,92 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <form (ngSubmit)="onCategorySave()" novalidate #f="ngForm">
+          <div class="card-body">
+            <p class="col-sm-12 text-right requiredLabel"><span>Fields marked with <span  class="asterisk_input"></span> are mandatory.</span>
+            </p>
+
+            <div class="form-group">
+              <label for="meta_keywords">Category Name <span class="asterisk_input"></span></label>
+              <input [(ngModel)]="category_name" type="text" name="name" class="form-control" placeholder="Category Name.." required #name="ngModel">
+              <div class="form-control-feedback text-danger" *ngIf="name.errors && (name.dirty || name.touched)">
+                <p *ngIf="name.errors.required">Please enter category name</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="meta_description">Description</label>
+              <textarea class="form-control" [(ngModel)]="category_description" name="description" placeholder="Category Description.." rows="4"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="col-form-label" for="status">Status <span class="asterisk_input"></span></label>
+              <div class="col-form-label">
+                <div class="form-check form-check-inline mr-1" id="inline-radios">
+                  <input [(ngModel)]="category_status" name="status" class="form-check-input" type="radio" id="active" value="Active" required #status="ngModel">
+                  <label class="form-check-label" for="active">Active</label>
+                </div>
+                <div class="form-check form-check-inline mr-1">
+                  <input class="form-check-input" name="status" [(ngModel)]="category_status" type="radio" id="inactive" value="Inactive" required #status="ngModel">
+                  <label class="form-check-label" for="inactive">Inactive</label>
+                </div>
+              </div>
+              <div class="form-control-feedback text-danger" *ngIf="status.errors && (status.dirty || status.touched)">
+                <p *ngIf="status.errors.required">Status is required</p>
+              </div>
+            </div>
+
+            <!-- <div class="form-group tree-dropdown">
+              <select class="form-control" (click)="openTree()">
+              </select>
+              <div class="list" *ngIf="isOpen" style="">
+                <ul class="">
+                  <li>
+                    <p class="selected" style="" (click)="openTree()">Select Category</p>
+                  </li>
+                  <li>
+                    <p>Food</p>
+                    <ul>
+                      <li>
+                        <p ng-class="{selected:selected.id==3}" class="level-1">Non Veg</p>
+                      </li>
+                      <li>
+                        <p ng-class="{selected:selected.id==2}" class="level-1">Veg</p>
+                        <ul>
+                          <li>
+                            <p ng-class="{selected:selected.id==5}" class="level-2">Gujrati</p>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p ng-class="{selected:selected.id==6}" class="level-0">Games</p>
+                    <ul>
+                      <li>
+                        <p ng-class="{selected:selected.id==7}" class="level-1">Indoor Games</p>
+                      </li>
+                      <li>
+                        <p ng-class="{selected:selected.id==8}" class="level-1">Outdoor Games</p>
+                        <ul>
+                          <li>
+                            <p ng-class="{selected:selected.id==10}" class="level-2">Cricket</p>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div> -->
+
+            <div class="form-group">
+              <div class="divider"></div>
+              <button [disabled]="submitted || !f.form.valid" type="submit" class="btn btn-primary"><i class="fa fa-check-circle-o fa-lg"></i> Save</button>&nbsp;
+              <a class="btn btn-warning" [routerLink]="['/category/list']"><i class="fa fa-exclamation-triangle "></i> Cancel</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

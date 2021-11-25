@@ -1,0 +1,131 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <form (ngSubmit)="onSettingsDataSave(f)" novalidate #f="ngForm">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12">
+                <h4 class="text-left col-12 col-sm-6 pull-left p-0">General Settings</h4>
+                <p class="text-sm-right text-left requiredLabel col-12 col-sm-6 p-0 pull-right"><span>Fields marked with <span class="asterisk_input"></span> are mandatory.</span>
+                </p>
+              </div>
+              <div class="col-12">
+                <div class="dropdown-divider"></div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 col-12">
+                <div class="form-group mt-2 mt-sm-3">
+                  <label for="meta_keywords">Site Name<span class="asterisk_input"></span></label>
+                  <input [(ngModel)]="model.site_name" type="text" name="site_name" class="form-control" placeholder="Site Name" required #site_name="ngModel">
+                  <div class="form-control-feedback text-danger" *ngIf="site_name.errors && submitted">
+                    <p *ngIf="site_name.errors.required">Please enter site name</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-12">
+                <div class="form-group mt-2 mt-sm-3">
+                  <label for="meta_keywords">Tag Line<span class="asterisk_input"></span></label>
+                  <input [(ngModel)]="model.tag_line" type="text" name="tag_line"  class="form-control" placeholder="Tag Line" required #tag_line="ngModel">
+                  <div class="form-control-feedback text-danger" *ngIf="tag_line.errors && submitted">
+                    <p *ngIf="tag_line.errors.required">Please enter tag line</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 col-12">
+                <div class="form-group mt-2 mt-sm-3">
+                  <label for="meta_keywords">Support Email <span class="asterisk_input"></span></label>
+                  <input [(ngModel)]="model.support_email" type="text" name="support_email" class="form-control" placeholder="Support Email" required #support_email="ngModel" pattern="^[a-z]+[a-zA-Z0-9._+]+@[a-zA-Z0-9]+\.[a-z.]{2,5}$">
+                  <div class="form-control-feedback text-danger" *ngIf="support_email.errors&& submitted">
+                    <p *ngIf="support_email.errors.required">Please enter support email</p>
+                    <p *ngIf="support_email.errors.pattern">Please enter valid support email</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-12">
+                <div class="form-group mt-2 mt-sm-3">
+                  <label for="meta_keywords">Contact Email <span class="asterisk_input"></span></label>
+                  <input [(ngModel)]="model.contact_email" type="text" name="contact_email" class="form-control" placeholder="Contact Email" required #contact_email="ngModel" pattern="^[a-z]+[a-zA-Z0-9._+]+@[a-zA-Z0-9]+\.[a-z.]{2,5}$">
+                  <div class="form-control-feedback text-danger" *ngIf="contact_email.errors&& submitted">
+                    <p *ngIf="contact_email.errors.required">Please enter contact email</p>
+                    <p *ngIf="contact_email.errors.pattern">Please enter valid contact email</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 col-12">
+                <div class="form-group mt-2 mt-sm-3">
+                  <label for="meta_keywords">Contact Number <span class="asterisk_input"></span></label>
+                  <input [(ngModel)]="model.contact_number" type="number" name="contact_number" class="form-control" placeholder="Contact Number" required #contact_number="ngModel" pattern="^((\\+91-?)|0)?[0-9]{10,13}$" minlength="10" maxlength="13" >
+                  <div class="form-control-feedback text-danger" *ngIf="contact_number.errors && submitted">
+                    <p *ngIf="contact_number.errors.required">Please enter contact number</p>
+                    <p *ngIf="contact_number.errors.pattern">Please enter valid contact number with atleast 10 digits</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-12">
+                <div class="form-group mt-2 mt-sm-3">
+                  <label for="meta_keywords">Default Language<span class="asterisk_input"></span></label>
+                  <input [(ngModel)]="model.default_language" type="text" name="default_language"  class="form-control" placeholder="Default Language.." required #default_language="ngModel">
+                  <div class="form-control-feedback text-danger" *ngIf="default_language.errors && submitted">
+                    <p *ngIf="default_language.errors.required">Please enter default language</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 col-12">
+                <div class="form-group mt-2 mt-sm-3">
+                  <label for="meta_keywords">Address <span class="asterisk_input"></span></label>
+                  <textarea [(ngModel)]="model.address" type="text" name="address" class="form-control" placeholder="Address" required #address="ngModel" rows="4"></textarea>
+                  <div class="form-control-feedback text-danger" *ngIf="address.errors && submitted">
+                    <p *ngIf="address.errors.required">Please enter address</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-12">
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group mt-2 mt-sm-3">
+                      <label for="meta_keywords">Logo</label>
+                      <div class="profile">
+                        <div class="profile-wrapper">
+                          <img [src]="logoURL" (change)="changeLogoImage($event)">
+                        </div>
+                        <i class="fa fa-2x fa-times-circle-o" aria-hidden="true" (click)="removeLogoPicture()" *ngIf="!noPicture"></i>
+                        <a href="" class="change-profile" (click)="changeLogoImage($event)">Change</a>
+                        <input [(ngModel)]="model.profile_logo" type='file' (change)="changeLogoImage($event)" name="profile_logo" class="form-control" id="profile_logo" #profile_logo="ngModel">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group mt-2 mt-sm-3">
+                      <label for="meta_keywords">Favicon</label>
+                      <div class="profile">
+                        <div class="profile-wrapper">
+                          <img [src]="faviconURL" (change)="changeFavImage($event)">
+                        </div>
+                        <i class="fa fa-2x fa-times-circle-o" aria-hidden="true" (click)="removeFavPicture()" *ngIf="!noPicture"></i>
+                        <a href="" class="change-profile" (click)="changeFavImage($event)">Change</a>
+                        <input [(ngModel)]="model.profile_favicon" type='file' (change)="changeFavImage($event)" name="profile_favicon" class="form-control" id="profile_favicon" #profile_favicon="ngModel">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group mt-3">
+              <button *ngxPermissionsOnly="['CONFIG_UPDATE','SUPER_ADMIN']"  type="submit" class="btn btn-primary"><i class="fa fa-check-circle-o fa-lg"></i> Update</button>&nbsp;
+              <a class="btn btn-warning" [routerLink]="['/dashboard']"><i class="fa fa-exclamation-triangle "></i> Cancel</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-spinner bdColor = "rgba(51, 51, 51, 0.8)" size = "medium" color = "#fff" type = "ball-beat"></ngx-spinner>

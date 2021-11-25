@@ -1,0 +1,609 @@
+<ngx-ui-loader
+[logoUrl]="loader.logoUrl"
+[logoSize]="loader.logoSize"
+[fgsType]="loader.spinnerType"
+[bgsType]="loader.spinnerType"
+></ngx-ui-loader>
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-md-12">
+      <!-- (ngSubmit)="onUserDataSave(f)" -->
+      <form (ngSubmit)="submitForm(f)" #f="ngForm">
+          <div class="card" >
+              <div class="card-body">
+                 <p class="col-sm-12 text-right requiredLabel"><span>Fields marked with <span  class="asterisk_input"></span> are mandatory.</span>
+                </p>
+                <!-- <ng-multiselect-dropdown
+                name="city"
+                [placeholder]="'Select Ethnicity'"
+                [data]="ethnicityList"
+                [settings]="dropdownSettings">
+            </ng-multiselect-dropdown> -->
+            <div class="row">
+                <div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label>First Name <span class="asterisk_input"></span></label>
+                    <input type="text" name="first_name" [(ngModel)]="model.first_name" required #firstName="ngModel" class="form-control" placeholder="First Name">
+                    <div class="form-control-feedback text-danger" *ngIf="firstName?.errors && (f.submitted || firstName.changed || firstName.dirty)">
+                      <p *ngIf="firstName?.errors.required">Please enter first name</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-12">
+                    <div class="form-group">
+                        <label>Last Name <span class="asterisk_input"></span></label>
+                        <input type="text" name="last_name" [(ngModel)]="model.last_name" required #lastName="ngModel" class="form-control" placeholder="Last Name">
+                        <div class="form-control-feedback text-danger" *ngIf="lastName?.errors && (f.submitted || lastName.changed || lastName.dirty)">
+                          <p *ngIf="lastName?.errors.required">Please enter last name</p>
+                        </div>
+                    </div>
+                  </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label>Country <span class="asterisk_input"></span></label>
+                    <select class="form-control" name="country_id"  [(ngModel)]="model.country_id" required #country_id="ngModel">
+                      <option value="">Select Country</option>
+                      <option *ngFor="let country of countryList" [value]="country.id">{{country.name}}</option>
+                    </select>
+                    <div class="form-control-feedback text-danger" *ngIf="country_id?.errors && (f.submitted || country_id.dirty || country_id.changed)">
+                      <p *ngIf="country_id?.errors.required">Please select country</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 col-12">
+                    <div class="form-group">
+                        <label>City <span class="asterisk_input"></span></label>
+                        <input type="text" class="form-control" placeholder="City" name="city" [(ngModel)]="model.city" required #cityName="ngModel">
+                        <div class="form-control-feedback text-danger" *ngIf="cityName?.errors && (f.submitted || cityName.dirty || cityName.changed)">
+                          <p *ngIf="cityName?.errors.required">Please enter city</p>
+                        </div>
+                    </div>
+                  </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-12">
+                <div class="form-group">
+                  <label>Email <span class="asterisk_input"></span></label>
+                  <input type="email" class="form-control" placeholder="Email" name="email" [(ngModel)]="model.email" required email #emailId="ngModel">
+                  <div class="form-control-feedback text-danger" *ngIf="emailId?.errors && (f.submitted || emailId.dirty || emailId.changed)">
+                    <p *ngIf="emailId?.errors?.required">Please enter email</p>
+                    <p *ngIf="emailId?.errors?.email">Please enter valid email</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 col-12">
+                <div class="form-group">
+                    <label>Title <span class="asterisk_input"></span></label>
+                    <input type="text" class="form-control" placeholder="Title" name="title" [(ngModel)]="model.title" required #titleVal="ngModel">
+                    <div class="form-control-feedback text-danger" *ngIf="titleVal?.errors && (f.submitted || titleVal.changed || titleVal.dirty)">
+                      <p *ngIf="titleVal?.errors.required">Please enter title</p>
+                    </div>
+                </div>
+            </div>
+              <!-- <div class="col-md-6 col-12">
+                  <div class="form-group">
+                      <label for="meta_keywords">Gender <span class="asterisk_input"></span></label>
+                      <div class="d-block">
+                        <div class="form-check-inline">
+                          <label class="form-check-label">Female
+                            <input type="radio" class="form-check-input" name="gender" value="Female" [(ngModel)]="model.gender" #genderValue="ngModel" required>
+                            <span class="radio-span"></span>
+                          </label>
+                        </div>
+                        <div class="form-check-inline">
+                          <label class="form-check-label">Male
+                            <input type="radio" class="form-check-input" name="gender" value="Male" [(ngModel)]="model.gender" #genderValue="ngModel" required>
+                            <span class="radio-span"></span>
+                          </label>
+                        </div>
+                        <div class="form-check-inline">
+                          <label class="form-check-label">Other
+                            <input type="radio" class="form-check-input" name="gender" value="Other" [(ngModel)]="model.gender" #genderValue="ngModel" required>
+                            <span class="radio-span"></span>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="form-control-feedback text-danger" *ngIf="genderValue?.errors && (f.submitted || genderValue.dirty || genderValue.changed)">
+                        <p *ngIf="genderValue?.errors?.required">Please select gender</p>
+                      </div>
+                  </div>
+              </div> -->
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 col-12">
+		        <div class="form-group">
+                <label>Overview <span class="asterisk_input"></span></label>
+                <textarea name="overview" class="form-control" cols="30" rows="5" [(ngModel)]="model.overview" required #overview="ngModel"></textarea>
+                <div class="form-control-feedback text-danger" *ngIf="overview?.errors && (f.submitted || overview.dirty || overview.changed)">
+                   <p *ngIf="overview?.errors?.required">Please enter overview</p>
+                </div>
+              </div>
+              </div>
+              <div class="form-group col-md-4">
+                  <label for="meta_keywords">Make Profile Private<span class="asterisk_input"></span></label>
+                  <div class="d-block">
+                    <div class="form-check-inline">
+                      <label class="form-check-label">Yes
+                        <input type="radio" [value]="1"  name="is_private"  [(ngModel)]="model.is_private" #private_profile="ngModel" required>
+                        <span class="radio-span"></span>
+                      </label>
+                    </div>
+                    <div class="form-check-inline">
+                      <label class="form-check-label">No
+                        <input type="radio" [value]="0"  name="is_private" [(ngModel)]="model.is_private" #private_profile="ngModel" required>
+                        <span class="radio-span"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="form-control-feedback text-danger" *ngIf="private_profile?.errors && f.submitted">
+                    <p *ngIf="private_profile?.errors?.required">Please select status of private profile</p>
+                  </div>
+                </div>
+        </div>
+        <div class="row">
+            <!-- <div class="col-md-6 col-12">
+              <div class="form-group">
+               <label>User Type <span class="asterisk_input"></span></label>
+               <input type="hidden" [(ngModel)]="model.userType" name="userType" #user_type=ngModel>
+                   <ng-multiselect-dropdown
+                      [(ngModel)]="model.userType"
+                      name="user_type"
+                      [placeholder]="'Select User Type'"
+                      [data]="userTypeList"
+                      [settings]="dropdownSettings">
+                  </ng-multiselect-dropdown>
+                <div class="form-control-feedback text-danger" *ngIf="model.userType.length==0 && (f.submitted || user_type.changed || user_type.dirty)">
+                  <p>Please select user type</p>
+                </div>
+              </div>
+            </div> -->
+            <!-- <div class="col-md-6 col-12">
+                <div class="form-group">
+                    <label>Ethnicity<span class="asterisk_input"></span></label>
+                    <select class="form-control" name="ethnicity_id"  [(ngModel)]="model.ethnicity_id" required #ethnicity="ngModel">
+                      <option value="">Select Ethnicity</option>
+                      <option *ngFor="let ethnicity of ethnicityList" [value]="ethnicity.id">{{ethnicity.name}}</option>
+                    </select>
+                    <div class="form-control-feedback text-danger" *ngIf="ethnicity?.errors && f.submitted">
+                      <p *ngIf="ethnicity?.errors.required">Please select ethnicity</p>
+                    </div>
+                </div>
+              </div> -->
+        </div>
+        <div class="row">
+            <!-- <div class="col-md-6 col-12">
+              <div class="form-group">
+                  <label>Eye Color<span class="asterisk_input"></span></label>
+                  <select class="form-control" name="eye_color_id"  [(ngModel)]="model.eye_color_id" required #eye="ngModel">
+                    <option value="">Select Eye Color</option>
+                    <option *ngFor="let eyecolor of eyeColorList" [value]="eyecolor.id">{{eyecolor.name}}</option>
+                  </select>
+                  <div class="form-control-feedback text-danger" *ngIf="eye?.errors && f.submitted">
+                    <p *ngIf="eye?.errors.required">Please select eye color</p>
+                  </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-12">
+                <div class="form-group">
+                    <label>Hair Color<span class="asterisk_input"></span></label>
+                  <select class="form-control" name="hair_color_id"  [(ngModel)]="model.hair_color_id" required #hair="ngModel">
+                    <option value="">Select Hair Color</option>
+                    <option *ngFor="let hairColor of hairColorList" [value]="hairColor.id">{{hairColor.name}}</option>
+                  </select>
+                  <div class="form-control-feedback text-danger" *ngIf="hair?.errors && f.submitted">
+                    <p *ngIf="hair?.errors.required">Please select hair color</p>
+                  </div>
+                </div>
+              </div> -->
+        </div>
+            </div>
+        </div>
+        <div class="card" *ngFor="let userType of model.userType">
+            <div class="card-body">
+                <div class="form-group">
+                    <h5 class="col-sm-12 text-left requiredLabel" style="margin-left:-15px !important;">{{userType.name}}</h5>
+                    <hr>
+                  </div>
+                  <div class="devider"></div>
+                  <h5>Appearance</h5>
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                            <ng-template #gender_bind>gender_{{userType.name}}</ng-template>
+                            <label>Gender<span class="asterisk_input"></span></label>  
+                            <select class="form-control" name="gender_val_{{userType.name}}" [(ngModel)]="model2[userType.name].gender" required #gender_bind="ngModel">
+                              <option value="null">Select Gender</option>
+                              <option value="Male">Male</option>
+                              <option value="Female">Female</option>
+                            </select>
+                            <div class="form-control-feedback text-danger" *ngIf="gender_bind?.errors && (f.submitted || gender_bind.dirty || gender_bind.changed)">
+                                <p *ngIf="gender_bind?.errors.required">Please select gender</p>
+                              </div>
+                        </div>
+                    </div>
+                    <div *ngIf="userType.name=='Voiceover' || userType.name=='Actor' || userType.name=='Modal'" class="col-md-6 col-12">
+                        <ng-template #age_range_min_bind>age_range_min_{{userType.name}}</ng-template>
+                        <ng-template #age_range_max_bind>age_range_max_{{userType.name}}</ng-template>
+                        <label for="age_range">Age Range<span class="asterisk_input"></span></label>  
+                        <div class="form-group">
+                            <input type="number" pattern="^[0-9][0-9]?$|^100$" placeholder="From" (change)="model2[userType.name].max_age=model2[userType.name].min_age" min="0"  max="100" class="form-control from_range"  name="age_min_{{userType.name}}" #age_range_min_bind="ngModel" required [(ngModel)]="model2[userType.name].min_age">
+                            <input type="number" pattern="^[0-9][0-9]?$|^100$" placeholder="To" [min]="model2[userType.name].min_age" max="100"  class="form-control to_range" name="age_max_{{userType.name}}" #age_range_max_bind="ngModel" required [(ngModel)]="model2[userType.name].max_age">
+                            <div class="form-control-feedback text-danger" *ngIf="(age_range_min_bind?.errors || age_range_max_bind?.errors) && (f.submitted || age_range_min_bind.dirty || age_range_min_bind.changed || age_range_max_bind.dirty || age_range_max_bind.changed)">
+                                <p *ngIf="(age_range_min_bind?.errors?.required && age_range_max_bind?.errors?.required);else min_max_error">Please enter age range</p>
+                                <ng-template #min_max_error>
+                                    <p *ngIf="age_range_min_bind?.errors?.required">Please enter minimum value for age range</p>
+                                    <p *ngIf="age_range_max_bind?.errors?.required ">Please enter maximum value for age range</p>
+                                    <p *ngIf="age_range_min_bind?.errors?.pattern || age_range_max_bind?.errors?.pattern">Please enter valid value for age range</p>
+                                </ng-template>
+                              </div>
+                        </div>
+                    </div>
+                    <div *ngIf=" userType.name=='Crew'" class="col-md-6 col-12">
+                        <ng-template #age_bind>age_{{userType.name}}</ng-template>
+                        <label for="age_range">Age<span class="asterisk_input"></span></label>  
+                        <input type="number" pattern="^[0-9][0-9]?$|^100$" min="0" max="100" class="form-control" #age_bind="ngModel" placeholder="Age" required name="age_val_{{userType.name}}" [(ngModel)]="model2[userType.name].age">
+                        <div class="form-control-feedback text-danger" *ngIf="age_bind?.errors && (f.submitted || age_bind.dirty || age_bind.changed)">
+                            <p *ngIf="age_bind?.errors.required">Please enter age</p>
+                            <p *ngIf="age_bind?.errors.pattern">Please enter valid age</p>
+                          </div>
+
+                    </div>
+                    <!-- <div class="col-md-6 col-12">
+
+                      <div class="form-group">
+                        <ng-template #eye_bind>eye_{{userType.name}}</ng-template>
+                          <label>Eye Color<span class="asterisk_input"></span></label>  
+                          <select class="form-control" name="eye_{{userType.name}}" [(ngModel)]="model[userType.name]['eye_color_id']" required #eye_bind="ngModel">
+                            <option value="">Select Eye Color</option>
+                            <option *ngFor="let eyecolor of eyeColorList" [value]="eyecolor.id">{{eyecolor.name}}</option>
+                          </select>
+                          <div class="form-control-feedback text-danger" *ngIf="eye_bind?.errors && f.submitted">
+                            <p *ngIf="eye_bind?.errors.required">Please select eye color</p>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                            <ng-template #hair_bind>hair_{{userType.name}}</ng-template>
+                            <label>Hair Color<span class="asterisk_input"></span></label>
+                          <select class="form-control" name="hair_{{userType.name}}" [(ngModel)]="model[userType.name]['hair_color_id']" required #hair_bind="ngModel">
+                            <option value="">Select Hair Color</option>
+                            <option *ngFor="let hairColor of hairColorList" [value]="hairColor.id">{{hairColor.name}}</option>
+                          </select>
+                          <div class="form-control-feedback text-danger" *ngIf="hair_bind?.errors && f.submitted">
+                            <p *ngIf="hair_bind?.errors.required">Please select hair color</p>
+                          </div>
+                        </div>
+                      </div>-->
+                </div> 
+                <div class="row">
+                    <div *ngIf="userType.name=='Voiceover' || userType.name=='Actor' || userType.name=='Crew' || userType.name=='Modal'" class="col-md-6 col-12">
+                        <div class="form-group">
+                            <ng-template #bind_ethnicity>ethnicity_{{userType.name}}</ng-template>
+                            <label>Ethnicity<span class="asterisk_input"></span></label>  
+                          <select name="ethnicity_id_{{userType.name}}" class="form-control" [(ngModel)]="model2[userType.name].ethnicity_id" required #bind_ethnicity="ngModel">
+                            <option value="">Select Ethnicity</option>
+                            <option *ngFor="let ethnicity of ethnicityList" [value]="ethnicity.id">{{ethnicity.name}}</option>
+                          </select>
+                          <div class="form-control-feedback text-danger" *ngIf="bind_ethnicity?.errors && (f.submitted || bind_ethnicity.changed || bind_ethnicity.dirty)">
+                            <p *ngIf="bind_ethnicity?.errors.required">Please select ethnicity</p>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12" *ngIf="userType.name=='Actor' || userType.name=='Modal'">
+                      <div class="form-group">
+                          <ng-template #bind_body>body_type_{{userType.name}}</ng-template>
+                          <label>Body Type</label>
+                        <select name="body_type_id_{{userType.name}}" class="form-control" [(ngModel)]="model2[userType.name].body_type_id" #bind_body="ngModel">
+                          <option value="">Select Body Type</option>
+                          <option *ngFor="let body of bodyTypeList" [value]="body.id">{{body.name}}</option>
+                        </select>
+                      </div>
+                  </div>
+                </div>
+                <div *ngIf="userType.name=='Actor' || userType.name=='Modal'" class="row">
+                  <div class="col-md-6 col-12">
+                      <div class="form-group">
+                          <ng-template #bind_eyes>eyes_color_{{userType.name}}</ng-template>
+                          <label>Eyes Color</label>  
+                        <select name="eye_color_id_{{userType.name}}" class="form-control" [(ngModel)]="model2[userType.name].eye_color_id"  #bind_eyes="ngModel">
+                          <option value="">Select Eyes Color</option>
+                          <option *ngFor="let eye of eyeColorList" [value]="eye.id">{{eye.name}}</option>
+                        </select>
+                      </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                        <ng-template #bind_hair>hair_color_{{userType.name}}</ng-template>
+                        <label>Hair Color</label>
+                      <select name="hair_color_id_{{userType.name}}" class="form-control" [(ngModel)]="model2[userType.name].hair_color_id" #bind_hair="ngModel">
+                        <option value="">Select Hair Color</option>
+                        <option *ngFor="let hair of hairColorList" [value]="hair.id">{{hair.name}}</option>
+                      </select>
+                    </div>
+                </div>
+              </div>
+              <div *ngIf="userType.name=='Actor' || userType.name=='Modal'" class="row">
+                <div class="col-md-6 col-12">
+                  <div class="form-group">
+                      <ng-template #bind_height>height_{{userType.name}}</ng-template>
+                      <label>Height (cm)<span class="asterisk_input"></span></label>
+                      <input class="form-control" pattern="^(?:[1-9]\d*|0)?(?:\.\d+)?$"  step="0.1" required [(ngModel)]="model2[userType.name].height" type="number" placeholder="Height (cm)" #bind_height="ngModel" min="0" name="height_val_{{userType.name}}">
+                      <div class="form-control-feedback text-danger" *ngIf="bind_height?.errors && (f.submitted || bind_height.changed || bind_height.dirty)">
+                          <p *ngIf="bind_height?.errors.required">Please enter height</p>
+                          <p *ngIf="bind_height?.errors.pattern">Please enter valid value for height</p>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                      <div class="form-group">
+                          <ng-template #bind_weight>weight_{{userType.name}}</ng-template>
+                          <label>Weight (Kg)<span class="asterisk_input"></span></label>
+                          <input class="form-control" pattern="^(?:[1-9]\d*|0)?(?:\.\d+)?$"  step="0.1" required [(ngModel)]="model2[userType.name].weight" type="number" placeholder="Weight (Kg)" #bind_weight="ngModel" min="0" name="weight_val_{{userType.name}}">
+                          <div class="form-control-feedback text-danger" *ngIf="bind_weight?.errors && (f.submitted || bind_weight.changed || bind_weight.dirty)">
+                              <p *ngIf="bind_weight?.errors.required">Please enter weight</p>
+                              <p *ngIf="bind_weight?.errors.pattern">Please enter valid value for weight</p>
+                            </div>
+                        </div>
+                      </div>
+              </div>
+              <div *ngIf="userType.name=='Modal'" class="row">
+                  <div class="col-md-6 col-12">
+                      <div class="form-group">
+                          <ng-template #bind_bust>bust_{{userType.name}}</ng-template>
+                          <label>Bust (cm)<span class="asterisk_input"></span></label>
+                          <input class="form-control"  pattern="^(?:[1-9]\d*|0)?(?:\.\d+)?$"   step="0.1" required [(ngModel)]="model2[userType.name].bust" type="number" placeholder="Bust (cm)" #bind_bust="ngModel" min="0" name="bust_val_{{userType.name}}">
+                          <div class="form-control-feedback text-danger" *ngIf="bind_bust?.errors && (f.submitted || bind_bust.changed || bind_bust.dirty)">
+                              <p *ngIf="bind_bust?.errors.required">Please enter bust</p>
+                              <p *ngIf="bind_bust?.errors.pattern">Please enter valid value for bust</p>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-12">
+                          <div class="form-group">
+                              <ng-template #bind_waist>waist_{{userType.name}}</ng-template>
+                              <label>Waist (Kg)<span class="asterisk_input"></span></label>
+                              <input class="form-control"  pattern="^(?:[1-9]\d*|0)?(?:\.\d+)?$"   step="0.1" required [(ngModel)]="model2[userType.name].waist" type="number" placeholder="Waist (Kg)" #bind_waist="ngModel" min="0" name="waist_val_{{userType.name}}">
+                              <div class="form-control-feedback text-danger" *ngIf="bind_waist?.errors && (f.submitted || bind_waist.changed || bind_waist.dirty)">
+                                  <p *ngIf="bind_waist?.errors.required">Please enter waist</p>
+                                  <p *ngIf="bind_waist?.errors.pattern">Please enter valid value for waist</p>
+                                </div>
+                            </div>
+                          </div>
+              </div>
+              <div *ngIf="userType.name=='Modal'" class="row">
+                  <div class="col-md-6 col-12">
+                      <div class="form-group">
+                          <ng-template #bind_hips>hips_{{userType.name}}</ng-template>
+                          <label>Hips (cm)<span class="asterisk_input"></span></label>
+                          <input class="form-control"  pattern="^(?:[1-9]\d*|0)?(?:\.\d+)?$"  step="0.1" required [(ngModel)]="model2[userType.name].hips" type="number" placeholder="Hips (cm)" #bind_hips="ngModel" min="0" name="hips_val_{{userType.name}}">
+                          <div class="form-control-feedback text-danger" *ngIf="bind_hips?.errors && (f.submitted || bind_hips.changed || bind_hips.dirty)">
+                              <p *ngIf="bind_hips?.errors.required">Please enter hips</p>
+                              <p *ngIf="bind_hips?.errors.pattern">Please enter valid value for hips</p>
+                            </div>
+                        </div>
+                      </div>
+              </div>
+              <div class="devider"></div>
+              <h5>Specific Skills</h5>
+              <div class="row">
+                  <div class="col-md-6 col-12">
+                      <div class="form-group">
+                          <label>Skills<span class="asterisk_input"></span></label>
+                          <ng-template #bind_skills>skills_{{userType.name}}</ng-template>
+                          <input type="hidden"  [(ngModel)]="model2[userType.name].skills" name="skills_val_{{userType.name}}" #bind_skills=ngModel>
+                          <ng-multiselect-dropdown
+                          [(ngModel)]="model2[userType.name].skills"
+                          name="skills_{{userType.name}}"
+                          [placeholder]="'Select Skills'"
+                          [data]="skillsList"
+                          [settings]="dropdownSettings">
+                      </ng-multiselect-dropdown>
+                    <div class="form-control-feedback text-danger" *ngIf="model2[userType.name].skills.length==0 && (f.submitted || bind_skills.changed || bind_skills.dirty)">
+                      <p>Please select skills</p>
+                    </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="devider"></div>
+              <h5>General Skills</h5>
+              <div class="row">
+                  <div class="col-md-6 col-12">
+                      <div class="form-group">
+                          <label>Spoken Languages<span class="asterisk_input"></span></label>
+                          <ng-template #bind_spoken_language>spoken_language_{{userType.name}}</ng-template>
+                          <input type="hidden" [(ngModel)]="model2[userType.name].language" name="language_val_{{userType.name}}" #bind_spoken_language=ngModel>
+                          <ng-multiselect-dropdown
+                          [(ngModel)]="model2[userType.name].language"
+                          name="language_{{userType.name}}"
+                          [placeholder]="'Select Languages'"
+                          [data]="spokenLaguagesList"
+                          [settings]="dropdownSettings">
+                      </ng-multiselect-dropdown>
+                    <div class="form-control-feedback text-danger" *ngIf="model2[userType.name].language.length==0 && (f.submitted || bind_spoken_language.changed || bind_spoken_language.dirty)">
+                      <p>Please select spoken languages</p>
+                    </div>
+                      </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                      <div class="form-group">
+                          <label>Experienced In<span class="asterisk_input"></span></label>
+                          <ng-template #bind_experience>experienced_in_{{userType.name}}</ng-template>
+                          <input type="hidden" [(ngModel)]="model2[userType.name].experienced" name="experience_val_{{userType.name}}" #bind_experience=ngModel>
+                          <ng-multiselect-dropdown
+                          [(ngModel)]="model2[userType.name].experienced"
+                          name="experience_{{userType.name}}"
+                          [placeholder]="'Select Experience'"
+                          [data]="experienceList"
+                          [settings]="dropdownSettings">
+                      </ng-multiselect-dropdown>
+                    <div class="form-control-feedback text-danger" *ngIf="model2[userType.name].experienced.length==0 && (f.submitted || bind_experience.changed || bind_experience.dirty)">
+                      <p>Please select experience</p>
+                    </div>
+                      </div>
+                  </div>
+              </div>
+              <div *ngIf="userType.name=='Crew'" class="devider"></div>
+              <h5 *ngIf="userType.name=='Crew'">Additional Information</h5>
+              <div *ngIf="userType.name=='Crew'" class="row">
+                  <div class="col-md-6 col-12">
+                      <div class="form-group">
+                          <label>Years of Experience<span class="asterisk_input"></span></label>
+                          <ng-template #bind_experience_year>year_experience_{{userType.name}}</ng-template>
+                        <!-- <input placeholder="Years of Experience" pattern="^100(\.[0]{1,2})?|([0-9]|[1-9][0-9])(\.[0-9]{1,2})?$" type="number" step="1" min="0" max="100" name="year_experience_{{userType.name}}" [(ngModel)]="model2[userType.name].experience_years" class="form-control" required #bind_experience_year="ngModel"> -->
+                        <select name="year_experience_{{userType.name}}" required [(ngModel)]="model2[userType.name].experience_years" class="form-control" required #bind_experience_year="ngModel">
+                          <option value="">Select Experience</option>
+                          <option [value]="expYear.id" *ngFor="let expYear of expereneInYearList">{{expYear.name}}</option>
+                        </select>
+                    <div class="form-control-feedback text-danger" *ngIf="bind_experience_year?.errors?.required && (f.submitted || bind_experience_year.changed || bind_experience_year.dirty)">
+                      <p *ngIf="bind_experience_year?.errors.required">Please enter experience in year</p>
+                      <p *ngIf="bind_experience_year?.errors.pattern">Please enter valid experience in year</p>
+                    </div>
+                      </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                      <div class="form-group">
+                          <label>Pay Rate (per hour)<span class="asterisk_input"></span></label>
+                          <ng-template #bind_pay>pay_rate_{{userType.name}}</ng-template>
+                        <input type="number"  pattern="^(?:[1-9]\d*|0)?(?:\.\d+)?$"  step="1" min="0.1" placeholder="$ Pay Rate (per hour)" name="pay_rate_{{userType.name}}" required [(ngModel)]="model2[userType.name].pay_rate" class="form-control" #bind_pay="ngModel">
+                        <div class="form-control-feedback text-danger" *ngIf="bind_pay?.errors?.required && (f.submitted || bind_pay.changed || bind_pay.dirty)">
+                          <p *ngIf="bind_pay?.errors.required">Please enter pay rate</p>
+                          <p *ngIf="bind_pay?.errors.required">Please enter valid  value for pay rate</p>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="devider"></div>
+              <div class="row">
+                <div class="col-md-6" style="display: flex;align-items: center;">
+                    <h5 class="text-left" style="margin-bottom:0">Credits</h5>
+                </div>
+                <div class="col-md-6">
+                    <button type="button" class="btn btn-primary" (click)="openModal(template,'Add',null,userType.name,'Add Credit',model2[userType.name]['uuid'])" style="float: right">Add Credit</button>
+                </div>
+              </div>
+              <hr/>              
+                <div class="form-group">
+                  <div class="col-md-12"  *ngFor="let d of model2[userType.name].data;let i=index" >
+                      <div class="col-md-12">
+                          <div class="card card-accent-sucess list-card">
+                            <div class="card-header">
+                              <div class="list-view-head row">
+                                <div class="name col-md-4">
+                                  <b class="text-center">Project Name : </b> <span class="m-l-10 text-center">{{d.project_name}}</span>
+                                </div>
+                                <div class="date col-md-4">
+                                  <b class="text-center">Production Company : </b> <span class="m-l-10 text-center">{{d.production_company}}</span>
+                                </div>
+                                <div class="date col-md-2">
+                                    <b class="text-center">Year : </b> <span class="m-l-10 text-center">{{d.production_year}}</span>
+                                  </div>
+                              <div class="action-button col-md-2 text-right">
+                                <span class="ml-2"><button type="button" (click)="openModal(template,'Edit',i,userType.name,'Edit Credit',model2[userType.name]['uuid'],d['uuid'])" class="btn btn-primary btn-sm btn-approve" title="Edit"><i class="fa fa-pencil-square-o fa-lg"></i></button></span>
+                                <span class="ml-2"><button type="button" (click)="openModal(template,'Delete',i,userType.name,'Edit Credit',model2[userType.name]['uuid'],d['uuid'])" class="btn btn-primary btn-sm btn-approve" title="Delete"><i class="fa fa-trash fa-lg"></i></button></span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        <div class="card">
+          <div class="card-body">
+              <div class="form-group">
+                  <div class="divider"></div>
+                  <button  type="submit" class="btn btn-primary"><i class="fa fa-check-circle-o fa-lg"></i> Save</button>&nbsp;
+                  <a class="btn btn-warning" [routerLink]="['/talent-crew-management/list']"><i class="fa fa-exclamation-triangle "></i> Cancel</a>
+                </div>
+          </div>
+        </div>
+      </form>
+  </div>
+</div>
+</div>
+<ng-template #template>
+  <form #pro_form="ngForm">
+  <div class="modal-content">
+    <div class="modal-header bg-primary">
+      <h5 class="modal-title">
+      {{model_title}}
+      </h5>
+      <button type="button" class="close" (click)="decline()" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      
+      <div class="row">
+        <div class="col-md-12">
+         
+          <div class="form-group">
+            <label>Production Name</label>
+              <input type="text"#pro_name="ngModel" name="model_production_name" [(ngModel)]="model_production_name" required placeholder="Production Name" class="form-control">
+              <div class="form-control-feedback text-danger" *ngIf="pro_name?.errors && (pro_name.dirty || pro_name.touched)">
+                  <p *ngIf="pro_name?.errors?.required">Please enter production name</p>
+                </div>
+          </div>
+          <div class="form-group">
+            <label>Production Company</label>
+              <input type="text" name="model_production_company" [(ngModel)]="model_production_company" required #pro_com="ngModel" placeholder="Production Company" class="form-control">
+              <div class="form-control-feedback text-danger" *ngIf="pro_com?.errors && (pro_com.dirty || pro_com.touched)">
+                  <p *ngIf="pro_com?.errors?.required">Please enter production Company</p>
+                </div>
+          </div>
+          <div class="form-group">
+            <label>Year</label>
+            <!-- <input type="number" [(ngModel)]="model_pro_year" name="model_pro_year" required #year="ngModel" name="founded_year" min="1200" [max]="max_year" class="form-control" placeholder="Year"> -->
+            <select [(ngModel)]="model_pro_year" name="model_pro_year" required #year="ngModel" name="founded_year" class="form-control">
+              <option value="">Select Year</option>
+              <option [value]="year" *ngFor="let year of year_arr">{{year}}</option>
+            </select>
+            <div class="form-control-feedback text-danger" *ngIf="year?.errors && (year.dirty || year.touched)">
+                <p *ngIf="year?.errors?.required">Please enter Year</p>
+              </div>
+          </div>
+          <div class="form-group">
+            <label>Production type</label>
+            <select name="model_production_type" id="production_type" required [(ngModel)]="model_production_type" #productionType="ngModel" class="form-control">
+                <option value="">Select Production type</option>
+              <option [value]="production.uuid" *ngFor="let production of productionTypeList">{{production.name}}</option>
+            </select>
+            <div class="form-control-feedback text-danger" *ngIf="productionType?.errors && (productionType.dirty || productionType.touched)">
+                <p *ngIf="productionType?.errors?.required">Please select Production Type</p>
+              </div>
+          </div>
+          <div class="form-group">
+              <label>Your role</label>
+              <input type="text" [(ngModel)]="model_your_role" name="model_your_role" required #role="ngModel" placeholder="Your role" class="form-control">
+              <div class="form-control-feedback text-danger" *ngIf="role?.errors && (role.dirty || role.touched)">
+                  <p *ngIf="role?.errors?.required">Please enter Role</p>
+                </div>
+          </div>
+          <div class="form-group">
+              <label>Country</label>
+              <select name="model_country" id="country" [(ngModel)]="model_country" class="form-control">
+                  <option value="">Select Country</option>
+                  <option [value]="country.id" *ngFor="let country of countryList">{{country.name}}</option>
+              </select>
+          </div>
+          <div class="form-group">
+              <label>City</label>
+              <input type="text" [(ngModel)]="model_city" name="model_city" placeholder="City" class="form-control">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" [disabled]="!pro_form.valid" class="btn btn-primary" (click)="buttonClick(pro_form)">Yes</button>
+      <button type="button" class="btn btn-default" (click)="decline()">No</button>
+    </div>
+  </div>
+</form>
+</ng-template>
+
+

@@ -1,0 +1,97 @@
+
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-12">
+                <form novalidate #f="ngForm" (ngSubmit)="submitForm(f)">
+            <div class="card">
+               
+                    <div class="card-body">
+                        <p class="col-sm-12 text-right requiredLabel">
+                            <span>Fields marked with
+                                <span class="asterisk_input"></span>
+                                are mandatory.</span>
+                        </p>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <!-- Type -->
+                                <div *ngIf="IsEditMode" class="form-group">
+                                    <b>Type:</b> {{propertyTypeList ? propertyTypeList[model.property_type] : ""}}
+                                </div>
+                                <div *ngIf="!IsEditMode" class="form-group">
+                                    <label for="meta_keywords">Skill Type
+                                        <span class="asterisk_input"></span>
+                                    </label>
+                                    <select class="form-control" [(ngModel)]="model.property_type" required name="property_type" #type="ngModel">
+                                        <option value="">Select Type</option>
+                                        <option *ngFor="let propertyType of propertyTypeList|alKeys" value="{{propertyType}}">{{propertyTypeList[propertyType]}}</option>
+                                    </select>
+                                    <div class="form-control-feedback text-danger" *ngIf="type?.errors && (type.dirty || type.touched) || f.submitted ">
+                                        <p *ngIf="type?.errors?.required">Please select skill type</p>
+                                    </div>
+                                </div>
+
+                                <!-- Name -->
+                                <div *ngFor="let langName of model.name|alKeys" class="form-group">
+                                    <ng-template #bind_name>name_{{siteLanguage[langName]}}</ng-template>
+                                    <label for="meta_keywords">Name ({{siteLanguage[langName]}})
+                                        <span class="asterisk_input"></span>
+                                    </label>
+                                    <input [(ngModel)]="model.name[langName]" type="text" name="'name'+{{siteLanguage[langName]}}" class="form-control" placeholder="Name" required #bind_name="ngModel">
+                                    <div class="form-control-feedback text-danger" *ngIf="bind_name?.errors  && (bind_name.dirty || bind_name.touched) || f.submitted">
+                                        <p *ngIf="bind_name?.errors?.required">Please enter name</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Is Active -->
+                                <div class="form-group">
+                                    <label class="col-form-label" for="is_active">Status
+                                        <span class="asterisk_input"></span>
+                                    </label>
+                                    <div class="col-form-label">
+                                        <div class="form-check form-check-inline mr-1" id="inline-radios">
+                                            <input [(ngModel)]="model.is_active" name="skillStatus" class="form-check-input" type="radio" id="active" [value]="1" required #skillStatus="ngModel">
+                                            <label class="form-check-label" for="active">Active</label>
+                                        </div>
+                                        <div class="form-check form-check-inline mr-1">
+                                            <input class="form-check-input" name="skillStatus" [(ngModel)]="model.is_active" type="radio" id="inactive" [value]="0" required #skillStatus="ngModel">
+                                            <label class="form-check-label" for="inactive">Inactive</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-control-feedback text-danger" *ngIf="skillStatus?.errors && (skillStatus.dirty || skillStatus.touched) || f.submitted ">
+                                        <p *ngIf="skillStatus?.errors?.required">Please select status</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+            </div>
+
+            <!-- Buttons -->
+            <div class="card">
+              
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="divider"></div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-check-circle-o fa-lg"></i>
+                                {{IsEditMode==true?'Save':'Submit'}}</button>&nbsp;
+                            <a class="btn btn-warning" [routerLink]="['/skill-management']">
+                                <i class="fa fa-exclamation-triangle "></i>
+                                Cancel</a>
+                        </div>
+                    </div>
+                
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+
+<ngx-ui-loader
+[logoUrl]="loader.logoUrl"
+[logoSize]="loader.logoSize"
+[fgsType]="loader.spinnerType"
+[bgsType]="loader.spinnerType"
+></ngx-ui-loader>

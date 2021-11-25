@@ -1,0 +1,66 @@
+<div class="animated fadeIn">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card" *ngxPermissionsOnly="['CMS_LIST', 'SUPER_ADMIN']">
+				<!-- <div class="card-header">
+					<i class="fa fa-align-justify"></i> Listing
+					
+				</div> -->
+				<div class="card-body">
+					<table datatable id="cmsTable" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="hover table table-bordered">
+						<thead class="text-center">
+							<tr>
+								<th>Sr. No</th>
+								<th>Title</th>
+								<th>Status</th>
+								<th *ngxPermissionsOnly="['CMS_UPDATE', 'SUPER_ADMIN' , 'CMS_STATUS']">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let cms of cmsList; let i=index">
+								<td class="text-center">{{ i+1 }}</td>
+								<td>{{ cms.page_title }}</td>
+								<td class="text-center"><span [ngClass]="{'badge-success': cms.status == 'Active', 'badge-danger': cms.status == 'Inactive'}" class="badge">{{ cms.status }}</span></td>
+								<td class="text-center" *ngxPermissionsOnly="['CMS_UPDATE', 'SUPER_ADMIN' , 'CMS_STATUS']">
+									<a *ngxPermissionsOnly="['CMS_UPDATE', 'SUPER_ADMIN']" title="Edit" routerLink="/cms-management/edit/{{cms.id}}"><i class="fa fa-pencil-square-o fa-lg "></i></a> &nbsp;
+									<!-- <a *ngxPermissionsOnly="['CMS_STATUS', 'SUPER_ADMIN']" (click)="openModal(template, cms.id, cms.status)"><i [ngClass]="{'fa-toggle-on': cms.status == 'Active', 'fa-toggle-off': cms.status == 'Inactive'}" class="fa  fa-lg "></i></a> -->
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+								<tr *ngIf="check()==true">
+										<td  colspan="4" class=" table_footer_border_none text-center">{{data_table_empty_msg}}</td>
+									</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+		<!--/.col-->
+	</div>
+</div>
+
+
+<ng-template #template>
+	<div class="modal-content">
+		<div class="modal-header bg-primary">
+			<h5 class="modal-title">Confirmation</h5>
+			<button type="button" class="close" (click)="decline()" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+		</div>
+		<div class="modal-body">
+			<p>Are you sure you want to change status?</p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary" (click)="confirm()">Yes</button>
+			<button type="button" class="btn btn-default" (click)="decline()">No</button>
+		</div>
+	</div>
+</ng-template>
+<ngx-ui-loader
+[logoUrl]="loader.logoUrl"
+[logoSize]="loader.logoSize"
+[fgsType]="loader.spinnerType"
+[bgsType]="loader.spinnerType"
+></ngx-ui-loader>

@@ -1,0 +1,41 @@
+export class UserDetails {
+
+  constructor(
+    public first_name : string,
+    public last_name : string,
+    public profile_image : string,   
+    public user_country_id : number,
+    public gender : string,
+    public employer_uuid:string,
+    public post_code:string,
+    public position:string,
+    public user_type:string,
+    public user_role:number,
+    public company_uuid:string,
+    public company_name:string,
+    public founded_year:any,
+    public company_logo:string,
+    public size:number,
+    public company_address:string,
+    public company_country_id:number,
+    public company_city:string,
+    public company_post_code:string,
+    public contact_no_prefix:number,
+    public contact_no:number,
+    public registration_no:string,
+    public registration_dt:any,
+    public facebook_link:string,
+    public twtter_link:string,
+    public linkedin_link:string,
+    public website_link:string,
+    public overview:string,
+    public contact_email:string,
+    public is_contact_no_public:number,
+    public is_verified:string,
+    public is_premium:string,
+    public user_city:string,
+    public email:string,
+    public services:any[]
+  ) {  }
+
+}

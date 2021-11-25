@@ -1,0 +1,367 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-md-12 mb-4">
+      <form novalidate #jobDetails="ngForm">
+        <tabset #tabset>
+          <tab>
+              <ng-template tabHeading><span class="fs-12"> <b>General Information</b> </span>
+              </ng-template>
+              <div class="row">
+                  <div class="col-12">
+                    
+                      <div>
+                        <!-- <h6 class="card-title">General Information</h6> -->
+                        <label>Fill in general job vacancy information to provide applicants with an overview of the position</label>
+                        <div class="divider-md"></div>
+              
+                        <div class="row">
+                          <div class="col-12">
+                            <label>What type of specialist are you looking for?</label>
+                            <div class="specialistCheck">
+                                <label class="talentCheck">
+                                    <input type="radio" name="talentCheck" value="0" disabled="" [checked]="model.specialist_type == 0">
+                                    <span>Actor</span>
+                                </label>
+                                
+                                <label class="talentCheck">
+                                    <input type="radio" name="talentCheck" value="2" disabled="" [checked]="model.specialist_type == 2">
+                                    <span>Voiceover</span>
+                                </label>
+                                
+                                <label class="talentCheck">
+                                    <input type="radio" name="talentCheck" value="1" disabled="" [checked]="model.specialist_type == 1">
+                                    <span>Model</span>
+                                </label>
+                                
+                                <label class="talentCheck">
+                                    <input type="radio" name="talentCheck" value="3" disabled="" [checked]="model.specialist_type == 3">
+                                    <span>Crew</span>
+                                </label>
+                            </div>
+                          </div>
+                          
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="form-group">
+                                  <label>Enter the name of your job vacancy</label>
+                                  <input [(ngModel)]="model.name" type="text" name="name" class="form-control"
+                                    placeholder="Name" disabled="">
+                                </div>
+                              </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                            <div class="form-group">
+                              <label>Production type</label>
+                              <select class="form-control" [(ngModel)]="model.production_name" name="production_type" disabled="">
+                                <option value="" selected>-- Select Production Type --</option>
+                                <option *ngFor="let prod of prodTypeList" [value]="prod.name">{{prod.name}}</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                              <div class="form-group">
+                                <label>Employment status</label>
+                                <select class="form-control" [(ngModel)]="model.employment_status" name="employment_status" disabled="">
+                                  <option value="" selected>-- Select Employment Status --</option>
+                                  <option *ngFor="let status of statusList" [value]="status.id">{{status.name}}</option>
+                                </select>
+                              </div>
+                          </div>
+                          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                            <div class="form-group">
+                              <label>Closed Date</label>
+                                  <input [(ngModel)]="model.closed_at" type="text" name="closed_at" class="form-control"
+                                    placeholder="Closed Date" disabled="">
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                              <div class="form-group">
+                                <label>Description</label>
+                                <textarea [(ngModel)]="model.description" type="text" name="description" class="form-control"
+                                  placeholder="Description" disabled="" rows="3"></textarea>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="model.job_media?.length != 0">
+                            <div class="col-12">
+                              <div class="form-group">
+                                <label>Attach files for applicants (e.g., script, slides) (optional)</label>
+                                <div class="uploadedDocs" *ngFor="let media of model.job_media">
+                                    <div class="singleDocs">
+                                      <div class="innerDocs">
+                                        <figure><img src="http://app1.com/images/file_doc.svg"></figure>
+                                        <figcaption>
+                                          <a target="_blank" href="{{model.default_document_path}}/{{model.uuid}}/{{media.file_name}}"><strong>{{media.file_name}}</strong></a>
+                                          <p><small>{{(media.file_size / 1000) | number: '.2-3'}} KB</small></p>
+                                        </figcaption>
+                                      </div>
+                                    </div>
+                                  </div>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <div class="urgentJobs">
+                                        <label class="thmChk">
+                                            <div class="d-block">
+                                                <div class="custom-control custom-checkbox">
+                                                  <input class="custom-control-input" type="checkbox" [checked]="model.is_urgent == 1" name="is_urgent" id="is_urgent" disabled="">
+                                                  <label class="custom-control-label" for="is_urgent"> <b>Urgent job</b> </label>
+                                                </div>
+                                              </div>
+                                            <div class="chkText">
+                                                <span>The job will be marked as Urgent in search results.</span>
+                                            </div>
+                                        </label>
+                                        <div class="row" *ngIf="model.is_urgent == 1">
+                                            <div class="col-4">
+                                              <div class="form-group">
+                                                <label>Expiration date</label>
+                                                <input [(ngModel)]="model.urgent_expiration_dt" type="text" name="urgent_expiration_dt" class="form-control"
+                                                  placeholder="Expiration date" disabled="">
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+          </tab>
+          <tab>
+              <ng-template tabHeading><span class="fs-12"> <b>Payment Details</b> </span>
+              </ng-template>
+              <div class="row">
+                  <div class="col-12">
+                        <div class="row">
+                          <div class="col-12">
+                            <label>How would you like to pay?</label>
+                            <div class="specialistCheck">
+                                <label class="talentCheck">
+                                    <input type="radio" name="payOption" value="0" disabled="" [checked]="model.payment_type == 0">
+                                    <span>Pay a fixed price</span>
+                                </label>
+  
+                                <label class="talentCheck">
+                                    <input type="radio" name="payOption" value="1" disabled="" [checked]="model.payment_type == 1">
+                                    <span>Pay per hour</span>
+                                </label>
+                                
+                                <label class="talentCheck">
+                                    <input type="radio" name="payOption" value="2" disabled="" [checked]="model.payment_type == 2">
+                                    <span>No pay</span>
+                                </label>
+                                
+                                <label class="talentCheck">
+                                    <input type="radio" name="payOption" value="3" disabled="" [checked]="model.payment_type == 3">
+                                    <span>I'm not sure</span>
+                                </label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row mt-3" *ngIf="model.payment_type == 0">
+                          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group">
+                              <label>Budget (optional)</label>
+                              <input [(ngModel)]="model.budget" type="text" name="budget" class="form-control"
+                              placeholder="$" disabled="">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row mt-3" *ngIf="model.payment_type == 1">
+                          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group">
+                              <label>Amount (optional)</label>
+                              <input [(ngModel)]="model.budget" type="text" name="budget" class="form-control"
+                              placeholder="$" disabled="">
+                            </div>
+                          </div>
+                          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group">
+                              <label>Budget (optional)</label>
+                              <select class="form-control" [(ngModel)]="model.budget_type" name="budget_type" disabled="">
+                                <option value="" selected>-- Select Budget --</option>
+                                <option value="0">Per day</option>
+                                <option value="1">Per week</option>
+                                <option value="2">Per month</option>
+                                <option value="3">Per year</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row" [ngClass]="{'mt-3': model.payment_type == 3}" *ngIf="model.payment_type == 0 || model.payment_type == 1 || model.payment_type == 3">
+                          <div class="col-12">
+                            <div class="form-group">
+                              <label>Salary details (optional)</label>
+                              <input [(ngModel)]="model.salary_details" type="text" name="salary_details" class="form-control" disabled="">
+                            </div>
+                          </div>
+                        </div>
+                  </div>
+              </div>
+          </tab>
+          <tab>
+              <ng-template tabHeading><span class="fs-12"> <b>Location & Dates</b> </span>
+              </ng-template>
+              <div class="row">
+                  <div class="col-12">
+                      <div>
+                        <!-- <h6 class="card-title">Location & Dates</h6> -->
+                        <label>Specify your project location and duration to.</label>
+                        <div class="divider-md"></div>
+              
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                              <div class="form-group">
+                                <label>Country</label>
+                                <select class="form-control" [(ngModel)]="model.country_id" name="country_id" disabled="">
+                                  <option value="" selected>-- Select Country --</option>
+                                  <option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                  <label>City</label>
+                                  <input [(ngModel)]="model.city" type="text" name="city" class="form-control"
+                                    placeholder="City" disabled="">
+                                </div>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-12">
+                                  <div class="form-group">
+                                    <label>Production dates (optional)</label>
+                                    <input [(ngModel)]="model.production_dates" type="text" name="production_dates" class="form-control"
+                                      placeholder="e.g April 2019, January - March" disabled="">
+                                  </div>
+                                </div>
+                            </div>
+                      </div>
+                  </div>
+              </div>
+          </tab>
+          <tab>
+              <ng-template tabHeading><span class="fs-12"> <b>Role Information</b> </span>
+              </ng-template>
+              <div class="row">
+                  <div class="col-12">
+                      <div>
+                        <h6 class="card-title">Role Information</h6>
+                        <label>Fill in the information for the roles that your job vacancy includes.</label>
+                        <div class="divider-md"></div>
+              
+                        <div class="row" *ngFor="let role of model.job_roles">
+                          <div class="col-12">
+                            <div class="createdJobs">
+                              <div class="jobsInner">
+                                <div class="jobsHeader">
+                                  <div class="personRole">
+                                    <h3 *ngIf="model.specialist_type != 3"> {{role.role_name}}  </h3>
+                                    <h3 *ngIf="model.specialist_type == 3"> {{role.crew_profession_title}}  </h3>
+                                    <h5>{{role.gender}}, {{role.min_age}}-{{role.max_age}}</h5>
+                                  </div>
+                                </div>
+                                <div class="jobBody">
+                                  <p>{{role.description}}</p>
+                                  <p *ngIf="model.specialist_type != 3"><b>Ethnicity:</b> {{role.ethnicity}}</p>
+                                  <p *ngIf="model.specialist_type == 3"><b>Years of experience:</b> {{role.year_of_exp}}</p>
+                                  <p><b>Required skills:</b> 
+                                    <span class="badge badge-info tagKind" *ngFor="let skill of model.job_roles_edit[role.uuid].skills">{{ skill.name }}</span>&nbsp;</p>
+                                  <p><b>Job duration:</b> {{role.job_duration == 0 ? 'Less than 1 week' : role.job_duration == 1 ? 'Less than 1 month' : role.job_duration == 2 ? '1 to 3 months' : role.job_duration == 3 ? '3 to 6 months' : role.job_duration == 4 ? 'More than 6 months' : role.job_duration == 5 ? role.custom_duration : ''}}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                        </div>
+                      </div>
+                  </div>
+              </div>
+          </tab>
+          <tab>
+              <ng-template tabHeading><span class="fs-12"> <b>Share Options</b> </span>
+              </ng-template>
+              <div class="row">
+                  <div class="col-12">
+                        <label>Who can see your job?</label>
+                        <div class="row">
+                          <div class="col-12">
+                              <div class="seeBlock">
+                                  <div class="innerSeeBlock">
+                                      <input type="radio" name="shareOption" id="anyone" value="0" [checked]="model.job_type == 0" disabled="">
+                                      <label for="anyone">
+                                          <figure class="anyone">
+                                              <!-- <span></span> -->
+                                              <img src="http://app1.com/../images/{{model.job_type == 0 ? 'search_icon_white' : 'search_icon_gray'}}-big.svg" />
+                                          </figure>
+                                          <figcaption>
+                                              <b>Anyone</b>
+                                              <p>Anyone using app1 and public search engines can find your job.</p>
+                                          </figcaption>
+                                      </label>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="seeBlock">
+                                    <div class="innerSeeBlock">
+                                        <input type="radio" name="shareOption" id="almUsers" value="1" [checked]="model.job_type == 1" disabled="">
+                                        <label for="almUsers">
+                                            <figure class="almUsers">
+                                                <!-- <span></span> -->
+                                                <img src="http://app1.com/../images/{{model.job_type == 1 ? 'logo_white' : 'logo_gray'}}.svg" />
+                                            </figure>
+                                            <figcaption>
+                                                <b>Only app1 users</b>
+                                                <p>Only users of app1 can find your job.</p>
+                                            </figcaption>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-12">
+                                  <div class="seeBlock">
+                                      <div class="innerSeeBlock">
+                                          <input type="radio" name="shareOption" id="inviteOnly" value="1" [checked]="model.job_type == 2" disabled="">
+                                          <label for="inviteOnly">
+                                              <figure class="inviteOnly">
+                                                  <!-- <span></span> -->
+                                                  <img src="http://app1.com/../images/{{model.job_type == 2 ? 'ic_line_email_white' : 'ic_line_email_gray'}}.svg" />
+                                              </figure>
+                                              <figcaption>
+                                                  <b>Invite-only</b>
+                                                  <p>Only Talent&Crew you have invited can find your job.</p>
+                                              </figcaption>
+                                          </label>
+                                      </div>
+                                  </div>
+                              </div>
+                            </div>
+                  </div>
+              </div>
+          </tab>
+        </tabset>
+      </form>
+    </div>
+  </div>
+</div>
+<ngx-ui-loader
+[logoUrl]="loader.logoUrl"
+[logoSize]="loader.logoSize"
+[fgsType]="loader.spinnerType"
+[bgsColor]="'#ffffff'"
+[bgsOpacity]="'1.0'"
+></ngx-ui-loader>

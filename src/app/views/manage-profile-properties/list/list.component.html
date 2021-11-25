@@ -1,0 +1,133 @@
+<div class="animated fadeIn">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card">
+				<!-- <div class="card-header">
+					<i class="fa fa-align-justify"></i> Filter
+				</div> -->
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-4 col-12">
+							<div class="form-group">
+								<select class="form-control" id="propertyType" [(ngModel)]="propertyType" name="propertyType">
+									<option value="">Select Skill Type</option>
+									<option *ngFor="let propertyType of propertyTypeList|alKeys" value="{{propertyType}}">{{propertyTypeList[propertyType]}}</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-md-5 col-12">
+								<div class="form-group">
+									<input type="text" id="skillName" [(ngModel)]="skillName" placeholder="Skill Name" #skill_n class="form-control">
+								</div>
+							</div>
+						<div class="col-md-3 col-sm-12">
+							<div class="form-group">
+									<button type="button" class="btn btn-warning pull-right" [disabled]="disableBtn" (click)="reset()">
+											<i class="fa fa-search"></i> Reset</button>
+											<button type="button" class="btn btn-primary pull-right mr-10" [disabled]="disableBtn" (click)="rerender()">
+													<i class="fa fa-search"></i> Apply</button>
+							</div>
+						</div>
+						<div class="col-md-12"><small><b>Note</b>: Select property type to load records for specific profile property</small></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card">
+				<div class="card-header">
+					<!-- <i class="fa fa-align-justify"></i> Listing -->
+					<a *ngxPermissionsOnly="['SUPER_ADMIN']" routerLink="/skill-management/add" class="btn btn-primary pull-right">
+						<i class="fa fa-plus-circle fa-lg"></i> Add New</a>
+				</div>
+				<div class="card-body" *ngxPermissionsOnly="['SUPER_ADMIN']">
+					<div class="table-responsive" id="profile_table">
+						<table id="skillTable"  datatable #t [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="hover table table-bordered">
+							<thead>
+								<tr>
+									<th class="text-center">Sr. No</th>
+									<th class="text-center">Skill Name</th>
+									<th class="text-center">Status</th>
+									<th class="text-center">Skill Type</th>
+									<th *ngxPermissionsOnly="['SUPER_ADMIN']" class="table-actions">Actions</th>
+								</tr>
+							</thead>
+							<tbody *ngIf="profilePropertyList.length > 0">
+								<tr *ngFor="let profileProperty of profilePropertyList; let i=index">
+									<td class="text-center"> {{ i+1 }}</td>
+									<td class="text-center">{{ profileProperty.name }}</td>
+									<td class="table-actions">
+										<span [ngClass]="{'badge-success': profileProperty.is_active == 1, 'badge-danger': profileProperty.is_active == 0}" class="badge">{{ profileProperty.is_active == 1 ? 'Active' : 'Inactive' }}</span>
+									</td>
+									<td class="text-center">{{ propertyTypeList[profileProperty.property_type]}}</td>
+									<td *ngxPermissionsOnly="['SUPER_ADMIN']" class="table-actions">
+										<a title="Edit" *ngxPermissionsOnly="['SUPER_ADMIN']" routerLink="/skill-management/edit/{{profileProperty.uuid}}">
+											<i class="fa fa-pencil-square-o fa-lg"></i>
+										</a> &nbsp;
+										<a title="Change Status" (click)="openModal(templateStatus, profileProperty.uuid, (profileProperty.is_active == 1 ? 0 :1))">
+											<i [ngClass]="{'fa-toggle-on': profileProperty.is_active == 1, 'fa-toggle-off': profileProperty.is_active == 0}" class="fa  fa-lg "></i>
+										</a>&nbsp;
+										<!-- <a *ngxPermissionsOnly="['SUPER_ADMIN']" (click)="openModal(templateDelete, profileProperty.uuid)" title="Delete">
+											<i class="fa fa-trash-o fa-lg"></i>
+										</a> -->
+									</td>
+								</tr>
+							</tbody>
+							<tfoot *ngIf="check()==true">
+									<tr >
+											<td  colspan="5" class=" table_footer_border_none text-center">{{data_table_empty_msg}}</td>
+										</tr>
+							</tfoot>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<ng-template #templateStatus>
+	<div class="modal-content">
+		<div class="modal-header bg-primary">
+			<h5 class="modal-title">
+				<i class="fa fa-info-circle modal-icon"></i> Confirmation</h5>
+			<button type="button" class="close" (click)="decline()">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body text-center">
+			<p>Are you sure you want to change status?</p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary" (click)="changeStatus()">Yes</button>
+			<button type="button" class="btn btn-default" (click)="decline()">No</button>
+		</div>
+	</div>
+</ng-template>
+
+<ng-template #templateDelete>
+	<div class="modal-content">
+		<div class="modal-header bg-primary">
+			<h5 class="modal-title">
+				<i class="fa fa-info-circle modal-icon"></i> Confirmation</h5>
+			<button type="button" class="close" (click)="decline()">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body text-center">
+			<p>Are you sure you want to delete this record?</p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary" (click)="deleteRecord()">Yes</button>
+			<button type="button" class="btn btn-default" (click)="decline()">No</button>
+		</div>
+	</div>
+</ng-template>
+<ngx-ui-loader
+[logoUrl]="loader.logoUrl"
+[logoSize]="loader.logoSize"
+[fgsType]="loader.spinnerType"
+[bgsType]="loader.spinnerType"
+></ngx-ui-loader>

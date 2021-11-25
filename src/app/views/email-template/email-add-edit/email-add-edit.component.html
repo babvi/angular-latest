@@ -1,0 +1,62 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <!-- <div class="card-header">
+          <strong>Edit Email Template</strong>
+        </div> -->
+        <form  novalidate #f="ngForm">
+          <div class="card-body">
+            <p class="col-sm-12 text-right requiredLabel"><span>Fields marked with <span class="asterisk_input"></span> are mandatory.</span></p>
+            <div *ngFor="let lan of languages" class="form-group" [ngClass]="{ 'has-danger': bind_sub.invalid && (bind_sub.dirty || bind_sub.touched), 'has-success': bind_sub.valid && (bind_sub.dirty || bind_sub.touched)}">
+              <label for="page_title">Subject ({{lan.name}})<span class="asterisk_input"></span></label>
+              <ng-template #bind_sub>sub_{{lan.locale}}</ng-template>
+              <input [(ngModel)]="model[lan.locale]['email_subject']" [style.direction]="lan.text_direction"  type="text" name="sub_{{lan.locale}}" id="sub_{{lan.locale}}" class="form-control" placeholder="Subject" required #bind_sub="ngModel">
+              <div class="form-control-feedback text-danger" *ngIf="bind_sub?.errors && (bind_sub.dirty || bind_sub.touched)||f.submitted">
+                <span *ngIf="bind_sub?.errors?.required">Please enter subject</span>
+              </div>
+            </div>
+            <div class="divider">
+              <hr>
+            </div>
+            <div *ngFor="let lan of languages" class="form-group" [ngClass]="{ 'has-danger': bind_content.invalid && (bind_content.dirty || bind_content.touched), 'has-success': bind_content.valid && (bind_content.dirty || bind_content.touched)}">
+              <label>Content {{lan.name}}<span class="asterisk_input"></span></label>
+              <ng-template #bind_content>content_{{lan.locale}}</ng-template>
+              <ck-editor (change)="getCKData(lan.locale,lan.text_direction)" contentsLangDirection="lan.text_direction" [(ngModel)]="model[lan.locale]['email_body']" language="{{lan.locale}}" name="content_{{lan.locale}}" skin="moono-lisa" language="en" [config]="ck_config" [fullPage]="true" required #bind_content="ngModel"></ck-editor>
+              <div class="form-control-feedback text-danger" *ngIf="ck_error[lan.locale]==true && (bind_content.dirty || bind_content.touched ||f.submitted) ">
+                <p>Please enter content</p>
+              </div>
+            </div>
+             <div class="form-group" [ngClass]="{ 'has-danger': Emailstatus.invalid && (Emailstatus.dirty || Emailstatus.touched), 'has-success': Emailstatus.valid && (Emailstatus.dirty || Emailstatus.touched)}">
+	              	<label class="col-form-label" for="status">Status *</label>
+	              		<div class="col-form-label">
+			                <div class="form-check form-check-inline mr-1" id="inline-radios">
+		                  		<input [(ngModel)]="status" name="status" class="form-check-input" type="radio" id="active" value="Active" required #Emailstatus="ngModel">
+			                  	<label class="form-check-label" for="active">Active</label>
+			                </div>
+			                <div class="form-check form-check-inline mr-1">
+		                  		<input class="form-check-input" name="status" [(ngModel)]="status" type="radio" id="inactive" value="Inactive" required #Emailstatus="ngModel">
+			                  	<label class="form-check-label" for="inactive">Inactive</label>
+			                </div>
+		              	</div>
+		              	<div class="form-control-feedback text-danger" *ngIf="Emailstatus?.errors && (Emailstatus.dirty || Emailstatus.touched)">
+				  			<p *ngIf="Emailstatus?.errors?.required">Please select status</p>
+						</div>
+		            </div>  
+            <div class="form-group">
+              <div class="divider"></div>
+              <button (click)="onEmailSave() && !f.invalid"  type="submit" class="btn btn-primary"><i class="fa fa-check-circle-o fa-lg"></i> Save</button>&nbsp;
+              <button class="btn btn-warning" [routerLink]="['/email-template/list']"><i class="fa fa-exclamation-triangle "></i> Cancel</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<ngx-ui-loader
+[logoUrl]="loader.logoUrl"
+[logoSize]="loader.logoSize"
+[fgsType]="loader.spinnerType"
+[bgsType]="loader.spinnerType"
+></ngx-ui-loader>

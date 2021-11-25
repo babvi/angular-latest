@@ -1,0 +1,180 @@
+// Here you can add other styles
+.btn-warning{
+  color: #ffffff;
+}
+.btn-warning:hover{
+  color: #ffffff;
+}
+.asterisk_input:before {
+    content: '*';
+    font-size: 15px;
+    color: #E85656;
+}
+.divider{
+  margin-top: 30px;
+}
+.btn.disabled, .btn:disabled{
+  cursor: not-allowed;
+}
+.divider-md {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 15px;
+}
+.form-control:disabled, .form-control[readonly]{
+  cursor: not-allowed;
+}
+.error-message {
+    font-size: 15px;
+    line-height: 14px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    opacity: 1;
+    margin-top: 0;
+    padding-top: 5px;
+    color: #d50000;
+}
+.dataTables_filter input[type=search] {
+    border: 1px solid #E4E4E4;
+    border-radius: 5px;
+    line-height: 30px;
+    padding-left: 10px;
+}
+.dataTables_filter input {
+    margin-bottom: 8px;
+}
+div.dataTables_length select {
+    width: 75px;
+    height: 30px;
+    border: 1px solid #dcdcdc !important;
+    padding-left: 8px;
+    border-radius: 5px;
+}
+a:not([href]):not([tabindex]){
+  color: #20a8d8;
+  cursor: pointer;
+}
+a:not([href]):not([tabindex]):hover{
+  color: #167495;
+  cursor: pointer;
+}
+div.dataTables_info,div.dataTables_paginate {
+    margin-top: 10px;
+}
+table.dataTable.no-footer{
+  border: 1px solid #c8ced3 !important;
+}
+table.dataTable thead th, table.dataTable thead td{
+  border-bottom:1px solid #c8ced3 !important;;
+}
+table.table-bordered.dataTable td, table.table-bordered.dataTable th {
+    border-left-width: 0;
+}
+table.table-bordered.dataTable {
+    border-collapse: separate!important;
+}
+.modal .modal-footer{
+  border: none;
+  padding-top: 0;
+}
+.table-actions{
+  text-align: center;
+  min-width: 100px;
+}
+.card-header > i{
+  margin-top:10px;
+}
+.sidebar .nav{
+  margin-top: 15px;
+}
+.no-data-available {
+  text-align: center;
+}
+.dataTables_empty {
+    display: none;
+}
+.table-status{
+  min-width: 80px;
+  text-align: center;
+}
+.modal-content{
+  -webkit-box-shadow: 0 5px 15px rgba(0,0,0,.5);
+  box-shadow: 0 5px 15px rgba(0,0,0,.5);
+}
+.mr-10{
+  margin-right: 10px;
+}
+
+
+.node-content-wrapper, .tree-children {
+  position: relative;
+}
+
+.node-content-wrapper::before, .tree-children::after {
+  content: "";
+  position: absolute;
+}
+
+.node-content-wrapper::before {
+  border-bottom: 1px solid lightgrey;
+  border-left: 1px solid lightgrey;
+  height: 28px;
+  top: -17px;
+  width: 20px;
+  left: -28px;
+}
+
+
+.tree-node-level-1 > tree-node-wrapper > .node-wrapper > .node-content-wrapper::before {
+  display: none;
+}
+
+.tree-node-leaf > .node-wrapper > .node-content-wrapper::before {
+  width: 25px;
+}
+
+.tree-children::after {
+  border-left: 1px solid lightgrey;
+  height: 100%;
+  top: -15px;
+  left: -15px;
+}
+
+tree-node:last-child > .tree-node > .tree-children::after {
+  border-left: none;
+}
+
+.toggle-children {
+  z-index: 1;
+}
+.angular-tree-component .node-wrapper{
+  line-height: 12px;
+  cursor: pointer;
+  border: 1px solid #dae2ea;
+  background: #f8faff;
+  color: #7c9eb2;
+  margin: 3px;
+  padding: 8px;
+}
+.node-content-wrapper, .tree-children{
+  width: 100%;
+}
+.node-content-wrapper-active, .node-content-wrapper.node-content-wrapper-active:hover, .node-content-wrapper-active.node-content-wrapper-focused,.node-content-wrapper-focused{
+  background: transparent;
+}
+.node-content-wrapper-active, .node-content-wrapper-focused, .node-content-wrapper:hover{
+  box-shadow: none;
+}
+.node-content-wrapper span{
+  font-size: 15px;
+  font-weight: 400;
+}
+.md-drppicker.shown.double {
+  right: 0 !important;
+/*  left: auto !important;*/
+}
+@media (min-width: 1144px)
+{
+.md-drppicker.shown.double {
+    width: 600px !important;
+}
+}

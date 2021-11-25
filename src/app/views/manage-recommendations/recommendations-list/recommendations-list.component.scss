@@ -1,0 +1,18 @@
+.profile-data
+{
+    display: flex;
+    align-items: center;
+}
+.profile-data img
+{
+    float: left;
+    border-radius: 50%;
+    width: 66px;
+    margin-right: 13px;
+}
+.profile-data span:first-of-type
+{
+    margin-top: 10px;
+display: inline-block;
+margin-bottom: 5px;
+}

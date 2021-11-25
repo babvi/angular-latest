@@ -1,0 +1,469 @@
+<ngx-ui-loader
+[logoUrl]="loader.logoUrl"
+[logoSize]="loader.logoSize"
+[fgsType]="loader.spinnerType"
+[bgsType]="loader.spinnerType"
+></ngx-ui-loader>
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-md-12">
+      <form (ngSubmit)="onUserDataSave(f)" novalidate #f="ngForm">
+          <div class="card" >
+            
+          
+              <div class="card-body">
+                  <h4 style="float: left;">User Details</h4><p class="col-sm-12 text-right requiredLabel"><span>Fields marked with <span  class="asterisk_input"></span> are mandatory.</span>
+                </p>
+                <div class="row">
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label for="meta_keywords">Profile Picture <span class="asterisk_input"></span></label>
+                      <div class="profile">
+                        <div class="profile-wrapper">  
+                          <img [src]="(model.profile_image==null||model.profile_image=='')?'assets/default-user-image.png':model.profile_image" (change)="changeImage($event)">
+                        </div>
+                        <!-- <i  class="fa fa-2x fa-times-circle-o" aria-hidden="true" (click)="removePicture()" *ngIf="!noPicture && editMode==true"></i> -->
+                        <!-- <a href="" *ngIf="editMode" class="change-profile" (click)="changeImage($event)">Change Profile Picture</a>
+                        <input *ngIf="editMode" [(ngModel)]="model.profile_image" type='file' (change)="changeImage($event)" name="profile_image" class="form-control" id="profile_picture" #profile_picture="ngModel"> -->
+                      </div>
+                      <!-- <div class="form-control-feedback text-danger" *ngIf="profile_picture.errors && submitted">
+                      <p *ngIf="profile_picture.errors.required">Please upload profile picture</p>
+                    </div> -->
+                  </div>
+                </div>
+                <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="meta_keywords">Email <span class="asterisk_input"></span></label>
+                      <input [(ngModel)]="model.email" [readonly]="editMode==false" type="email" name="email" class="form-control" placeholder="Email" required email #email="ngModel">
+                      <div class="form-control-feedback text-danger" *ngIf="email?.errors && (f.submitted || email.dirty || email.touched)">
+                        <p *ngIf="email?.errors?.required">Please enter email</p>
+                        <p *ngIf="email?.errors?.email">Please enter valid email</p>
+                      </div>
+                    </div>
+                  </div>
+                <div class="col-md-6 col-12">
+                  <div class="form-group">
+                    <label for="meta_keywords">First Name <span class="asterisk_input"></span></label>
+                    <input [(ngModel)]="model.first_name" [readonly]="editMode==false" type="text" name="first_name" class="form-control" placeholder="First Name" required #firstName="ngModel">
+                    <div class="form-control-feedback text-danger" *ngIf="firstName?.errors && (f.submitted || firstName.dirty || firstName.touched)">
+                      <p *ngIf="firstName?.errors?.required">Please enter first name</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-6 col-12">
+                      <div class="form-group">
+                        <label for="meta_keywords">Last Name <span class="asterisk_input"></span></label>
+                        <input [(ngModel)]="model.last_name" [readonly]="editMode==false"  type="text" name="last_name"  class="form-control" placeholder="Last Name" required #lastName="ngModel">
+                        <div class="form-control-feedback text-danger" *ngIf="lastName?.errors && (f.submitted || lastName.dirty || lastName.touched)">
+                          <p *ngIf="lastName.errors.required">Please enter last name</p>
+                        </div>
+                      </div>
+                    </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="meta_keywords">Country <span class="asterisk_input"></span></label>
+                      <select [(ngModel)]="model.user_country_id" class="form-control" [disabled]="editMode==false"  name="country" required #country="ngModel">
+                        <option value="">Select Country</option>
+                        <option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
+                      </select>
+                      <div class="form-control-feedback text-danger" *ngIf="country?.errors && (f.submitted || country.dirty || country.touched)">
+                        <p *ngIf="country?.errors.required">Please Select Country</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                    
+                <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="meta_keywords">City <span class="asterisk_input"></span></label>
+                      <input [(ngModel)]="model.user_city" [disabled]="editMode==false" type="text" name="user_city" class="form-control" placeholder="City" required #city="ngModel">
+                      <div class="form-control-feedback text-danger" *ngIf="city?.errors && (f.submitted || city.touched || city.dirty)">
+                        <p *ngIf="city?.errors.required">Please enter City</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    
+                        <div class="form-group">
+                          <label for="meta_keywords">Post Code <span class="asterisk_input"></span></label>
+                          <input [(ngModel)]="model.post_code" [readonly]="editMode==false" type="text" name="post_code" class="form-control" placeholder="Postcode" required #postcode="ngModel">
+                          <div class="form-control-feedback text-danger" *ngIf="postcode?.errors && (f.submitted||postcode.dirty||postcode.touched)">
+                            <p *ngIf="postcode?.errors.required">Please enter PostCode</p>
+                          </div>
+                        </div>
+                      </div>
+
+              </div>
+  
+            </div>
+        
+
+        </div>
+        <div class="card"  *ngIf="model.user_type=='Company'">
+          <div class="card-body">
+              <h4 style="float: left;">Company Details</h4><p class="col-sm-12 text-right requiredLabel"><span>Fields marked with <span  class="asterisk_input"></span> are mandatory.</span>
+              </p>
+          </div>
+          <div class="card-body">
+              <div class="card-title"><h5>General Information</h5></div>
+              <div class="row">
+                  <div class="col-12">
+                      <div class="form-group">
+                        <label for="meta_keywords">Company Logo <span class="asterisk_input"></span></label>
+                        <div class="profile">
+                              <div class="profile-wrapper">
+                                  <img [src]="url">
+                              </div>
+                              <!-- <i class="fa fa-2x fa-times-circle-o" aria-hidden="true" (click)="removePicture(upld_photo)" *ngIf="url!='assets/default-user-image.png'"></i> -->
+                              <!-- <a href="" class="change-profile" (change)="openImageUpload()">Change Profile Picture</a>  -->
+                              <!-- <input type='file' (change)="changeImage($event)" #upld_photo class="form-control" id="Clogo"> -->
+                              <!-- <input type="hidden" [(ngModel)]="model['company_logo']" #c_logo="ngModel" name="profile_photo" required> -->
+                            </div>
+                            <!-- <div class="form-control-feedback text-danger" *ngIf="(c_logo.value==null || c_logo.value=='') && f.submitted">
+                              <p>Please upload company logo</p>
+                            </div> -->
+                        
+                        <!-- <div class="profile">
+                          <div class="profile-wrapper">
+                              
+                            <img [src]="(model.company_logo==null||model.company_logo=='')?'assets/default-user-image.png':model.profile_image" (change)="changeImage($event)">
+                          </div>
+                          <i  class="fa fa-2x fa-times-circle-o" aria-hidden="true" (click)="removePicture()" *ngIf="!noPicture && editMode==true"></i>
+                          <a href="" *ngIf="editMode" class="change-profile" (click)="changeImage($event)">Change Profile Picture</a>
+                          <input *ngIf="editMode" [(ngModel)]="model.profile_image" type='file' (change)="changeImage($event)" name="profile_image" class="form-control" id="profile_picture" #profile_picture="ngModel">
+                        </div> -->
+                        <!-- <div class="form-control-feedback text-danger" *ngIf="profile_picture.errors && submitted">
+                        <p *ngIf="profile_picture.errors.required">Please upload profile picture</p>
+                      </div> -->
+                    </div>
+                  </div>
+              </div>
+              <div class="row">
+                 
+                      <div class="col-md-6 col-12">
+                          <div class="form-group">
+                            <label for="meta_keywords">Company Name <span class="asterisk_input"></span></label>
+                            <input [(ngModel)]="model.company_name" [readonly]="editMode==false" type="text" name="company_name" class="form-control" placeholder="Company Name" required #cName="ngModel">
+                            <div class="form-control-feedback text-danger" *ngIf="cName?.errors && (f.submitted || cName.dirty==true || cName.touched==true)">
+                              <p *ngIf="cName?.errors?.required">Please enter company name</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                              <label for="meta_keywords">Services</label>
+                              <ng-multiselect-dropdown
+                                  [disabled]="editMode==false"
+                                  [placeholder]="'Select Services'"
+                                  [(ngModel)]="model.services"
+                                  name="services_val"
+                                  [data]="services"
+                                  [settings]="dropdownSetting"
+                              >
+                              </ng-multiselect-dropdown>
+                            </div>
+                          </div>
+                 
+              </div>
+              <div class="row">
+                  <div class="col-md-6 col-12">
+                      <div class="form-group">
+                        <label for="meta_keywords">Size </label>
+                        <!-- <input [(ngModel)]="model.size"  [disabled]="editMode==false" type="number" min="1" name="size" pattern= "[0-9]+" class="form-control" placeholder="Size"  #cSize="ngModel"> -->
+                        <select class="form-control" [disabled]="editMode==false" [(ngModel)]="model.size" name="size">
+                            <option value="">Select Size</option>
+                            <option *ngFor="let size of size" [value]="size.id">{{size.name}}</option>
+                        </select>
+                        <div class="form-control-feedback text-danger" *ngIf="cSize?.errors && (f.submitted || cSize.touched || cSize.dirty)">
+                            <p *ngIf="cSize.errors.pattern">Please enter size in number only</p>
+                        </div>
+                      </div>
+                    </div>
+                  <div class="col-md-6 col-12">
+                    <div class="form-group">
+                      <label for="meta_keywords">Founded Year </label>
+                      <select class="form-control" [(ngModel)]="model.founded_year" [disabled]="editMode==false" name="founded_year">
+                          <option value="">Select Founded Year</option>
+                          <option *ngFor="let year of year_arr" [value]="year">{{year}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+          </div>
+          <div class="card-body">
+              <div class="card-title"><h5>Contact Details</h5></div>
+              <div class="row">
+                  <div class="col-md-6 col-12">
+                      <div class="form-group">
+                        <label for="meta_keywords">Country <span class="asterisk_input"></span></label>
+                        <select [(ngModel)]="model.company_country_id" class="form-control" [disabled]="editMode==false" required name="company_country_id" #cCountry="ngModel">
+                          <option value="">Select Country</option>
+                          <option *ngFor="let country of countries" [value]="country.id">{{country.name}}</option>
+                        </select>
+                        <div class="form-control-feedback text-danger" *ngIf="cCountry?.errors && (submitted || cCountry.touched || cCountry.dirty )">
+                          <p *ngIf="cCountry?.errors.required">Please Select Country</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                            <label for="meta_keywords">City <span class="asterisk_input"></span></label>
+                            <input [(ngModel)]="model.company_city" [disabled]="editMode==false" type="text" name="company_city" class="form-control" placeholder="City" required #cCity="ngModel">
+                            <div class="form-control-feedback text-danger" *ngIf="cCity?.errors && (f.submitted||cCity.touched || cCity.dirty)">
+                              <p *ngIf="cCity?.errors.required">Please enter City</p>
+                            </div>
+                          </div>
+                    </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-6 col-12">
+                      <div class="form-group">
+                            <label for="meta_keywords">Post Code <span class="asterisk_input"></span></label>
+                            <input [(ngModel)]="model.company_post_code" [readonly]="editMode==false" type="text" name="company_post_code" class="form-control" placeholder="Postcode"  #cpostcode="ngModel">
+                            <div class="form-control-feedback text-danger" *ngIf="cpostcode?.errors && (f.submitted||cpostcode.dirty||cpostcode.touched)">
+                              <p *ngIf="cpostcode?.errors?.required">Please enter postCode</p>
+                            </div>
+                            
+                        <div class="form-group">
+                            <label for="meta_keywords">Contact Number <span class="asterisk_input"></span></label>
+                            <div class="input-group mb-3 flex-nowrap">
+                                <div class="input-group-prepend" style="margin-right: 10px">
+                                    <select name="contact_no_prefix" [disabled]="editMode==false" [(ngModel)]="model.contact_no_prefix" required #cc="ngModel" class="form-control">
+                                      <option value="">Select Country Code</option>
+                                      <option *ngFor="let country of countries" [value]="country.id">{{country.ccode}} [{{country.name}}]</option>
+                                    </select>
+                                </div>
+                                <input  [(ngModel)]="model.contact_no" style="min-width: 200px;" [disabled]="editMode==false"  type="text" name="contact_no" class="form-control" placeholder="Phone Number" required #contact="ngModel" pattern="^((\\+91-?)|0)?[0-9]{7,12}$" minlength="7" maxlength="12" >
+                              </div>  
+                            <div class="form-control-feedback text-danger" *ngIf="(contact.errors||cc.errors) && (f.submitted||contact.dirty||contact.touched||cc.dirty||cc.touched)">
+                              <p *ngIf="contact?.errors?.required">Please enter contact number</p>
+                              <p *ngIf="cc.errors?.required">Please select country code</p>
+                              <p *ngIf="contact?.errors?.pattern">Please enter valid contact number</p>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                          <label for="meta_keywords">Address <span class="asterisk_input"></span></label>
+                          <textarea [(ngModel)]="model.company_address" [disabled]="editMode==false" name="company_address" rows="5" class="form-control"  placeholder="Address" required #cAddress="ngModel" ></textarea>
+                          <div class="form-control-feedback text-danger" *ngIf="cAddress?.errors && (f.submitted||cAddress.dirty||cAddress.touched)">
+                            <p *ngIf="cAddress?.errors.required">Please enter Address</p>
+                          </div>
+                        </div>
+                      </div>
+              </div>
+              <div class="row">
+                      <div class="form-group col-md-4">
+                        <label for="meta_keywords">Contact Number Public <span class="asterisk_input"></span></label>
+                        <div class="d-block">
+                          <div class="form-check-inline">
+                            <label class="form-check-label">Yes
+                              <input type="radio" [value]="1" [disabled]="editMode==false"  name="is_contact_no_public"  [(ngModel)]="model.is_contact_no_public" #public_contact="ngModel" required>
+                              <span class="radio-span"></span>
+                            </label>
+                          </div>
+                          <div class="form-check-inline">
+                            <label class="form-check-label">No
+                              <input type="radio" [value]="0" [disabled]="editMode==false" name="is_contact_no_public" [(ngModel)]="model.is_contact_no_public" #public_contact="ngModel" required>
+                              <span class="radio-span"></span>
+                            </label>
+                          </div>
+                        </div>
+                        <div class="form-control-feedback text-danger" *ngIf="public_contact?.errors && f.submitted">
+                          <p *ngIf="public_contact?.errors?.required">Please select contact number public</p>
+                        </div>
+                      </div>
+              </div>
+          </div>
+          <div class="card-body">
+              <div class="card-title"><h5>Legal Information</h5></div>
+              <div class="row">
+                  <div class="col-md-6 col-12">
+                      <div class="form-group">
+                        <label for="meta_keywords">Company Registration Date <span class="asterisk_input"></span></label>
+                        <div class="input-group">
+                                                   
+                          <input type="hidden" [(ngModel)]="model.registration_dt"  name="registrationdate"  #rgdate="ngModel" required>
+                          <input type="text" [disabled]="editMode==false" #d [(ngModel)]="model.registration_dt" placeholder="Registration Date"  #regiDate="ngModel"  name="rgdate" required class="form-control" bsDatepicker [maxDate]="ma" autocomplete="off" [bsConfig]="{ dateInputFormat:date_formate, containerClass: 'theme-blue'}" #rd="bsDatepicker">  
+                          <div class="input-group-append">
+                            <button class="btn btn-primary" [disabled]="editMode==false" (click)="rd.toggle()" type="button"><i class="fa fa-calendar"></i></button>
+                          </div>
+                        </div>
+                         <div class="form-control-feedback text-danger" *ngIf="regiDate?.errors && (f.submitted || regiDate.changed || regiDate.dirty || regiDate.touched)">
+                          <p *ngIf="regiDate?.errors?.required">
+                              Please select registration date
+                          </p>  
+                          <p *ngIf="d.value=='Invalid date'">
+                                  Invalid registration Date
+                          </p>
+                          
+                        </div> 
+                      </div>
+                      </div>
+                      <div class="col-md-6 col-12">
+                          <div class="form-group">
+                            <label for="meta_keywords">Company Registration Number <span class="asterisk_input"></span></label>
+                            <div class="input-group">
+                              <input [(ngModel)]="model.registration_no" name="registration_no" [disabled]="editMode==false" type="text" name="registration_dt" class="form-control" placeholder="Registration Number" required  #regi_no="ngModel">
+                            </div>
+                            <div class="form-control-feedback text-danger" *ngIf="regi_no?.errors && (f.submitted || regi_no.changed || regi_no.dirty)">
+                              <p *ngIf="regi_no?.errors?.required">Please enter registration number</p>
+                            </div>
+                          </div>
+                          </div>
+              </div>
+          </div>
+          <div class="card-body">
+              <div class="card-title"><h5>Additional Information</h5></div>
+              <div class="row">
+                  <div class="col-md-6 col-12">
+                      <div class="form-group">
+                        <label for="meta_keywords">Overview <span class="asterisk_input"></span></label>
+                        <textarea rows="13" [(ngModel)]="model.overview"  [readonly]="editMode==false" type="text" name="overview" class="form-control" placeholder="Overview" required #over_view="ngModel"></textarea>
+                        <div class="form-control-feedback text-danger" *ngIf="over_view?.errors && (f.submitted || over_view.changed ||over_view.dirty)">
+                          <p *ngIf="over_view?.errors?.required">Please enter Overview</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="form-group">
+                            <label for="meta_keywords">Facebook Link </label>
+                            <input [(ngModel)]="model.facebook_link"  [readonly]="editMode==false" type="text" name="facebook_link" class="form-control" placeholder="Facebook Link"  #fb="ngModel">
+                            <!-- <div class="form-control-feedback text-danger" *ngIf="fb?.errors && submitted">
+                              <p *ngIf="fb.errors.required">Please enter Facebook Link</p>
+                            </div> -->
+                          </div>
+                          <div class="form-group">
+                              <label for="meta_keywords">Twtter Link </label>
+                              <input [(ngModel)]="model.twtter_link"  [readonly]="editMode==false" type="text" name="twtter_link" class="form-control" placeholder="Twtter Link" #twitter="ngModel">
+                              <!-- <div class="form-control-feedback text-danger" *ngIf="twitter?.errors && submitted">
+                                <p *ngIf="twitter.errors.required">Please enter Twtter Link</p>
+                              </div> -->
+                            </div> 
+                            <div class="form-group">
+                                <label for="meta_keywords">Linkedin Link </label>
+                                <input [(ngModel)]="model.linkedin_link"  [readonly]="editMode==false" type="text" name="linkedin_link" class="form-control" placeholder="Linkedin Link" #linkedin="ngModel">
+                                <!-- <div class="form-control-feedback text-danger" *ngIf="linkedin?.errors && submitted">
+                                  <p *ngIf="linkedin.errors.required">Please enter Linkedin Link</p>
+                                </div> -->
+                             </div>
+                             <div class="form-group">
+                                <label for="meta_keywords">Website Link </label>
+                                <input [(ngModel)]="model.website_link"  [readonly]="editMode==false" type="text" name="website_link" class="form-control" placeholder="Website Link"  #website="ngModel">
+                                <!-- <div class="form-control-feedback text-danger" *ngIf="website?.errors && submitted">
+                                  <p *ngIf="website.errors.required">Please enter Website Link</p>
+                                </div> -->
+                              </div>
+                    </div>
+              </div>
+          </div>
+        </div>
+        <div class="card" *ngIf="model.user_type=='Company'">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6" style="display: flex;align-items: center;">
+                  <h5 class="text-left" style="margin-bottom:0">Credits</h5>
+              </div>
+              <div class="col-md-6">
+                  <button type="button" class="btn btn-primary" *ngIf="editMode==true" (click)="openModal(template,'add')" style="float: right">Add Credit</button>
+              </div>
+            </div>
+            <hr/>              
+              <div class="form-group">
+                <div class="col-md-12"  *ngFor="let d of data;let i=index" >
+                    <div class="col-md-12">
+                        <div class="card card-accent-sucess list-card">
+                          <div class="card-header">
+                            <div class="list-view-head row">
+                              <div class="name col-md-4">
+                                <b class="text-center">Production Name : </b> <span class="m-l-10 text-center">{{d.production_name}}</span>
+                              </div>
+                              <div class="date col-md-4">
+                                <b class="text-center">Production Company : </b> <span class="m-l-10 text-center">{{d.production_company}}</span>
+                              </div>
+                              <div class="date col-md-2">
+                                  <b class="text-center">Year : </b> <span class="m-l-10 text-center">{{d.year}}</span>
+                                </div>
+                            <div class="action-button col-md-2 text-right">
+                              <span class="ml-2"><button type="button" *ngIf="editMode==true" (click)="openModal(template,'edit',i)" class="btn btn-primary btn-sm btn-approve" title="Edit"><i class="fa fa-pencil-square-o fa-lg"></i></button></span>
+                              <span class="ml-2"><button type="button" *ngIf="editMode==true" (click)="removeProduct(d.uuid)" class="btn btn-primary btn-sm btn-approve" title="Delete"><i class="fa fa-trash fa-lg"></i></button></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+              <div class="form-group">
+                  <div class="divider"></div>
+                  <button *ngIf="editMode" type="submit" class="btn btn-primary"><i class="fa fa-check-circle-o fa-lg"></i> Save</button>&nbsp;
+                  <button *ngIf="editMode==false" type="submit" (click)="navigateToEditPage()" class="btn btn-primary"><i class="fa fa-check-circle-o fa-lg"></i> Edit</button>&nbsp;
+                  <a class="btn btn-warning" [routerLink]="['/manage-employers/list']"><i class="fa fa-exclamation-triangle "></i> Cancel</a>
+                </div>
+          </div>
+        </div>
+      </form>
+  </div>
+</div>
+</div>
+<ng-template #template>
+
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="modal-title">
+        {{model_title}}
+        </h5>
+        <button type="button" class="close" (click)="decline()" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form #pro_form="ngForm">
+      <div class="modal-body">
+        
+        <div class="row">
+          <div class="col-md-12">
+           
+            <div class="form-group">
+              <label>Production Name</label>
+                <input type="text" #pro_name="ngModel" name="model_production_name" [(ngModel)]="model_production_name" required placeholder="Production Name" class="form-control">
+                <div class="form-control-feedback text-danger" *ngIf="pro_name?.errors && (pro_name.touched || pro_name.dirty)">
+                    <p *ngIf="pro_name?.errors?.required">Please enter production name</p>
+                  </div>
+            </div>
+            <div class="form-group">
+              <label>Production Company</label>
+                <input type="text" name="model_production_company" [(ngModel)]="model_production_company" required #pro_com="ngModel" placeholder="Production Company" class="form-control">
+                <div class="form-control-feedback text-danger" *ngIf="pro_com?.errors && (pro_com.touched || pro_com.dirty)">
+                    <p *ngIf="pro_com?.errors?.required">Please enter production Company</p>
+                  </div>
+            </div>
+            <div class="form-group">
+              <label>Year</label>
+              <!-- <input type="number" [(ngModel)]="model_pro_year" name="model_pro_year" required #year="ngModel" name="founded_year" min="1200" [max]="max_year" class="form-control" placeholder="Year"> -->
+              <select [(ngModel)]="model_pro_year" name="model_pro_year" required #year="ngModel" name="founded_year" class="form-control">
+                <option value="">Select Year</option>
+                <option [value]="year" *ngFor="let year of year_arr">{{year}}</option>
+              </select>
+              <div class="form-control-feedback text-danger" *ngIf="year?.errors && (year.touched || year.dirty)">
+                  <p *ngIf="year?.errors?.required">Please enter Year</p>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" [disabled]="!pro_form.valid" class="btn btn-primary" (click)="buttonClick(pro_form)">Yes</button>
+        <button type="button" class="btn btn-default" (click)="decline()">No</button>
+      </div>
+    </form>
+    </div>
+  
+  </ng-template>

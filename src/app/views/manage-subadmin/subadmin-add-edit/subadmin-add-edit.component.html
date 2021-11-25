@@ -1,0 +1,98 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <form (ngSubmit)="onSubadminSave(f)" novalidate #f="ngForm">
+          <div class="card-body">
+            <p class="col-sm-12 text-right requiredLabel"><span>Fields marked with <span  class="asterisk_input"></span> are mandatory.</span>
+            </p>
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="meta_keywords">First Name <span class="asterisk_input"></span></label>
+                  <input [(ngModel)]="model.first_name" type="text" name="first_name" class="form-control" placeholder="First Name.." required #first_name="ngModel">
+                  <div class="form-control-feedback text-danger" *ngIf="first_name.errors && submitted">
+                    <p *ngIf="first_name.errors.required">Please enter first name</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="meta_keywords">Last Name <span class="asterisk_input"></span></label>
+                  <input [(ngModel)]="model.last_name" type="text" name="last_name"  class="form-control" placeholder="Last Name.." required #last_name="ngModel">
+                  <div class="form-control-feedback text-danger" *ngIf="last_name.errors && submitted">
+                    <p *ngIf="last_name.errors.required">Please enter last name</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="meta_keywords">Username <span class="asterisk_input"></span></label>
+                  <input [(ngModel)]="model.username" type="text" name="username" class="form-control" placeholder="Username.." required #username="ngModel">
+                  <div class="form-control-feedback text-danger" *ngIf="username.errors && submitted">
+                    <p *ngIf="username.errors.required">Please enter username</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="meta_keywords">Email Address <span class="asterisk_input"></span></label>
+                  <input [(ngModel)]="model.email" type="text" name="email" [disabled]="editMode" class="form-control" placeholder="Email Address.." required #email="ngModel" pattern="^[a-z]+[a-zA-Z0-9._+]+@[a-zA-Z0-9]+\.[a-z.]{2,5}$">
+                  <div class="form-control-feedback text-danger" *ngIf="email.errors&& submitted">
+                    <p *ngIf="email.errors.required">Please enter email</p>
+                    <p *ngIf="email.errors.pattern">Please enter valid email</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="!editMode">
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="meta_keywords">Password <span class="asterisk_input"></span></label>
+                  <input [(ngModel)]="model.password" type="password" name="password" class="form-control" placeholder="Password.." required #password="ngModel" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&]{8,}$">
+                  <div class="form-control-feedback text-danger" *ngIf="password.errors && submitted">
+                    <p *ngIf="password.errors.required">Please enter password</p>
+                    <p *ngIf="password.errors.pattern">Password should be min 8 characters with number combination</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="meta_keywords">Confirm Password <span class="asterisk_input"></span></label>
+                  <input [(ngModel)]="model.confirm_pass" type="password" name="confirm_pass" class="form-control" placeholder="Confirm Password.." required #confirm_pass="ngModel" pattern="{{model.password}}">
+                  <div class="form-control-feedback text-danger" *ngIf="confirm_pass.errors && submitted">
+                    <p *ngIf="confirm_pass.errors.required">Please enter confirm password</p>
+                    <p *ngIf="confirm_pass.errors.pattern">Confirm Password should match with password</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="page_title">Role <span class="asterisk_input"></span></label>
+                  <select class="form-control" [(ngModel)]="role" name="role_id" #role_id="ngModel" required>
+                          <option value="" selected>-- Select Role --</option>
+                           <option *ngFor="let role of roleList"  value={{role.id}}>
+                               {{role.name}}
+                           </option>
+                        </select>
+                  <div class="form-control-feedback text-danger" *ngIf="role_id.errors && submitted">
+                    <p *ngIf="role_id.errors.required">Please select role</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="divider"></div>
+              <button  type="submit" class="btn btn-primary"><i class="fa fa-check-circle-o fa-lg"></i> Save</button>&nbsp;
+              <a class="btn btn-warning" [routerLink]="['/subadmin/list']"><i class="fa fa-exclamation-triangle "></i> Cancel</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

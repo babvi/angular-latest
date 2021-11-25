@@ -1,0 +1,187 @@
+<div class="animated fadeIn">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card" *ngxPermissionsOnly="['SUB_ADMIN_LIST', 'SUPER_ADMIN']">
+				<form (ngSubmit)="onSubadminSave(f)" novalidate #f="ngForm">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-3">
+								<div class="form-group">
+									<input [(ngModel)]="fullname" type="text" name="fullname" class="form-control" placeholder="Full Name">
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<input [(ngModel)]="email" type="text" name="email" class="form-control" placeholder="Email">
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<select class="form-control" [(ngModel)]="status" name="status">
+													<option value="">Select Status</option>
+													<option value="Active">Active</option>
+													<option value="Inactive">Inactive</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-3">
+								<div class="form-group">
+									<select class="form-control" [(ngModel)]="role" name="role_id">
+                          <option value="">Select Role</option>
+                           <option *ngFor="let role of roleList"  value={{role.id}}>
+                               {{role.name}}
+                           </option>
+                  </select>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<button type="button" class="btn btn-warning pull-right" (click)="resetSearch()"><i class="fa fa-refresh"></i> Reset</button>
+									<button type="button" class="btn btn-primary pull-right mr-10" (click)="searchApply()"><i class="fa fa-search"></i> Apply</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+
+		<div class="col-lg-12">
+			<div class="card">
+				<div class="card-header">
+					<i class="fa fa-align-justify"></i> Listing
+					<a *ngxPermissionsOnly="['SUB_ADMIN_CREATE', 'SUPER_ADMIN']" routerLink="/subadmin/add" class="btn btn-primary pull-right"><i class="fa fa-plus-circle fa-lg"></i> Add New</a>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table datatable [dtOptions]="dtOptions" class="hover table table-bordered">
+							<thead>
+								<tr>
+									<th>Sr.No</th>
+									<th>Full Name</th>
+									<th>Email</th>
+									<th>Role</th>
+									<th>Created Date</th>
+									<th>Updated Date</th>
+									<th class="table-status">Status</th>
+									<th class="table-actions" *ngxPermissionsOnly="['SUPER_ADMIN', 'SUB_ADMIN_UPDATE' ,'SUB_ADMIN_STATUS', 'SUB_ADMIN_CHANGE_PASSWORD','SUB_ADMIN_DELETE']">Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let subadmin of subadminList">
+									<td>{{ subadmin.srNum }}</td>
+									<td>{{ subadmin.fullname }}</td>
+									<td>{{ subadmin.email}}</td>
+									<td>{{ subadmin.roles[0].name}}</td>
+									<td>{{ subadmin.created_at | date: 'dd MMM yyyy' }}</td>
+									<td>{{ subadmin.updated_at | date: 'dd MMM yyyy' }}</td>
+									<td class="table-actions"><span [ngClass]="{'badge-success': subadmin.status == 'Active', 'badge-danger': subadmin.status == 'Inactive'}" class="badge">{{ subadmin.status }}</span></td>
+									<td class="table-actions" *ngxPermissionsOnly="['SUPER_ADMIN', 'SUB_ADMIN_UPDATE' ,'SUB_ADMIN_STATUS', 'SUB_ADMIN_CHANGE_PASSWORD','SUB_ADMIN_DELETE']">
+										<a *ngxPermissionsOnly="['SUB_ADMIN_UPDATE', 'SUPER_ADMIN']" routerLink="/subadmin/edit/{{subadmin.id}}" title="Edit"><i class="fa fa-pencil-square-o fa-lg"></i></a> &nbsp;
+										<a *ngxPermissionsOnly="['SUB_ADMIN_STATUS', 'SUPER_ADMIN']" (click)="openModal(templateStatus, subadmin.id, subadmin.status)" title="sub"><i [ngClass]="{'fa-toggle-on': subadmin.status == 'Active', 'fa-toggle-off': subadmin.status == 'Inactive'}" class="fa  fa-lg "></i></a>&nbsp;
+										<a *ngxPermissionsOnly="['SUB_ADMIN_CHANGE_PASSWORD', 'SUPER_ADMIN']" (click)="openModal(templateChangePassword, subadmin.id, subadmin.status)"><i class="fa fa-key fa-lg"></i></a>&nbsp;
+										<a *ngxPermissionsOnly="['SUB_ADMIN_DELETE', 'SUPER_ADMIN']" (click)="openModal(templateDeleteSubadmin,subadmin.id)" title="Delete"><i class="fa fa-trash-o fa-lg"></i> </a>
+									</td>
+								</tr>
+								<tr *ngIf="subadminList?.length == 0">
+									<td colspan="8" class="no-data-available">No data!</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<ng-template #templateStatus>
+	<div class="modal-content">
+		<div class="modal-header bg-primary">
+			<h5 class="modal-title"><i class="fa fa-info-circle modal-icon"></i> Confirmation</h5>
+			<button type="button" class="close" (click)="decline()">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+		</div>
+		<div class="modal-body text-center">
+			<p>Are you sure you want to change status?</p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary" (click)="changeStatus()">Yes</button>
+			<button type="button" class="btn btn-default" (click)="decline()">No</button>
+		</div>
+	</div>
+</ng-template>
+
+<ng-template #templateDeleteSubadmin>
+	<div class="modal-content">
+		<div class="modal-header bg-primary">
+			<h5 class="modal-title"><i class="fa fa-info-circle modal-icon"></i> Confirmation</h5>
+			<button type="button" class="close" (click)="decline()">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+		</div>
+		<div class="modal-body text-center">
+			<p>Are you sure you want to delete this record?</p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary" (click)="deleteSubadmin()">Yes</button>
+			<button type="button" class="btn btn-default" (click)="decline()">No</button>
+		</div>
+	</div>
+</ng-template>
+
+
+<ng-template #templateChangePassword>
+	<div class="modal-content">
+		<div class="modal-header bg-primary">
+			<h4 class="modal-title"><i class="fa fa-info-circle"></i><span class="ml-2">Change Password</span></h4>
+			<button type="button" class="close" (click)="decline()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+		</div>
+		<div class="modal-body">
+			<form novalidate #changePassFrm="ngForm" class="">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label for="newpass">New Password <span class="asterisk_input"></span></label>
+							<input type="password" class="form-control" [(ngModel)]="newpass" #newpassword="ngModel" placeholder="" name="newpass" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&]{8,}$">
+							<div *ngIf="newpassword.invalid  && submitted" class="">
+								<span *ngIf="newpassword.errors.required" class="error-message">
+									Please enter new password!
+								</span>
+								<span *ngIf="newpassword.errors.pattern" class="error-message">
+									Password should be 8 characters with number combination
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="form-group">
+							<label for="confirmpass">Confirm Password <span class="asterisk_input"></span></label>
+							<input type="password" class="form-control" id="confirmpass" [(ngModel)]="confirmpass" #confirmPassword="ngModel" placeholder="" name="confirmpass" required pattern="{{newpass}}">
+							<div *ngIf="confirmPassword.invalid  && submitted" class="">
+								<span *ngIf="confirmPassword.errors.required" class="error-message">
+									Please enter confirm password!
+								</span>
+								<span *ngIf="confirmPassword.errors.pattern" class="error-message">
+											Confirm Password should match with password!
+										</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary" (click)="changePassword(changePassFrm)">Yes</button>
+			<button type="button" class="btn btn-default" (click)="decline()">No</button>
+		</div>
+	</div>
+</ng-template>

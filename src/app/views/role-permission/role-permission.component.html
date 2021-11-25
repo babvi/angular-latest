@@ -1,0 +1,151 @@
+<div class="animated fadeIn">
+	<div class="row">
+		<div class="col-lg-6">
+			<div class="card">
+				<div class="card-header">
+					<div class="pull-left mt-8px">
+						<select class="form-control" id="roleName" [(ngModel)]="currRoleId" (change)="getRolePermissions(currRoleId)">
+	                      <option [ngValue]=null>Select Role</option>
+	                      <option *ngFor="let role of roleList; let i=index" [ngValue]="role.id">{{ role.name }}</option>
+	                  	</select>
+					</div>
+					<div class="pull-right mt-8px">
+						<button [disabled]="isPermissionSub" type="submit" (click)="savePermission()" class="btn btn-primary btn-with-icon">
+	                        <i class="ion-android-checkmark-circle"></i><i class="fa fa-check-circle-o fa-lg"></i> Save
+	                  </button>
+					</div>
+				</div>
+				<div class="card-body">
+					<!--  (selectedChange)="values = $event" -->
+					<ngx-treeview [config]="config" [items]="items"  [itemTemplate]="itemTemplate"
+						(selectedChange)="onSelectedChange($event,treeview)" #treeview >
+					</ngx-treeview>
+					<ng-template #itemTemplate let-item="item" let-onCollapseExpand="onCollapseExpand" let-onCheckedChange="onCheckedChange">
+						<div class="form-inline row-item">
+							<i *ngIf="item.children" (click)="onCollapseExpand()" aria-hidden="true" class="fa" [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
+							<div class="form-check">
+								<input type="checkbox" class="form-check-input" [(ngModel)]="item.checked" (ngModelChange)="onCheckedChange()" [disabled]="item.disabled" [indeterminate]="item.indeterminate" />
+
+								<label class="form-check-label">
+					        <i class="fa fa-folder-open" aria-hidden="true" ></i>
+					      </label>
+								<label class="form-check-label" (click)="item.checked = !item.checked; onCheckedChange()">
+					        {{item.text}}
+					      </label>
+							</div>
+						</div>
+					</ng-template>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-6">
+			<div class="card">
+				<!-- <div class="card-header">
+					 <i class="fa fa-align-justify"></i> Role Listing 
+					<a href="javascript: void(0);" *ngxPermissionsOnly="['ROLE_CREATE','SUPER_ADMIN']" (click)="addRole()" class="btn btn-primary pull-right"><i class="fa fa-plus-circle fa-lg"></i> Add New</a> 
+				</div> -->
+				<div class="card-body">
+					
+					<table id="role_permission_table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="hover table table-bordered">
+						<thead class="text-center">
+							<tr>
+								<th class="text-center">Sr. No</th>
+								<th>Title</th>
+								<th>Status</th>
+								<th *ngxPermissionsOnly="['ROLE_UPDATE','SUPER_ADMIN','ROLE_STATUS']">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let role of roleList; let i=index">
+								<td class="text-center">{{ i+1 }}</td>
+								<td>{{ role.name }}</td>
+								<td class="text-center"><span [ngClass]="{'badge-success': role.status == 'Active', 'badge-danger': role.status == 'Inactive'}" class="badge">{{ role.status }}</span></td>
+								<td class="text-center" *ngxPermissionsOnly="['ROLE_UPDATE','SUPER_ADMIN','ROLE_STATUS']">
+									<a title="Edit" *ngxPermissionsOnly="['ROLE_UPDATE','SUPER_ADMIN']" (click)="editRole(role.id, role.name, role.status)" href="javascript: void(0);"><i class="fa fa-pencil-square-o fa-lg"></i></a> &nbsp;
+									<!-- <a title="Change Status" *ngxPermissionsOnly="['ROLE_STATUS','SUPER_ADMIN']" (click)="openModal(template, role.id, role.status)"><i [ngClass]="{'fa-toggle-on': role.status == 'Active', 'fa-toggle-off': role.status == 'Inactive'}" class="fa  fa-lg "></i></a> -->
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+								<tr  *ngIf="check()==true">
+										<td  colspan="4" class=" table_footer_border_none text-center">{{data_table_empty_msg}}</td>
+									</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+
+			<div bsModal #myModal="bs-modal" (onHidden)="onHidden()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header bg-primary">
+							<h4 class="modal-title"><i class="ion-information-circled modal-icon"></i><span>{{ roleModalTitle }}</span></h4>
+							<button type="button" class="close" (click)="myModal.hide()" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+						</div>
+						<form (ngSubmit)="saveRole()" novalidate #roleForm="ngForm">
+							<div class="modal-body">
+
+								<div class="form-group" [ngClass]="{ 'has-danger': name.invalid && (name.dirty || name.touched), 'has-success': name.valid && (name.dirty || name.touched)}">
+									<label for="role">Role *</label>
+									<input type="text" [(ngModel)]="model.name" name="name" class="form-control" id="role" placeholder="Role Name" required #name="ngModel">
+									<div class="form-control-feedback text-danger" *ngIf="name.errors && (name.dirty || name.touched)">
+										<p *ngIf="name.errors.required">Role name is required</p>
+									</div>
+								</div>
+								<input type="hidden" [(ngModel)]="model.status" name="status">
+							</div>
+							<div class="modal-footer">
+								<button type="submit" class="btn btn-primary" [disabled]="roleLoading || !roleForm.valid">
+									{{roleModalId==null?'Submit':'Save'}}
+								</button>
+								<button type="button" class="btn btn-warning" (click)="myModal.hide()">Close</button>
+							</div>
+						</form>
+					</div>
+					<!-- /.modal-content -->
+				</div>
+				<!-- /.modal-dialog -->
+			</div>
+			<!-- /.modal -->
+
+			<ng-template #template>
+				<div class="modal-content">
+					<div class="modal-header  bg-primary">
+						<h5 class="modal-title">Confirmation</h5>
+						<button type="button" (click)="decline()" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to change status?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" (click)="confirm()">Yes</button>
+						<button type="button" class="btn btn-default" (click)="decline()">No</button>
+					</div>
+				</div>
+			</ng-template>
+
+			<ng-template #add_edit>
+				<div class="modal-content">
+					<div class="modal-header  bg-primary">
+						<h5 class="modal-title">{{model_title}}</h5>
+						<button type="button" (click)="decline()" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure you want to change status?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" (click)="confirm()">Yes</button>
+						<button type="button" class="btn btn-default" (click)="decline()">No</button>
+					</div>
+				</div>
+			</ng-template>
+		</div>
+	</div>
+</div>

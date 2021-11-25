@@ -1,0 +1,166 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <!-- <div class="card-header">
+              <i class="fa fa-align-justify"></i> Filter
+            </div> -->
+            <div class="card-body">
+              <div class="row">
+                  <label style="margin-top: 8px;margin-left: 10px;">Name / Email:</label>
+                <div class="col-md-3 col-12">
+                    <div class="form-group">
+                      <input type="text" [(ngModel)]="search_param" placeholder="Name / Email" class="form-control">
+                    </div>
+                  </div>
+                  <label style="margin-top: 8px;">Recommendation Type:</label>
+                  <div class="col-md-3 col-12">
+                      <div class="form-group">
+                        <select class="form-control" [(ngModel)]="user_type">
+                          <option value="user">User</option>
+                          <option value="company">Company</option>
+                        </select>
+                      </div>
+                    </div>
+                <div class="col-md-3 col-sm-12">
+                  <div class="form-group">
+                      <button type="button" class="btn btn-warning pull-right" (click)="resetSearch()">
+                          <i class="fa fa-search"></i> Reset</button>
+                          <button type="button" class="btn btn-primary pull-right mr-10" (click)="rerender()">
+                              <i class="fa fa-search"></i> Apply</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <!-- <div class="card-header">
+            <i class="fa fa-align-justify"></i> Listing
+          </div> -->
+          <div class="card-body">
+              <table id="recommendation_table" datatable [dtOptions]="dtOptions" class="hover table table-bordered">
+                  <thead class="text-center">
+                    <tr>
+                      <th [hidden]="true">Sr. No</th>
+                      <th>Recommended By</th>
+                      <th>Recommended To</th>
+                      <th>Recommendation</th>
+                      <th>Recommended On</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let data of DataList; let i=index">
+                          <td [hidden]="true" class="text-center"> {{ data.srNum }}</td>
+                          <td style="width:30%;vertical-align: middle">
+                          <div *ngIf="data.type=='user'" class="profile-data">
+                                <img *ngIf="data.user_profile_image!='' && data.user_profile_image!=null" src="{{data.s3_url+'user/'+data.user_uuid+'/round_'+data.user_profile_image}}">
+                                 <img *ngIf="data.user_profile_image=='' || data.user_profile_image==null" src="assets/default-user-image.png"> 
+                                <!-- <img src="assets/default-user-image.png">  -->
+                            <div class="span-align">
+                                <a href="{{frontURL}}{{userProfileURL}}{{data['user_uuid']}}" target="_blank" title="User Profile"><span>{{ data.first_name +'  '+data.last_name}}</span></a>
+                                <span>{{ data.email}}</span>
+                            </div>
+                          </div>
+                          <div *ngIf="data.type=='company'" class="profile-data">
+                              
+                                <img *ngIf="data.company_logo!='' && data.company_logo!=null" src="{{data.s3_url+'company/'+data.company_uuid+'/'+data.company_logo}}">
+                                <img *ngIf="data.company_logo=='' || data.company_logo==null" src="assets/default-user-image.png"> 
+                                <!-- <img src="assets/default-user-image.png"> -->
+                                <div class="span-align">
+                                    <a href="{{frontURL}}{{companyProfileURL}}{{data['company_uuid']}}" target="_blank" title="Company Profile"><span>{{ data.company_name}}</span></a>
+                              </div>
+                            </div>
+                            </td>
+                          <td style="width:30%;vertical-align: middle">
+                              <div *ngIf="data.type=='company'" class="profile-data">                               
+                                
+                                  <img *ngIf="data.user_profile_image!='' && data.user_profile_image!=null" src="{{data.s3_url+'user/'+data.user_uuid+'/round_'+data.user_profile_image}}">
+                                  <img *ngIf="data.user_profile_image=='' || data.user_profile_image==null" src="assets/default-user-image.png">
+                                  <div class="span-align">
+                                      <a href="{{frontURL}}{{userProfileURL}}{{data['user_uuid']}}" target="_blank" title="User Profile"><span>{{ data.first_name +'  '+data.last_name}}</span></a>
+                                    <span>{{ data.email}}</span>
+                                  </div>
+                              </div>
+                            <div *ngIf="data.type=='user'" class="profile-data">
+                                
+                                  <img *ngIf="data.company_logo!='' && data.company_logo!=null" src="{{data.s3_url+'company/'+data.company_uuid+'/'+data.company_logo}}">
+                                  <img *ngIf="data.company_logo=='' || data.company_logo==null" src="assets/default-user-image.png">
+                                  <div class="span-align">
+                                      <a href="{{frontURL}}{{companyProfileURL}}{{data['company_uuid']}}" target="_blank" title="Company Profile"><span>{{ data.company_name}}</span></a>
+                                  </div>
+                                
+                            </div>
+                        </td>
+                          <td *ngIf="data.recommendation.length>=50">
+                              <div>{{  data.recommendation | slice:0:50  }}...<a><span (click)="openModal(recommendationDataPopup,data.recommendation,data.uuid,data.is_active,data.type)" class="badge badge-light">Show more</span></a></div> 
+                          </td> 
+                          <td *ngIf="data.recommendation.length<50">
+                            <div>{{  data.recommendation}}</div> 
+                          </td> 
+                          <td class="text-center" style="vertical-align: middle">     
+                            {{getDateInMMDDYYformate(data.created_at)}}
+                          </td>
+                          <td style="vertical-align: middle" class="table-actions"><span [ngClass]="{'badge-success': data.is_active == 1, 'badge-danger': data.is_active == 0}" class="badge">{{ data.is_active==1?'Active':'Inactive' }}</span></td>
+                          <td class="text-center" style="vertical-align: middle" *ngxPermissionsOnly="['EMAIL_TEMP_UPDATE', 'SUPER_ADMIN']">     
+                          <a *ngxPermissionsOnly="['USER_STATUS', 'SUPER_ADMIN']" (click)="openModal(templateStatus,data.recommendation,data.uuid,data.is_active,data.type)" title="Change Status"><i [ngClass]="{'fa-toggle-on': data.is_active == 1, 'fa-toggle-off': data.is_active == 0}" class="fa  fa-lg "></i></a>&nbsp;
+                          </td>
+                        </tr>
+                  </tbody>
+                  <tfoot>
+                      <tr  *ngIf="check()==true">
+                          <td  colspan="8" class=" table_footer_border_none text-center">{{data_table_empty_msg}}</td>
+                        </tr>
+                  </tfoot>	
+                </table> 
+
+          </div>
+        </div>
+      </div>
+      <!--/.col-->
+    </div>
+  </div>
+  <ng-template #recommendationDataPopup>
+      <div class="modal-content">
+         <div class="modal-header bg-primary">
+          <h5 class="modal-title"><i class="fa fa-info-circle modal-icon"></i> Recommendation</h5>
+          <button type="button" class="close" (click)="decline()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div> 
+        <div class="modal-body">
+          <p>{{recommendation_modal_data}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="decline()">Close</button>
+        </div>
+      </div>
+    </ng-template>
+      <ng-template #templateStatus>
+          <div class="modal-content">
+            <div class="modal-header bg-primary">
+              <h5 class="modal-title"><i class="fa fa-info-circle modal-icon"></i> Confirmation</h5>
+              <button type="button" class="close" (click)="decline()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body text-center">
+              <p>Are you sure you want to change status?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" (click)="changeStatus()">Yes</button>
+              <button type="button" class="btn btn-default" (click)="decline()">No</button>
+            </div>
+          </div>
+        </ng-template>
+      <ngx-ui-loader
+      [logoUrl]="loader.logoUrl"
+      [logoSize]="loader.logoSize"
+      [fgsType]="loader.spinnerType"
+      [bgsType]="loader.spinnerType"
+      ></ngx-ui-loader>

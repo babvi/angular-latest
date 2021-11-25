@@ -1,0 +1,115 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <p class="col-sm-12 text-right requiredLabel"><span>Fields marked with <span class="asterisk_input"></span> are mandatory.</span></p>
+        <h4 class="card-title">Profile Information</h4>
+        <div class="divider-md"></div>
+        <form novalidate #profileForm="ngForm">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="name">First Name <span class="asterisk_input"></span></label>
+                <input class="form-control" [(ngModel)]="firstname" #firstName="ngModel" name="firstname" required minlength="3">
+                <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="">
+                  <span *ngIf="firstName.errors.required" class="error-message">
+                    Please enter first name
+                  </span>
+                  <span *ngIf="firstName.errors.minlength" class="error-message">
+                    First Name should not be less than 3 characters
+                  </span>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="lastname">Last Name <span class="asterisk_input"></span></label>
+                <input class="form-control" [(ngModel)]="lastname" #lastName="ngModel" name="lastname" required minlength="3">
+                <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="">
+                  <span *ngIf="lastName.errors.required" class="error-message">
+                    Please enter last name
+                  </span>
+                  <span *ngIf="lastName.errors.minlength" class="error-message">
+                    Last Name should not be less than 3 characters
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col-md-6">
+              <div class="form-group">
+                <label for="name">Username</label>
+                <input class="form-control" [(ngModel)]="username" disabled="" name="username">
+              </div>
+            </div> -->
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="name">Email</label>
+                <input type="email" [(ngModel)]="email" disabled="" class="form-control" name="email">
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="divider"></div>
+              <button class="btn  btn-primary" type="submit" [disabled]="profileForm.invalid" (click)="updateProfile()"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Update Profile</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Change Password</h4>
+        <div class="divider-md"></div>
+        <form novalidate #changePassFrm="ngForm" class="">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="oldpass">Old Password <span class="asterisk_input"></span></label>
+                <input type="password" class="form-control" [(ngModel)]="oldpass" #oldPassword="ngModel" placeholder="" name="oldpass" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&]{8,}$">
+                <div *ngIf="oldPassword.invalid && (oldPassword.dirty || oldPassword.touched)" class="">
+                  <span *ngIf="oldPassword.errors.required" class="error-message">
+                    Please enter old password
+                  </span>
+                  <span *ngIf="oldPassword.errors.pattern" class="error-message">
+                    Password should be 8 characters with number combination
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="newpass">New Password <span class="asterisk_input"></span></label>
+                <input type="password" class="form-control" id="newpass" [(ngModel)]="newpass" #newPassword="ngModel" placeholder="" name="newpass" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&]{8,}$">
+                <div *ngIf="newPassword.invalid && (newPassword.dirty || newPassword.touched)" class="">
+                  <span *ngIf="newPassword.errors.required" class="error-message">
+                    Please enter new password
+                  </span>
+                  <span *ngIf="newPassword.errors.pattern" class="error-message">
+                    Password should be 8 characters with number combination
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="confirmpass">Confirm Password <span class="asterisk_input"></span></label>
+                <input type="password" class="form-control" id="confirmpass" [(ngModel)]="confirmpass" pattern="{{newpass}}" #confirmPassword="ngModel" placeholder="" name="confirmpass" required="">
+                <div *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)" class="">
+                  <span *ngIf="confirmPassword.errors.required" class="error-message">
+                    Please enter confirm password
+                  </span>
+                  <span *ngIf="confirmPassword.errors.pattern" class="error-message">
+                  Confirm Password should match with password
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <button class="btn  btn-primary" type="submit" [disabled]="changePassFrm.invalid" (click)="changePassword(changePassFrm)"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Change Password</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

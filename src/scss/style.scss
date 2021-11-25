@@ -1,0 +1,167 @@
+// If you want to override variables do it here
+
+@import "variables";
+
+// Import styles
+@import "node_modules/@coreui/coreui/scss/coreui";
+
+@import '~angular-tree-component/dist/angular-tree-component.css';
+// If you want to add something do it here
+@import "custom";
+
+
+.vertical-middle{vertical-align: middle;}
+#toast-container > div {
+    opacity:1;
+}
+.dashboard_date
+{
+    float: right;
+    width: 31%;
+    min-width: 200px;
+    max-width: 300px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+}
+table.dataTable {
+    box-sizing: border-box;
+}
+.app-header .navbar-toggler
+{
+    display: none;
+}
+#logo
+{
+    vertical-align: middle !important;
+    border-style: none !important;
+    width: 100px !important;
+    height: 100px !important;
+    margin-bottom: 12% !important;
+    text-align: center !important;
+    margin: auto !important;
+}
+@media only screen and (max-width: 1200px) { 
+
+    .animated.fadeIn.dashboardCount .text-value h2 {
+        font-size: 2rem;
+    }
+    
+    .animated.fadeIn.dashboardCount .chart-wrapper h3 {
+        font-size: 1.2rem;
+    }
+ }
+
+#profile_table .dataTables_filter {
+    display: none;
+}
+.first_element_dropdown
+{
+    border-top: 2px solid #23282c;
+}
+.table_footer_border_none
+{
+    border-top:none !important;
+}
+
+#toast-container {
+   & > div {
+        max-width: inherit;
+        width: auto;
+        line-height: 100%;
+        background-size: 18px;
+        button.toast-close-button {
+            top: 0px;
+        }
+    }
+    .toast-message  {
+        word-wrap: inherit;
+        white-space: normal;
+        padding-right: 15px;
+        line-height: 100%;
+    }
+}
+  
+.customDatePicker
+{
+    text-align: right;
+}
+
+.sidebar .nav-dropdown.open .nav-link {
+    color: #fff;
+    border-left: 0;
+    background: #262829;
+}
+
+.sidebar .nav-dropdown.open .nav-link.menu-pl.active {
+    background: #3a4248;
+}
+
+.first_element_dropdown {
+    border-top: 0px solid #e4e5e6;
+}
+.sidebar .nav-link.custom_class {
+    // display: flex;
+   align-items: center;
+}
+.sidebar-minimized .sidebar .nav-link, .sidebar-minimized .sidebar .nav-link:hover
+{
+    width: 300px;
+}
+.sidebar-minimized .sidebar .nav > .nav-dropdown > .nav-dropdown-items
+{
+    width: 250px;
+}
+.sidebar-minimized .sidebar .nav-dropdown-items .nav-item .nav-link
+{
+    width:250px;
+}
+.sidebar-minimized .sidebar .nav-dropdown-items .nav-item 
+{
+    width:250px;
+}
+//spinner hide
+.sk-ball-spin-clockwise
+{
+    display: none !important;
+    
+}
+
+body .dataTables_wrapper .dataTables_paginate .paginate_button.current,body .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,body .dataTables_wrapper .dataTables_paginate .paginate_button:hover
+{
+    background: #20a8d8 !important;
+    color: white !important;
+    border: 1px solid #20a8d8;
+}
+// body .dataTables_wrapper .dataTables_paginate .paginate_button,body .dataTables_info{
+//     color: #20a8d8 !important;
+// }
+body .dataTables_wrapper .dataTables_paginate .paginate_button.disabled
+{
+    background: white !important;
+}
+body .dataTables_length select option:checked,
+body .dataTables_length select option:hover
+{
+    color: white !important;
+    background:  #20a8d8 !important;
+}
+body .dataTables_length select option
+{
+    background: white !important;
+    color: #23282c !important;
+}
+.ngx-overlay
+{
+    background: rgba(255,255,255,.8) !important
+}
+
+
+// #toast-container > div {
+//     width: 800px !important;
+// }
+.credit-list
+{
+    margin-bottom: 0.2%;
+}

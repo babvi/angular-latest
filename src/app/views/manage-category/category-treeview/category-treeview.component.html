@@ -1,0 +1,27 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <div class="pull-right mt-8px">
+            <button type="button" (click)="saveCategoryData()" class="btn btn-primary btn-with-icon mr-10">
+	                 <i class="fa fa-check-circle-o fa-lg"></i> Save
+	           </button>
+            <button routerLink="/category/list" type="button" class="btn btn-primary btn-with-icon">
+        	        <i class="fa fa-asterisk fa-lg"></i> Go To Category List
+        	   </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <tree-root  (moveNode)="onMoveNode($event)" [nodes]="allCategory" [options]="options">
+            <ng-template #treeNodeTemplate let-node let-index="index">
+              <span>{{ node.data.title }}</span>
+              <a class="pull-right" routerLink="/category/edit/{{node.data.id}}"><i class="fa fa-pencil-square-o fa-lg white"></i></a>
+            </ng-template>
+          </tree-root>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

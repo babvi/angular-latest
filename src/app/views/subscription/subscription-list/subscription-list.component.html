@@ -1,0 +1,102 @@
+<div class="animated fadeIn">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card" *ngxPermissionsOnly="['SUPER_ADMIN']">
+				<div class="card-body">
+						
+					<div class="table-responsive">
+						<table  id="user_table" class="hover table table-bordered">
+							<thead>
+								<tr>
+									<th>Product Name</th>
+									<th>Amount</th>
+									<th class="text-center" hidden>Status</th>
+									<th class="text-center" hidden>Date</th>
+									<th class="table-actions" *ngxPermissionsOnly="['SUPER_ADMIN']">Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let sub of ManagesubscriptionList;let i=index;">
+									<td>{{ sub.plan_type == '1' ? 'Monthly Premium' : 'Yearly Premium' }}</td>
+									<td>{{ sub.amount }} {{currency}}</td>
+									<td class="table-actions" hidden><span [ngClass]="{'badge-success': sub.status == 'Active', 'badge-danger': sub.status == 'Inactive'}" class="badge">{{ sub.status }}</span></td>
+									<td class="text-center" hidden>{{ getDateInMMDDYYformate(sub.created_at) }}</td>
+									<td class="table-actions" *ngxPermissionsOnly="['SUPER_ADMIN']">
+										<a *ngxPermissionsOnly="['SUPER_ADMIN']" (click)="openModal(templateEditSub, sub, 'amount');" title="Edit"><i class="fa fa-pencil-square-o fa-lg"></i></a>&nbsp;
+										<!-- <a *ngxPermissionsOnly="['SUPER_ADMIN']" (click)="openModal(templateStatus, sub, 'status')" title="Change Status"><i [ngClass]="{'fa-toggle-on': sub.status == 'Active', 'fa-toggle-off': sub.status == 'Inactive'}" class="fa  fa-lg "></i></a> -->
+									</td>
+								</tr>
+							</tbody>
+							<!-- <tfoot >
+									<tr  *ngIf="check()==true">
+											<td colspan="7" class="table_footer_border_none no-data-available">{{empty_error_msg}}</td>
+									</tr>
+								</tfoot> -->
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<ng-template #templateEditSub>
+	<div class="modal-content">
+		<form (ngSubmit)="onSubscriptionSave(f)" novalidate #f="ngForm">
+			<div class="modal-header bg-primary">
+				<h5 class="modal-title"><i class="fa fa-info-circle modal-icon"></i> Edit</h5>
+				<button type="button" class="close" (click)="decline()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-12">
+						<div class="form-group">
+							<label for="meta_keywords">Product Name</label>: <i class="badge badge-info text-white">{{subDetail.productName}}</i>
+						</div>
+					</div>
+					<div class="col-12">
+						<div class="form-group">
+							<label for="meta_keywords">Amount <span class="asterisk_input"></span></label>
+							<input [(ngModel)]="subDetail.amt"  type="number" name="amount"  class="form-control" placeholder="Amount" required #Amount="ngModel">
+							<div class="form-control-feedback text-danger" *ngIf="Amount?.errors && (f.submitted || Amount.dirty || Amount.touched)">
+							<p *ngIf="Amount.errors.required">Please enter amount</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-primary">Save</button>
+				<button type="button" class="btn btn-default" (click)="decline(f)">Cancel</button>
+			</div>
+		</form>
+	</div>
+</ng-template>
+
+<ng-template #templateStatus>
+	<div class="modal-content">
+		<div class="modal-header bg-primary">
+			<h5 class="modal-title"><i class="fa fa-info-circle modal-icon"></i> Confirmation</h5>
+			<button type="button" class="close" (click)="decline()">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body text-center">
+			<p>Are you sure you want to change status?</p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary" (click)="changeStatus()">Yes</button>
+			<button type="button" class="btn btn-default" (click)="decline()">No</button>
+		</div>
+	</div>
+</ng-template>
+<ngx-ui-loader
+[logoUrl]="loader.logoUrl"
+[logoSize]="loader.logoSize"
+[fgsType]="loader.spinnerType"
+[bgsColor]="'#ffffff'"
+[bgsOpacity]="'1.0'"
+></ngx-ui-loader>

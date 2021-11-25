@@ -1,0 +1,77 @@
+.from_range
+{
+    width: 20%;
+    margin-right: 2%;
+    display: inline-block;
+}
+
+.to_range
+{
+    width: 20%;
+    display: inline-block;
+}
+
+
+/* The container */
+.form-check-label {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Hide the browser's default radio button */
+  .form-check-label input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  /* Create a custom radio button */
+  .radio-span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #eee;
+    border-radius: 50%;
+  }
+  
+  /* On mouse-over, add a grey background color */
+  .form-check-label:hover input ~ .radio-span {
+    background-color: #ccc;
+  }
+  
+  /* When the radio button is checked, add a blue background */
+  .form-check-label input:checked ~ .radio-span {
+    background-color: #2196F3;
+  }
+  
+  /* Create the indicator (the dot/circle - hidden when not checked) */
+  .radio-span:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+  /* Show the indicator (dot/circle) when checked */
+  .form-check-label input:checked ~ .radio-span:after {
+    display: block;
+  }
+  
+  /* Style the indicator (dot/circle) */
+  .form-check-label .radio-span:after {
+    top: 3px;
+    left: 3px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: white;
+  }
+  

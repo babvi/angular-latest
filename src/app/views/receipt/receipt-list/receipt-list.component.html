@@ -1,0 +1,222 @@
+<div class="animated fadeIn">
+		<div class="row">
+				<div class="col-md-12">
+					<div class="card">
+						<form novalidate #f="ngForm">
+							<div class="card-body">
+								<div class="row">
+									<div class="col-md-4 col-12">
+										<div class="form-group">
+											<input [(ngModel)]="company_name" type="text" name="company_name" class="form-control" placeholder="Company Name">
+										</div>
+									</div>
+									<div class="col-md-4 col-12">
+										<div class="form-group">
+											<input [(ngModel)]="customer_name" type="text" name="customer_name" class="form-control" placeholder="Customer Name">
+										</div>
+									</div>
+									<div class="col-md-4 col-12">
+										<div class="form-group">
+											<input [(ngModel)]="customer_email" type="text" name="customer_email" class="form-control" placeholder="Customer Email">
+										</div>
+									</div>
+									<div class="col-md-4 col-12">
+										<div class="form-group">
+											<select class="form-control" [(ngModel)]="plan_type" name="plan_type">
+												<option value="">Select Product</option>
+												<option value="1">Monthly Premium</option>
+												<option value="2">Yearly Premium</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-md-4 col-12">
+										<div class="form-group">
+											<select class="form-control" [(ngModel)]="order_status" name="order_status">
+												<option value="">Select Status</option>
+												<option value="Active">Active</option>
+												<option value="Expired">Expired</option>
+												<option value="Cancelled">Cancelled</option>
+												<option value="Failed">Failed</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-md-4 col-12">
+										<!-- <div class="form-group dtePkr">
+												<input [(ngModel)]="fromDate" 
+													type="text" name="fromDate" class="form-control"
+													placeholder="From Date" #fDate  #from_date="bsDatepicker" (blur)="toDate=''"
+													bsDatepicker autocomplete="off" [bsConfig]="{ dateInputFormat: date_formate, containerClass: 'theme-blue'}">	
+													<i class="fa fa-calendar crsr-ptr" (click)="from_date.toggle()"></i>
+											</div> -->
+											<div class="dtePkr customDatePicker form-group">
+												<input class="form-control p-3" type="text" matInput 
+													ngxDaterangepickerMd
+													[showDropdowns]="true" 
+													[locale]="{ separator: ' To ' }"
+													[ranges]="ranges"
+													[showCustomRangeLabel]="true"
+													[alwaysShowCalendars]="true" 
+													startKey="start"
+													placeholder="Registered On"
+													id="dashboard_date"
+													endKey="end"
+													[(ngModel)]="selected_days"
+													name="daterange"/>
+												<i class="fa fa-calendar crsr-ptr ngx-daterangepicker-action"></i>
+												</div>
+										</div>
+										
+										<!-- <div class="col-md-4 col-12">
+											<div class="form-group dtePkr">
+													<input [(ngModel)]="toDate"
+														type="text" name="toDate" class="form-control"
+														[minDate]="fromDate" [readOnly]="fromDate==''||fromDate==null" [isDisabled]="fromDate==''||fromDate==null" 
+														placeholder="To Date" #tDate  #to_date="bsDatepicker"
+														bsDatepicker autocomplete="off" [bsConfig]="{ dateInputFormat: date_formate, containerClass: 'theme-blue'}">	
+														<i class="fa fa-calendar crsr-ptr" (click)="to_date.togle()"></i>
+												</div> 
+										</div> -->
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<button type="button" class="btn btn-warning pull-right" (click)="resetSearch()"><i class="fa fa-refresh"></i> Reset</button>
+											<button type="button" class="btn btn-primary pull-right mr-10" (click)="searchApply()"><i class="fa fa-search"></i> Apply</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card" *ngxPermissionsOnly="['SUPER_ADMIN']">
+				<div class="card-body">
+					<div class="float-right" style="margin-bottom:-30px;">
+						<!-- &nbsp;&nbsp;&nbsp;&nbsp;<button style="z-index: 5;position: relative;" (click)="downloadReportPDF()" title="Export Receipt to PDF" class="btn btn-primary pull-right mr-10"><i class="fa fa-file-pdf-o fa-lg"></i></button> -->
+						&nbsp;&nbsp;&nbsp;&nbsp;<button style="z-index: 5;position: relative;" (click)="downloadReport()" title="Export Receipt to CSV" class="btn btn-primary pull-right mr-10"><i class="fa fa-file-excel-o fa-lg"></i></button>
+					</div>
+					<div class="table-responsive">
+						<table  id="user_table" datatable [dtOptions]="dtOptions" class="hover table table-bordered">
+							<thead>
+								<tr>
+									<th>Company Name</th>
+									<th>Customer Name</th>
+									<th>Customer Email</th>
+									<th>Product</th>
+									<th>Reference</th>
+									<th>Price</th>
+									<th class="table-status">Status</th>
+									<th class="text-center">Date</th>
+									<th class="text-center">Next Payment Date</th>
+									<th class="table-actions" *ngxPermissionsOnly="['SUPER_ADMIN']">Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let receipt of ManagereceiptList;let i=index;">
+									<td><a href="{{frontURL}}{{companyProfileURL}}{{receipt['company_uuid']}}" target="_blank" title="Company Profile">{{ receipt.company_name }}</a></td>
+									<td>{{ receipt.customer_name }}</td>
+									<td>{{ receipt.customer_email }}</td>
+									<td>{{ receipt.plan_type == '1' ? 'Monthly Premium' : 'Yearly Premium' }}</td>
+									<td><span *ngIf="receipt.fort_id != null && receipt.fort_id != ''">{{ receipt.fort_id }}</span><span *ngIf="receipt.fort_id == null || receipt.fort_id == ''">NA</span></td>
+									<td>{{ receipt.amount }} {{receipt.currency}}</td>
+									<td class="table-actions"><span [ngClass]="{'badge-success': receipt.order_status == 'Active', 'badge-dark': receipt.order_status == 'Cancelled', 'badge-danger': receipt.order_status == 'Expired', 'badge-warning': receipt.order_status == 'Failed'}" class="badge">{{ receipt.order_status }}</span></td>
+									<td class="text-center">{{ receipt.payment_dt == null ? 'NA' : getDateInMMDDYYformate(receipt.payment_dt)  }}</td>
+									<td class="text-center">{{ receipt.nxt_payment_dt == null ? 'NA' : getDateInMMDDYYformate(receipt.nxt_payment_dt)  }}</td>
+									<td class="table-actions" *ngxPermissionsOnly="['SUPER_ADMIN']">
+										<a *ngxPermissionsOnly="['SUPER_ADMIN']" (click)="openModal(templateReceiptDetail, i)" title="View"><i class="fa fa-eye fa-lg"></i></a>
+									</td>
+								</tr>
+							</tbody>
+							<tfoot >
+								<tr *ngIf="ManagereceiptList.length == 0">
+									<td colspan="10" class="table_footer_border_none no-data-available">{{empty_error_msg}}</td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<ng-template #templateReceiptDetail>
+	<div class="modal-content" id="receipt">
+		<div class="modal-header bg-primary">
+			<h5 class="modal-title"><i class="fa fa-info-circle modal-icon" id="pdfFlag1"></i> Receipt {{receiptDetail.fort_id}}</h5>
+			<div id="pdfFlag2">
+				<button type="button" class="close" (click)="decline()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<button (click)="downloadReceiptPDF()" title="Export Receipt to PDF" class="btn pull-right line_height_1"><i class="fa fa-file-pdf-o fa-lg text-white"></i></button>
+			</div>
+		</div>
+		<div class="modal-body text-center" style="background-color: white;">
+			<div class=" col-12">
+				<div class="row">
+				<table class="table text-left">
+					<tbody>
+					  <tr>
+						<td><strong>Date</strong></td>
+						<td>{{ receiptDetail.payment_dt == null ? 'NA' : getDateInMMDDYYformate(receiptDetail.payment_dt) }}</td>
+					  </tr>
+					  <tr *ngIf=" receiptDetail.nxt_payment_dt != null">
+						<td><strong>Next Payment Date</strong></td>
+						<td>{{ receiptDetail.nxt_payment_dt == null ? 'NA' : getDateInMMDDYYformate(receiptDetail.nxt_payment_dt) }}</td>
+					  </tr>
+					  <tr>
+						<td><strong>Product</strong></td>
+						<td>{{ receiptDetail.plan_type == '1' ? 'Monthly Premium' : 'Yearly Premium' }}</td>
+					  </tr>
+					  <tr>
+						<td><strong>Reference</strong></td>
+						<td>{{ receiptDetail.fort_id || 'NA'}}</td>
+					  </tr>
+					  <tr>
+						<td><strong>Payment Method</strong></td>
+						<td>{{ receiptDetail.payment_option || 'NA' }}</td>
+					  </tr>
+					  <tr>
+						<td><strong>Retailer</strong></td>
+						<td>{{retailer_name}}</td>
+					  </tr>
+					  <tr>
+						<td><strong>Status</strong></td>
+						<td>{{ receiptDetail.order_status }}</td>
+					  </tr>
+					  <!-- <tr *ngIf="getResponseCode(receiptDetail.response_code) != '000' && getResponseCode(receiptDetail.response_code) != null && getResponseCode(receiptDetail.response_code) != '' && receiptDetail.response_message != null && receiptDetail.response_message != ''">
+						<td><strong>Reason</strong></td>
+						<td width="50%">{{receiptDetail.response_message}}</td>
+					  </tr> -->
+					  <tr *ngIf="receiptDetail.response_message != '' && receiptDetail.response_message != null">
+						<td><strong>Reason</strong></td>
+						<td width="50%">{{receiptDetail.response_message}}</td>
+					  </tr>
+					  <tr>
+						<td><strong>Total Tax</strong></td>
+						<td>{{ receiptDetail.total_tax }} {{receiptDetail.currency}}</td>
+					  </tr>
+					  <tr>
+						<td><strong>Total</strong></td>
+						<td>{{ receiptDetail.amount }} {{receiptDetail.currency}}</td>
+					  </tr>
+					  <tr><td colspan="2"></td></tr>
+					</tbody>
+					<tfoot></tfoot>
+				  </table>
+				</div>
+			</div>
+	</div>
+	</div>
+</ng-template>
+<ngx-ui-loader
+[logoUrl]="loader.logoUrl"
+[logoSize]="loader.logoSize"
+[fgsType]="loader.spinnerType"
+[bgsColor]="'#ffffff'"
+[bgsOpacity]="'1.0'"
+></ngx-ui-loader>

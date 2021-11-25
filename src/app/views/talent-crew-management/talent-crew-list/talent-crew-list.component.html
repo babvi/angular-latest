@@ -1,0 +1,267 @@
+<div class="animated fadeIn">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card">
+					<div class="card-body">
+							<div class="row">
+								<div class="col-md-4 col-12">
+									<div class="form-group">
+										<input [(ngModel)]="model.search_param" type="text" name="fullname" class="form-control" placeholder="Name / Email">
+									</div>
+								</div>
+								<div class="col-md-4 col-12">
+									<div class="form-group">
+											<select [(ngModel)]="model.specialization" name="specialization" class="form-control">
+												<option value="">Select Specialization</option>
+												<option value="is_actor">Actor</option>
+												<option value="is_crew">Crew</option>
+												<option value="is_modal">Modal</option>
+												<option value="is_voiceover">Voiceover</option>
+											</select>
+									</div>
+								</div>
+								<div class="col-md-4 col-12">
+									<div class="form-group">
+										<select class="form-control" [(ngModel)]="model.status" name="status">
+											<option value="">Select Status</option>
+											<option value="Active">Active</option>
+											<option value="Inactive">Inactive</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-4 col-12">
+									<div class="form-group">
+										<input [(ngModel)]="model.location" type="text" name="location" class="form-control" placeholder="City">
+									</div>
+								</div>
+								<div class="col-md-4 col-12">
+									
+									<!-- <div class="form-group dtePkr">
+											<input [(ngModel)]="model.min_created_at" 
+												type="text" name="fromDate" class="form-control"
+												placeholder="Registered From Date" #fDate  #from_date="bsDatepicker" (blur)="model.max_created_at=null"
+												bsDatepicker autocomplete="off" [bsConfig]="{ dateInputFormat: date_formate, containerClass: 'theme-blue'}">	
+												<i class="fa fa-calendar crsr-ptr" (click)="from_date.toggle()"></i>
+										</div> -->
+										<div class="dtePkr customDatePicker form-group">
+											<input class="form-control p-3" type="text" matInput 
+												ngxDaterangepickerMd
+												[showDropdowns]="true" 
+												[locale]="{ separator: ' To ' }"
+												[ranges]="ranges"
+												[showCustomRangeLabel]="true"
+												[alwaysShowCalendars]="true" 
+												startKey="start"
+												placeholder="Registered On"
+												id="dashboard_date"
+												endKey="end"
+												[(ngModel)]="selected_days"
+												name="daterange"/>
+											<i class="fa fa-calendar crsr-ptr ngx-daterangepicker-action"></i>
+											</div>
+									</div>
+									<!-- <div class="col-md-4 col-12">
+										<div class="form-group dtePkr">
+												<input [(ngModel)]="model.max_created_at"
+													type="text" name="toDate" class="form-control"
+													[minDate]="model.min_created_at" #tDate [readOnly]="model.min_created_at==''||model.min_created_at==null" [isDisabled]="model.min_created_at==''||model.min_created_at==null" 
+													placeholder="Registered To Date"  #to_date="bsDatepicker"
+													bsDatepicker autocomplete="off" [bsConfig]="{ dateInputFormat: date_formate, containerClass: 'theme-blue'}">	
+													<i class="fa fa-calendar crsr-ptr" (click)="to_date.togle()"></i>
+											</div> 
+									</div> -->
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-group">
+										<button type="button"  class="btn btn-warning pull-right" (click)="resetSearch()"><i class="fa fa-refresh"></i> Reset</button>
+										<button type="button" class="btn btn-primary pull-right mr-10" (click)="rerender()"><i class="fa fa-search"></i> Apply</button>
+									</div>
+								</div>
+							</div>
+						</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card" *ngxPermissionsOnly="['USER_LIST', 'SUPER_ADMIN']">
+				<!-- <div class="card-header">
+					<i class="fa fa-align-justify"></i> Listing
+					 <a *ngxPermissionsOnly="['USER_CREATE', 'SUPER_ADMIN']" routerLink="/manage-user/add" class="btn btn-primary pull-right"><i class="fa fa-plus-circle fa-lg"></i> Add New</a> 
+				</div> -->
+				<div class="card-body">
+					<div class="float-right" style="margin-bottom:-30px;">
+						<!-- &nbsp;&nbsp;&nbsp;&nbsp;<button style="z-index: 5;position: relative;" (click)="downloadReportPDF()" title="Export T&C Report to PDF" class="btn btn-primary pull-right mr-10"><i class="fa fa-file-pdf-o fa-lg"></i></button> -->
+						&nbsp;&nbsp;&nbsp;&nbsp;<button style="z-index: 5;position: relative;" (click)="downloadReport()" title="Export T&C Report to CSV" class="btn btn-primary pull-right mr-10"><i class="fa fa-file-excel-o fa-lg"></i></button>
+					</div>
+					<div class="table-responsive">
+						<table id="talent_crew_list" datatable [dtOptions]="dtOptions" class="hover table table-bordered">
+							<thead>
+								<tr>
+                  <th>Full Name</th>
+									<th>Email</th>
+									<th [hidden]="true">Gender</th>
+                  <th class="table-status">Status</th>
+                  <th class="table-status">Specialization</th>
+									<th class="text-center">Registered On</th>
+									<th class="table-actions" *ngxPermissionsOnly="['SUPER_ADMIN', 'USER_UPDATE','USER_STATUS','USER_CHANGE_PASSWORD',USER_DELETE]">Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let talent of TalentCrewList;let i=index;">
+									<td>
+										<a *ngIf="(talent.is_actor==1 || talent.is_modal==1 || talent.is_voiceover==1 || talent.is_crew==1) && (talent.user_talents_uuid!=undefined && talent.user_talents_uuid!=null);else else_user_has_no_profile" href="{{frontURL}}{{userProfileURL}}{{talent['uuid']}}{{(talent['slug']!=null) ? ('/' + talent['slug']) : ''}}" target="_blank" title="User Profile">{{ talent.first_name }} {{talent.last_name}}</a>
+											<ng-template #else_user_has_no_profile>
+													{{ talent.first_name }} {{talent.last_name}}
+											</ng-template>
+									</td>
+                  <td>{{ talent.email}}</td>
+                  <td [hidden]="true">{{ talent.gender}}</td>
+                  <td class="table-actions"><span [ngClass]="{'badge-success': talent.status == 'Active', 'badge-danger': talent.status == 'Inactive'}" class="badge fa-lg">{{ talent.status }}</span></td>
+                  <td>
+                    <div  *ngIf="talent.is_actor==1"><span class="badge badge-info fa-3x">Actor</span><br></div>
+                    <div *ngIf="talent.is_modal==1"><span class="badge badge-info fa-3x">Modal</span><br></div>
+                    <div *ngIf="talent.is_voiceover==1"><span class="badge badge-info fa-3x">Voiceover</span><br></div>
+					<div *ngIf="talent.is_crew==1"><span class="badge badge-info fa-3x">Crew</span><br></div>
+					<div *ngIf="talent.is_crew!=1 && talent.is_modal!=1 && talent.is_voiceover!=1 && talent.is_actor!=1">NA</div>
+                  </td>
+									<td>{{getDateInMMDDYYformate(talent.created_at)}}</td>
+									<td class="table-actions" *ngxPermissionsOnly="['SUPER_ADMIN', 'USER_UPDATE','USER_STATUS','USER_CHANGE_PASSWORD',USER_DELETE]">
+											<a *ngIf="(talent.user_talents_uuid!=undefined && talent.user_talents_uuid!=null)" href="{{frontURL}}{{userProfileURL}}{{talent['uuid']}}{{(talent['slug']!=null) ? ('/' + talent['slug']) : ''}}" target="_blank" title="User Profile"><i class="fa fa-user-o fa-lg"></i></a> &nbsp;
+										 <a *ngxPermissionsOnly="['USER_UPDATE', 'SUPER_ADMIN']" routerLink="/talent-crew-management/edit/{{talent.uuid}}" title="Edit"><i class="fa fa-pencil-square-o fa-lg"></i></a> &nbsp;
+										<a *ngxPermissionsOnly="['SUPER_ADMIN']" (click)="openModal(templateStatus, talent.uuid, talent.status)" title="Change Status"><i [ngClass]="{'fa-toggle-on': talent.status == 'Active', 'fa-toggle-off': talent.status == 'Inactive'}" class="fa  fa-lg "></i></a>&nbsp;
+										<!-- <a *ngxPermissionsOnly="['USER_DELETE', 'SUPER_ADMIN']" (click)="openModal(templateDeleteManageUser,user.id,user['company']['is_verified'],'')" title="Delete"><i class="fa fa-trash-o fa-lg"></i> </a>&nbsp; -->
+										<!-- <span *ngIf="user.user_type=='Company'"><a *ngxPermissionsOnly="['CATEGORY_STATUS', 'SUPER_ADMIN']" (click)="openModal(tempateVarified,user['company']['uuid'],user.status,user['company']['is_verified'],'verify')" [title]="user['company']['is_verified']==1?'Mark as Un-Verified':'Mark as Verified'"><i [ngClass]="{'fa-check-circle  text-success': user['company']['is_verified']==1, 'fa-times-circle text-secondary': user['company']['is_verified']==0}" class="fa  fa-lg "></i></a>&nbsp;
+											<a *ngxPermissionsOnly="['CATEGORY_STATUS', 'SUPER_ADMIN']" (click)="openModal(tempateVarified,user['company']['uuid'],user.status,user['company']['is_promoted'],'promote')" [title]="user['company']['is_promoted']==1?'Unmark as Promoted':'Mark as Promoted'"><i [ngClass]="{'fa-check-circle  text-success': user['company']['is_verified']==1, 'fa-times-circle text-secondary': user['company']['is_verified']==0}" class="fa  fa-lg "></i></a>
+										</span> -->
+									</td>
+								</tr>
+								
+							</tbody>
+							<tfoot>
+								<tr *ngIf="TalentCrewList.length==0">
+									<td style="border-top:none" colspan="10" class="text-center">{{empty_table_msg}}</td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<ng-template #templateStatus>
+	<div class="modal-content">
+		<div class="modal-header bg-primary">
+			<h5 class="modal-title"><i class="fa fa-info-circle modal-icon"></i> Confirmation</h5>
+			<button type="button" class="close" (click)="decline()">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body text-center">
+			<p>Are you sure you want to change status?</p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary" (click)="changeStatus()">Yes</button>
+			<button type="button" class="btn btn-default" (click)="decline()">No</button>
+		</div>
+	</div>
+</ng-template>
+
+<ng-template #tempateVarified>
+		<div class="modal-content">
+			<div class="modal-header bg-primary">
+				<h5 class="modal-title"><i class="fa fa-info-circle modal-icon"></i> Confirmation</h5>
+				<button type="button" class="close" (click)="decline()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body text-center">
+				<p *ngIf="actionType=='verify'">Are you sure you want to Mark as {{varified_status==0?'Varified':'Un-Varified'}}?</p>
+				<p *ngIf="actionType=='promote'">Are you sure you want to {{varified_status==0?'Mark as Promoted':'Unmark as Promoted'}}?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" (click)="changeVarifiedStatus('verify')">Yes</button>
+				<button type="button" class="btn btn-default" (click)="decline()">No</button>
+			</div>
+		</div>
+</ng-template>
+
+
+<ng-template #templateDeleteManageUser>
+	<div class="modal-content">
+		<div class="modal-header bg-primary">
+			<h5 class="modal-title"><i class="fa fa-info-circle modal-icon"></i> Confirmation</h5>
+			<button type="button" class="close" (click)="decline()">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body text-center">
+			<p>Are you sure you want to delete this record?</p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary" (click)="deleteManageUser()">Yes</button>
+			<button type="button" class="btn btn-default" (click)="decline()">No</button>
+		</div>
+	</div>
+</ng-template>
+
+
+<ng-template #templateChangePassword>
+	<div class="modal-content">
+		<div class="modal-header bg-primary">
+			<h4 class="modal-title"><i class="fa fa-info-circle"></i><span class="ml-2">Change Password</span></h4>
+			<button type="button" class="close" (click)="decline()">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<form novalidate #changePassFrm="ngForm" class="">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label for="newpass">New Password <span class="asterisk_input"></span></label>
+							<input type="password" class="form-control" [(ngModel)]="newpass" #newpassword="ngModel" placeholder="" name="newpass" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&]{8,}$">
+							<div *ngIf="newpassword.invalid  && submitted" class="">
+								<span *ngIf="newpassword.errors.required" class="error-message">
+									Please enter new password!
+								</span>
+								<span *ngIf="newpassword.errors.pattern" class="error-message">
+									Password should be 8 characters with number combination
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="form-group">
+							<label for="confirmpass">Confirm Password <span class="asterisk_input"></span></label>
+							<input type="password" class="form-control" id="confirmpass" [(ngModel)]="confirmpass" #confirmPassword="ngModel" placeholder="" name="confirmpass" required pattern="{{newpass}}">
+							<div *ngIf="confirmPassword.invalid  && submitted" class="">
+								<span *ngIf="confirmPassword.errors.required" class="error-message">
+									Please enter confirm password!
+								</span>
+								<span *ngIf="confirmPassword.errors.pattern" class="error-message">
+									Confirm Password should match with password!
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary" (click)="changePassword(changePassFrm)">Yes</button>
+			<button type="button" class="btn btn-default" (click)="decline()">No</button>
+		</div>
+	</div>
+</ng-template>
+
+<ngx-ui-loader
+[logoUrl]="loader.logoUrl"
+[logoSize]="loader.logoSize"
+[fgsType]="loader.spinnerType"
+[bgsType]="loader.spinnerType"
+></ngx-ui-loader>

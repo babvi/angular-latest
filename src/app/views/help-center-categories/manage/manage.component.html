@@ -1,0 +1,139 @@
+<ngx-ui-loader
+[logoUrl]="loader.logoUrl"
+[logoSize]="loader.logoSize"
+[fgsType]="loader.spinnerType"
+[bgsType]="loader.spinnerType"
+></ngx-ui-loader>
+<div class="animated fadeIn">
+    <form novalidate #f="ngForm" (ngSubmit)="submitForm(f)">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="col-sm-12 text-right requiredLabel">
+                            <span>Fields marked with
+                                <span class="asterisk_input"></span>
+                                are mandatory.</span>
+                        </p>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- Title -->
+                                <div class="row">
+                                    <div class="col-sm-6" *ngFor="let langName of model.title|alKeys">
+                                        <div class="form-group">
+                                            <ng-template #bind_title>title_{{siteLanguage[langName]}}</ng-template>
+                                            <label for="meta_keywords">Title ({{siteLanguage[langName]}})
+                                                <span class="asterisk_input"></span>
+                                            </label>
+                                            
+                                            <input [(ngModel)]="model.title[langName]" type="text" name="'title_'+{{siteLanguage[langName]}}" class="form-control" placeholder="Title" pattern="^[^ ].+[^ ]$" required #bind_title="ngModel">
+                                            <div class="form-control-feedback text-danger" *ngIf="bind_title?.errors && (bind_title.dirty || bind_title.touched) || f.submitted ">
+                                                <p *ngIf="bind_title?.errors?.required">Please enter title</p>
+                                                <p *ngIf="bind_title?.errors?.pattern">Please enter valid title</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                <div class="col-sm-6" >
+                                        <div class="form-group">
+                                            <label class="col-form-label" for="category_type_id">User Type
+                                                <span class="asterisk_input"></span>
+                                            </label>
+                                            <select [(ngModel)]="model.category_type_id" class="form-control" required name="category_type_id"
+                                                #categiryTypeId="ngModel">
+                                                <option value="">Select Category</option>
+                                                <option *ngFor="let category of propertyTypeList" [value]="category.id">{{category.name}}</option>
+                                            </select>
+                                            <div class="form-control-feedback text-danger" *ngIf="categiryTypeId?.errors &&  (categiryTypeId.dirty || categiryTypeId.touched) ||  f.submitted ">
+                                                <p *ngIf="categiryTypeId?.errors?.required">Please select user type</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                <hr />
+                                <div class="devider"></div>
+
+                                <!-- Description -->
+                                <div class="row">
+                                    <div class="col-sm-6" *ngFor="let langName of model.description|alKeys">
+                                        <div class="form-group">
+                                                <ng-template #bind_description>description_{{siteLanguage[langName]}}</ng-template>
+                                            <label for="meta_keywords">Description ({{siteLanguage[langName]}})
+                                                <span class="asterisk_input"></span>
+                                            </label>
+                                            <input [(ngModel)]="model.description[langName]" type="text" name="'description_'+{{siteLanguage[langName]}}" class="form-control" placeholder="Description"
+                                                required  pattern="^[^ ].+[^ ]$" #bind_description="ngModel">
+                                            <div class="form-control-feedback text-danger" *ngIf="bind_description?.errors && (bind_description.dirty || bind_description.touched)|| f.submitted ">
+                                                <p *ngIf="bind_description?.errors?.required">Please enter description</p>
+                                                <p *ngIf="bind_description?.errors?.pattern">Please enter valid description</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="devider"></div>
+
+                                <!-- Is Parent -->
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label class="col-form-label" for="is_parent">Is Parent
+                                                <span class="asterisk_input"></span>
+                                            </label>
+                                            <div class="col-form-label">
+                                                <div class="form-check form-check-inline mr-1" id="inline-radios">
+                                                    <input [(ngModel)]="model.is_parent" name="isParent" class="form-check-input" type="radio" id="active" [value]="1" required
+                                                        #isParent="ngModel">
+                                                    <label class="form-check-label" for="active">Yes</label>
+                                                </div>
+                                                <div class="form-check form-check-inline mr-1">
+                                                    <input class="form-check-input" name="isParent" [(ngModel)]="model.is_parent" type="radio" id="inactive" [value]="0" required
+                                                        #isParent="ngModel">
+                                                    <label class="form-check-label" for="inactive">No</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-control-feedback text-danger" *ngIf="isParent?.errors && (isParent.dirty || isParent.touched) ||  f.submitted ">
+                                                <p *ngIf="isParent?.errors?.required">Please select status</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group" *ngIf="model.is_parent==0">
+                                            <label class="col-form-label" for="parent_id">Parent Category
+                                                <span class="asterisk_input"></span>
+                                            </label>
+                                            <select [(ngModel)]="model.parent_id" class="form-control" [hidden]="model.is_parent" required name="parent_id" #parentId="ngModel">
+                                                <option value="0">Select Category</option>
+                                                <option *ngFor="let parent of parentCategoryList" [value]="parent.id">{{parent.title}}</option>
+                                            </select>
+                                            <div class="form-control-feedback text-danger" *ngIf="parentId?.errors &&  (parentId.dirty || parentId.touched) || f.submitted ">
+                                                <p *ngIf="parentId?.errors?.required">Please Select Category</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="divider"></div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-check-circle-o fa-lg"></i>
+                                {{IsEditMode==true?'Save':'Submit'}}</button>&nbsp;
+                            <a class="btn btn-warning" [routerLink]="['/help-center-management/categories']">
+                                <i class="fa fa-exclamation-triangle "></i>
+                                Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

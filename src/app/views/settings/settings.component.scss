@@ -1,0 +1,72 @@
+.profile {
+  border: 1px dashed #b8b8b8;
+  width: 102px;
+  height: 102px;
+  position: relative;
+  cursor: pointer;
+  .profile-wrapper {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+  .change-profile {
+    display: none;
+    width: 102px;
+    background: rgb(32, 168, 216);
+    transition: all .2s ease-in-out;
+    color: #FFF;
+    text-decoration: none;
+    position: absolute;
+    bottom: -1px;
+    left: -1px;
+    line-height: 32px;
+    text-align: center;
+  }
+  input {
+    position: absolute;
+    opacity: 0;
+    top: 0px;
+    height: 100%;
+    width: 100px;
+    z-index: 999;
+    cursor: pointer;
+  }
+  i {
+    display: none;
+    position: absolute;
+    font-size: 32px;
+    background: #fff;
+    cursor: pointer;
+    color: #209e91;
+    top: -11px;
+    right: -11px;
+    height: 26px;
+    border-radius: 50%;
+    z-index: 1000;
+  }
+  &:hover {
+    i, .change-profile {
+      display: block;
+    }
+
+  }
+}
+label {
+  font-weight: 500;
+}
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}

@@ -1,0 +1,157 @@
+<app-header [fixed]="true" [navbarBrandFull]="{src: 'assets/img/brand/logo.svg', width: 89, height: 25, alt: 'CoreUI Logo'}" [navbarBrandMinimized]="{src: 'assets/img/brand/sygnet.svg', width: 30, height: 30, alt: 'CoreUI Logo'}" [sidebarToggler]="'lg'"
+  [asideMenuToggler]="'md none'">
+  <ul class="nav navbar-nav ml-auto">
+    <li class="nav-item dropdown mr-3" dropdown placement="bottom right">
+      <a class="nav-link custom_class login_user_name" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false">
+        <!-- <img src="assets/img/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com"/> -->
+        Welcome {{currentUserFirstName}} <i class="fa fa-angle-down"></i>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
+        <a class="dropdown-item" [routerLink]="['/profile']"><i class="fa fa-user"></i> Profile</a>
+        <a class="dropdown-item" [routerLink]="['/login']" (click)="onLogout()"><i class="fa fa-lock"></i> Logout</a>
+      </div>
+    </li>
+  </ul>
+</app-header>
+<div class="app-body">
+  <app-sidebar class="sidebar" [fixed]="true" [display]="'lg'">
+    <nav class="sidebar-nav" [perfectScrollbar] [disabled]="sidebarMinimized">
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link custom_class" routerLinkActive="active" [routerLink]="['/dashboard']">
+              <i class="nav-icon icon-home"></i> <span>
+                Dashboard
+              </span>
+            </a>
+        </li>
+        <!-- <li class="nav-item" *ngxPermissionsOnly="['SUB_ADMIN_LIST', 'SUPER_ADMIN']">
+          <a class="nav-link custom_class" routerLinkActive="active" [routerLink]="['/subadmin/list']">
+            <i class="nav-icon icon-user"></i> Manage Sub Admin
+              </a>
+        </li> -->
+        <li class="nav-item" *ngxPermissionsOnly="['USER_LIST', 'SUPER_ADMIN']">
+          <a routerLinkActive="active" class="nav-link custom_class" [routerLink]="['/manage-employers']">
+            <i class="nav-icon icon-user"></i> <span>Manage Employers</span>
+            </a>
+        </li>
+        <li class="nav-item">
+          <a routerLinkActive="active" class="nav-link custom_class" [routerLink]="['/talent-crew-management']">
+            <i class="nav-icon icon-user"></i> <span>Manage T&Cs</span>
+          </a>
+        </li> 
+        <li class="nav-item" *ngxPermissionsOnly="['SUPER_ADMIN']">
+          <a routerLinkActive="active" class="nav-link custom_class" [routerLink]="['/skill-management']">
+            <i class="nav-icon icon-lock"></i> <span>Skills Management </span>
+          </a>
+        </li>
+        <li class="nav-item" *ngxPermissionsOnly="['SUPER_ADMIN']">
+          <a routerLinkActive="active" class="nav-link custom_class" [routerLink]="['/jobs-management']">
+            <i class="nav-icon fa fa-handshake-o"></i> <span>Jobs Management </span>
+          </a>
+        </li>
+        <li class="nav-item" *ngxPermissionsOnly="['SUPER_ADMIN']">
+          <a routerLinkActive="active" class="nav-link custom_class" [routerLink]="['/subscription']">
+            <i class="nav-icon fa fa-hand-pointer-o"></i> <span>Subscription </span>
+          </a>
+        </li>
+        <li class="nav-item" *ngxPermissionsOnly="['SUPER_ADMIN']">
+          <a routerLinkActive="active" class="nav-link custom_class" [routerLink]="['/receipt']">
+            <i class="nav-icon fa fa-file-text-o"></i> <span>Receipt Management </span>
+          </a>
+        </li>
+        <li class="nav-item" *ngxPermissionsOnly="['CMS_LIST', 'SUPER_ADMIN']">
+          <a routerLinkActive="active" class="nav-link custom_class" [routerLink]="['/cms-management']">
+            <i class="nav-icon fa fa-file-o"></i> <span>CMS Management</span>
+            </a>
+        </li>
+        <li class="nav-item" *ngxPermissionsOnly="['CMS_LIST', 'SUPER_ADMIN']">
+            <a routerLinkActive="active" class="nav-link custom_class" [routerLink]="['/manage-recommendations']">
+              <i class="nav-icon fa fa-thumbs-o-up"></i><span>Recommendations</span>
+              </a>
+          </li>
+          <!-- <li class="nav-item nav-dropdown" routerLinkActive="open" appNavDropdown>
+              <a *ngxPermissionsOnly="['SUPER_ADMIN']" [ngClass]="{'active':router.url.endsWith('/manage-recommendations/list/user') || router.url.endsWith('/manage-recommendations/list/company')}" class="nav-link custom_class nav-dropdown-toggle" href="#" appNavDropdownToggle><i class="nav-icon fa fa-thumbs-o-up"></i><span>Recommendations Management</span></a>
+              <ul class="nav-dropdown-items">
+              <li class="nav-item">
+                <a class="nav-link menu-pl" routerLinkActive="active first_element_dropdown" *ngxPermissionsOnly="['SUPER_ADMIN','REPORT_USER_LIST']" [routerLink]="['/manage-recommendations/list/user']"><i class="nav-icon fa fa-user-o"></i> <span>User Recommendations</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link menu-pl" routerLinkActive="active" *ngxPermissionsOnly="['SUPER_ADMIN','REPORT_MOST_VIEWED_LIST']" [routerLink]="['/manage-recommendations/list/company']"><i class="nav-icon fa fa-building-o"></i> <span>Company Recommendations</span></a>
+              </li>
+            </ul>
+          </li>   -->
+        <!-- <li class="nav-item" *ngxPermissionsOnly="['CATEGORY_LIST', 'SUPER_ADMIN']">
+          <a routerLinkActive="active" class="nav-link custom_class" [routerLink]="['/category/list']">
+            <i class="nav-icon fa fa-list"></i> <span>Manage Category</span>
+            </a>
+        </li>-->
+        <li class="nav-item" *ngxPermissionsOnly="['EMAIL_TEMP_LIST', 'SUPER_ADMIN']"> 
+          <a routerLinkActive="active" class="nav-link custom_class" [routerLink]="['/email-template']">
+            <i class="nav-icon icon-envelope"></i> <span>Email Template</span>
+            </a>
+        </li>
+        <!-- <li class="nav-item nav-dropdown"  routerLinkActive="open" appNavDropdown>
+          <a *ngxPermissionsOnly="['SUPER_ADMIN']" [ngClass]="{'active':router.url.endsWith('/categories/list') || router.url.endsWith('/questions/list') || router.url.startsWith('/questions/edit/')  ||  router.url.startsWith('/categories/edit/')  }" class="nav-link custom_class nav-dropdown-toggle" href="#" appNavDropdownToggle><i class="nav-icon fa fa-phone"></i><span>Help Center</span></a>
+          <ul class="nav-dropdown-items">
+          <li class="nav-item">
+            <a class="nav-link menu-pl" routerLinkActive="active first_element_dropdown" *ngxPermissionsOnly="['SUPER_ADMIN','REPORT_USER_LIST']" [routerLink]="['/help-center-management/categories']"><i class="nav-icon fa fa-th"></i><span>Categories</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link menu-pl" routerLinkActive="active" *ngxPermissionsOnly="['SUPER_ADMIN','REPORT_MOST_VIEWED_LIST']"  [routerLink]="['/help-center-management/questions']"><i class="nav-icon fa fa-question-circle"></i><span>Questions</span></a>
+          </li>
+        </ul>
+      </li>   -->
+        <!-- <li class="nav-item" *ngxPermissionsOnly="['FAQ_LIST', 'SUPER_ADMIN']">
+          <a routerLinkActive="active" class="nav-link custom_class" [routerLink]="['/faq/list']">
+            <i class="nav-icon icon-question"></i> FAQ Management
+            </a>
+        </li>-->
+        <li class="nav-item nav-dropdown"  routerLinkActive="open" appNavDropdown>
+          <a *ngxPermissionsOnly="['SUPER_ADMIN']" [ngClass]="{'active':router.url.endsWith('/access-management')}" class="nav-link custom_class nav-dropdown-toggle" href="#" appNavDropdownToggle><i class="nav-icon icon-lock"></i><span>Access Management</span></a>
+          <ul class="nav-dropdown-items">
+            <li class="nav-item">
+              <a class="nav-link menu-pl" routerLinkActive="active first_element_dropdown" *ngxPermissionsOnly="['SUPER_ADMIN','ROLE_PERMISSION_LIST']" [routerLink]="['/access-management']"><i class="nav-icon icon-lock"></i><span>Access Management</span></a>
+            </li>
+          </ul>
+          <ul class="nav-dropdown-items">
+            <li class="nav-item">
+              <a class="nav-link menu-pl" routerLinkActive="active first_element_dropdown" *ngxPermissionsOnly="['SUPER_ADMIN']" [routerLink]="['/subscription-permission']"><i class="nav-icon fa fa-hand-pointer-o"></i><span class="position-absolute">Subscription Permission</span></a>
+            </li>
+          </ul>
+        </li> 
+        <!--<li class="nav-item" *ngxPermissionsOnly="['CONFIG_LIST','SUPER_ADMIN']">
+          <a routerLinkActive="active" class="nav-link custom_class" [routerLink]="['/settings']">
+              <i class="nav-icon icon-settings"></i> Settings
+              </a>
+        </li>  -->
+        
+      </ul>
+    </nav>
+    <!-- <app-sidebar-nav [navItems]="navItems" [perfectScrollbar] [disabled]="sidebarMinimized"></app-sidebar-nav> -->
+    <app-sidebar-minimizer></app-sidebar-minimizer>
+  </app-sidebar>
+
+  <!-- Main content -->
+  <main class="main">
+    <!-- Breadcrumb -->
+    <ol class="breadcrumb">
+      <app-breadcrumb></app-breadcrumb>
+      <!-- Breadcrumb Menu-->
+      <!-- <li class="breadcrumb-menu d-md-down-none">
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+          <a class="btn" href="#"><i class="icon-speech"></i></a>
+          <a class="btn" [routerLink]="['/dashboard']"><i class="icon-graph"></i> &nbsp;Dashboard</a>
+          <a class="btn" href="#"><i class="icon-settings"></i> &nbsp;Settings</a>
+        </div>
+      </li> -->
+    </ol>
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div>
+    <!-- /.container-fluid -->
+  </main>
+</div>
+<app-footer>
+  <span><a [routerLink]="['/dashboard']">app</a> &copy; 2019</span>
+  <span class="ml-auto">Powered by <a href="https://www.app1.com/" target="_blank">app1.</a></span>
+</app-footer>

@@ -1,0 +1,85 @@
+<div class="card">
+    <div class="card-header">
+      <i class="fa fa-align-justify"></i> Role Listing
+      <a href="javascript: void(0);" (click)="addRole()" class="btn btn-primary pull-right">Add New</a>
+    </div>
+    <div class="card-body">
+      	<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="hover table table-bordered">
+            <thead class="text-center">
+              <tr>
+              	<th>Sr. No</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+			    <tr *ngFor="let role of roleList; let i=index">
+			    	<td>{{ i+1 }}</td>
+				    <td>{{ role.name }}</td>
+				    <td><span [ngClass]="{'badge-success': role.status == 'Active', 'badge-secondary': role.status == 'Inactive'}" class="badge">{{ role.status }}</span></td>
+				    <td class="text-center">
+				    	<a (click)="editRole(role.id, role.name, role.status)" href="javascript: void(0);"><i class="nav-icon icon-note"></i></a>
+				    	&nbsp;
+				    	
+				    	<!-- <div class="switch switch-sm switch-3d switch-primary vertical-middle" [ngClass]="role.status == 'Active' ? 'switch-primary' : switch-default">
+                <input type="checkbox" class="switch-input" [attr.checked]="role.status == 'Active' ? 'checked' : null">
+                <span (click)="openModal(template, role.id, role.status);" class="switch-slider"></span>
+            	</div> -->
+
+              <a (click)="openModal(template, role.id, role.status)"><i [ngClass]="{'fa-toggle-on': role.status == 'Active', 'fa-toggle-off': role.status == 'Inactive'}" class="fa  fa-lg "></i></a>
+	                  	
+				    </td>
+				  </tr>
+            </tbody>
+      	</table>
+    </div>
+</div>
+
+<div bsModal #myModal="bs-modal" (onHidden)="onHidden()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"><i class="ion-information-circled modal-icon"></i><span>{{ roleModalTitle }}</span></h4>
+        <button type="button" class="close" (click)="myModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form (ngSubmit)="saveRole()" novalidate #roleForm="ngForm">
+        <div class="modal-body">
+
+          	<div class="form-group" [ngClass]="{ 'has-danger': name.invalid && (name.dirty || name.touched), 'has-success': name.valid && (name.dirty || name.touched)}">
+          		<label for="role">Role *</label>
+              	<input type="text" [(ngModel)]="model.name" name="name" class="form-control" id="role" placeholder="Role Name.." required #name="ngModel">
+              	<div class="form-control-feedback text-danger" *ngIf="name.errors && (name.dirty || name.touched)">
+			  		<p *ngIf="name.errors.required">Role name is required</p>
+				</div>
+          	</div>
+          	<input type="hidden" [(ngModel)]="model.status" name="status">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="myModal.hide()">Close</button>
+          <button type="submit" class="btn btn-primary" [disabled]="roleLoading || !roleForm.valid">Submit</button>
+        </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<ng-template #template>
+	<div class="modal-content">
+		<div class="modal-header  bg-primary">
+	        <h5 class="modal-title">Confirmation</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	  	</div>
+	  	<div class="modal-body">
+	    	<p>Are you sure you want to change status?</p>   	
+	  	</div>
+	  	<div class="modal-footer">
+	        <button type="button" class="btn btn-primary" (click)="confirm()" >Yes</button>
+	    	<button type="button" class="btn btn-default" (click)="decline()" >No</button>
+	  	</div>
+  	</div>
+</ng-template>

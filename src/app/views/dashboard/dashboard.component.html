@@ -1,0 +1,435 @@
+<div class="animated fadeIn dashboardCount">
+
+    <div class="row">
+   <div class="col-sm-6 col-lg-3">
+      <div class="card text-white bg-primary">
+          <div class="card-body pb-0">
+
+              <div class="text-value" style="text-align: center"><h2 class="fa-2x">{{model.totalusers}}</h2></div>
+            </div>
+            <div class="chart-wrapper mt-3 mx-3" style="height:65px;text-align: center;">
+                <h3>Total Users</h3>
+            </div>
+      </div>
+    </div>
+     <div class="col-sm-6 col-lg-3">
+      <div class="card text-white bg-warning">
+          <div class="card-body pb-0">
+
+              <div class="text-value" style="text-align: center"><h4 class="fa-2x">{{model.getpremiumuser}}</h4></div>
+            </div>
+            <div class="chart-wrapper mt-3 mx-3" style="height:65px;text-align: center;">
+                <h3>Total Premium users</h3>
+            </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <a href="#/receipt/list">
+          <div class="card text-white bg-primary">
+              <div class="card-body pb-0">
+
+                  <div class="text-value" style="text-align: center"><h4 class="fa-2x">{{model.getpaymetsubscriptionamount}}</h4></div>
+                </div>
+                <div class="chart-wrapper mt-3 mx-3" style="height:65px;text-align: center;">
+                    <h3>Total Subscription Amount</h3>
+                </div>
+          </div>
+      </a>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+       <a href="#/receipt/list?rstatus=Active">
+          <div class="card text-white bg-warning">
+              <div class="card-body pb-0">
+
+                  <div class="text-value" style="text-align: center"><h2 class="fa-2x">{{model.getactivesubscription}}</h2></div>
+                </div>
+                <div class="chart-wrapper mt-3 mx-3" style="height:65px;text-align: center;">
+                    <h3>Total Active Subscription</h3>
+                </div>
+          </div>
+       </a>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <div class="card text-white bg-primary">
+          <div class="card-body pb-0">
+
+              <div class="text-value" style="text-align: center"><h2 class="fa-2x">{{model.totalhiredcount}}</h2></div>
+            </div>
+            <div class="chart-wrapper mt-3 mx-3" style="height:65px;text-align: center;">
+                <h3>Total Hired Talents & Crew</h3>
+            </div>
+      </div>
+    </div>
+</div>
+
+
+    <div class="col-12">
+        <div class="row">
+          <div class="col-md-12 col-lg-12 form-group float-sm-right">
+            <div class="dtePkr customDatePicker">
+            <input class="form-control p-3" type="text" matInput
+                (change)="getDashBoardData()"
+                ngxDaterangepickerMd
+                [showDropdowns]="true"
+                [locale]="{ separator: ' To '}"
+                [ranges]="ranges"
+                [showCustomRangeLabel]="true"
+                [alwaysShowCalendars]="true"
+                startKey="startd"
+                id="dashboard_date"
+                endKey="end"
+                [(ngModel)]="selected_days"
+                name="daterange"/>
+            <i class="fa fa-calendar crsr-ptr ngx-daterangepicker-action"></i>
+            </div>
+          </div>
+        </div>
+
+    </div>
+
+ <div class="row">
+
+    <div class="col-sm-6 col-lg-3">
+        <a href="#/manage-employers/list?startj={{getDateInMMDDYYformate(this.selected_days.startd)}}&endj={{getDateInMMDDYYformate(this.selected_days.end)}}">
+          <div class="card text-white bg-primary">
+              <div class="card-body pb-0">
+
+                  <div class="text-value" style="text-align: center"><h2 class="fa-2x">{{model.total_employers}}</h2></div>
+                </div>
+                <div class="chart-wrapper mt-3 mx-3" style="height:50px;text-align: center;">
+                    <h3>Total Employers</h3>
+                </div>
+          </div>
+      </a>
+    </div>
+
+
+    <div class="col-sm-6 col-lg-3">
+        <a href="#/talent-crew-management/list?startj={{getDateInMMDDYYformate(this.selected_days.startd)}}&endj={{getDateInMMDDYYformate(this.selected_days.end)}}">
+          <div class="card text-white bg-warning">
+              <div class="card-body pb-0">
+
+                  <div class="text-value" style="text-align: center"><h2 class="fa-2x">{{model.total_job_seekers}}</h2></div>
+                </div>
+                <div class="chart-wrapper mt-3 mx-3" style="height:50px;text-align: center;">
+                    <h3>Total Job Seekers</h3>
+                </div>
+          </div>
+        </a>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+         <a href="#/talent-crew-management/list?stype=is_actor&startj={{getDateInMMDDYYformate(this.selected_days.startd)}}&endj={{getDateInMMDDYYformate(this.selected_days.end)}}">
+          <div class="card text-white bg-primary">
+              <div class="card-body pb-0">
+
+                  <div class="text-value" style="text-align: center"><h2 class="fa-2x">{{model.totalactor}}</h2></div>
+                </div>
+                <div class="chart-wrapper mt-3 mx-3" style="height:50px;text-align: center;">
+                    <h3>Total Actor</h3>
+                </div>
+          </div>
+         </a>
+    </div>
+     <div class="col-sm-6 col-lg-3">
+         <a href="#/talent-crew-management/list?stype=is_modal&startj={{getDateInMMDDYYformate(this.selected_days.startd)}}&endj={{getDateInMMDDYYformate(this.selected_days.end)}}">
+              <div class="card text-white bg-warning">
+                  <div class="card-body pb-0">
+
+                      <div class="text-value" style="text-align: center"><h4 class="fa-2x">{{model.totalmodel}}</h4></div>
+                    </div>
+                    <div class="chart-wrapper mt-3 mx-3" style="height:65px;text-align: center;">
+                        <h3>Total Model</h3>
+                    </div>
+              </div>
+         </a>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <a href="#/talent-crew-management/list?stype=is_voiceover&startj={{getDateInMMDDYYformate(this.selected_days.startd)}}&endj={{getDateInMMDDYYformate(this.selected_days.end)}}">
+          <div class="card text-white bg-primary">
+              <div class="card-body pb-0">
+
+                  <div class="text-value" style="text-align: center"><h2 class="fa-2x">{{model.totalvoiceover}}</h2></div>
+                </div>
+                <div class="chart-wrapper mt-3 mx-3" style="height:65px;text-align: center;">
+                    <h3>Total Voiceover</h3>
+                </div>
+          </div>
+        </a>
+    </div>
+     <div class="col-sm-6 col-lg-3">
+         <a href="#/talent-crew-management/list?stype=is_crew&startj={{getDateInMMDDYYformate(this.selected_days.startd)}}&endj={{getDateInMMDDYYformate(this.selected_days.end)}}">
+          <div class="card text-white bg-warning">
+              <div class="card-body pb-0">
+
+                  <div class="text-value" style="text-align: center"><h4 class="fa-2x">{{model.totalcrew}}</h4></div>
+                </div>
+                <div class="chart-wrapper mt-3 mx-3" style="height:65px;text-align: center;">
+                    <h3>Total Crew</h3>
+                </div>
+          </div>
+         </a>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <a href="#/manage-employers/list?type=Individual&startj={{getDateInMMDDYYformate(this.selected_days.startd)}}&endj={{getDateInMMDDYYformate(this.selected_days.end)}}">
+      <div class="card text-white bg-primary">
+          <div class="card-body pb-0">
+
+              <div class="text-value" style="text-align: center"><h2 class="fa-2x">{{model.totalindivudalemployer}}</h2></div>
+            </div>
+            <div class="chart-wrapper mt-3 mx-3" style="height:65px;text-align: center;">
+                <h3>Total Individual Employer</h3>
+            </div>
+      </div>
+        </a>
+    </div>
+     <div class="col-sm-6 col-lg-3">
+         <a href="#/manage-employers/list?type=Company&startj={{getDateInMMDDYYformate(this.selected_days.startd)}}&endj={{getDateInMMDDYYformate(this.selected_days.end)}}">
+      <div class="card text-white bg-warning">
+          <div class="card-body pb-0">
+
+              <div class="text-value" style="text-align: center"><h2 class="fa-2x">{{model.totalcompanyemployer}}</h2></div>
+            </div>
+            <div class="chart-wrapper mt-3 mx-3" style="height:65px;text-align: center;">
+                <h3>Total Company Employer</h3>
+            </div>
+      </div>
+         </a>
+    </div>
+ </div>
+
+<div class="row">
+ <div class="col-lg-12">
+         <div class="card">
+             <div class="card-body">
+                 <div class="table-responsive">
+                     <h3>Active Jobs</h3>
+                    <table  id="user_table" datatable [dtOptions]="dtOptions[0]" class="hover table table-bordered">
+                            <thead>
+                                <tr>
+                                        <th class="text-center">Company/Individual</th>
+                                        <th class="text-center">Job Name</th>
+                                        <th class="text-center">City</th>
+                                        <th class="text-center">Specialist Type</th>
+                                        <th class="table-status">Status</th>
+                                        <th class="text-center">Created on</th>
+                                        <th class="text-center">Action</th>
+                                </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr *ngFor="let job of ManagejobList;let i=index;">
+                                <td *ngIf="job.user_type == 'Company'">{{ job.company_name }}</td>
+                                <td *ngIf="job.user_type == 'Individual' || job.user_type==undefined || job.user_type.trim().length == 0">{{ job.first_name }} {{job.last_name}}</td>
+                                <td><span *ngIf="job.name != null && job.name!= ''">{{ job.name }}</span><span *ngIf="job.name == null || job.name == '' || job.name == undefined || job.name!=undefined && job.name.trim().length == 0">NA</span></td>
+                                <td><span *ngIf="job.city != null && job.city != ''">{{ job.city }}</span><span *ngIf="job.city == null || job.city == ''">NA</span></td>
+                                <td class="text-center">{{ job.specialist_type == '0' ? specialistList[0].name : job.specialist_type == '1' ? specialistList[1].name : job.specialist_type == '2' ? specialistList[2].name : specialistList[3].name }}</td>
+                                <td class="table-actions"><span [ngClass]="{'badge-info': job.job_status == '0', 'badge-warning': job.job_status == '1', 'badge-success': job.job_status == '2', 'badge-dark': job.job_status == '3'}" class="badge">{{ job.job_status == '0' ? 'New' : job.job_status == '1' ? 'Draft' : job.job_status == '2' ? 'Published' : 'Closed' }}</span></td>
+                                <td class="text-center">{{ getDateInMMDDYYformate(job.created_at)  }}</td>
+                                <td>
+                                    <a (click)="openModal(templateFeature, job.uuid, job.status, job.is_featured, 'feature')" title="Mark Featured Job"><i [ngClass]="{'fa-toggle-on': job.is_featured == 1, 'fa-toggle-off': job.is_featured == 0}" class="fa fa-lg "></i></a>&nbsp;
+				   <a routerLink="/jobs-management/view/{{job.uuid}}" title="View"><i class="fa fa-eye fa-lg"></i></a> &nbsp;
+				 <a (click)="openModal(templateDeleteManageJob, job.uuid);" title="Delete"><i class="fa fa-trash fa-lg"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr *ngIf="ManagejobList.length == 0">
+                                <td colspan="7" class="table_footer_border_none no-data-available">No record Found</td>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                 </div>
+             </div>
+         </div>
+ </div>
+</div>
+
+ <div class="row">
+     <div class="col-lg-12">
+         <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                     <h3>Unverified Companies</h3>
+                   <table  id="user_table" datatable [dtOptions]="dtOptions[1]" class="hover table table-bordered">
+                           <thead>
+                           <tr>
+                               <th hidden>Sr.No</th>
+                               <th class="text-center">Company Name</th>
+                               <th class="text-center">Email</th>
+                               <th class="text-center">City</th>
+                               <th class="text-center">Employer Type</th>
+                               <th class="table-status">Status</th>
+                               <th class="text-center">Registered On</th>
+                               <th class="text-center">Action</th>
+                           </tr>
+                       </thead>
+                       <tbody>
+                           <tr *ngFor="let user of ManageuserList;let i=index;">
+                               <td hidden>{{start+i+1}}</td>
+                               <td *ngIf="user.user_type == 'Individual' || user.company_name == '' || user.company_name == null">NA</td>
+                               <td *ngIf="user.user_type == 'Company' && user.company_name != '' && user.company_name != null">{{user.company_name}}</td>
+                               <td>{{ user.email != '' ? user.email : '-' }}</td>
+                               <td class="text-center">{{ user.city != '' ? user.city : '-' }}</td>
+                               <td class="text-center">{{ user.user_type != '' ? user.user_type : '-' }}</td>
+                               <td class="table-actions"><span [ngClass]="{'badge-success': user.status == 'Active', 'badge-danger': user.status == 'Inactive'}" class="badge">{{ user.status }}</span></td>
+                               <td class="text-center">{{ getDateInMMDDYYformate(user.created_at)  }}</td>
+                               <td>
+                                   <a *ngxPermissionsOnly="['USER_UPDATE', 'SUPER_ADMIN']" routerLink="/manage-employers/view/{{user.user_uuid}}" title="View"><i class="fa fa-eye fa-lg"></i></a> &nbsp;
+                                   <a *ngxPermissionsOnly="['CATEGORY_STATUS', 'SUPER_ADMIN']" (click)="openModalcomp(tempateVarified,user['uuid'],user.status,user['is_verified'],'verify')" [title]="user['is_verified']==1?'Mark as Unverified':'Mark as Verified'">
+												<i [ngClass]="{'text-success': user['is_verified']==1, 'text-secondary': user['is_verified']==0 || is_verified==''}" class="fa fa-lg fa-check-circle"></i></a>
+                               </td>
+                           </tr>
+                       </tbody>
+                       <tfoot >
+                           <tr *ngIf="ManageuserList.length == 0">
+                                <td colspan="7" class="table_footer_border_none no-data-available">No record Found</td>
+                            </tr>
+                       </tfoot>
+                   </table>
+                </div>
+            </div>
+         </div>
+     </div>
+ </div>
+
+
+<div class="row">
+ <div class="col-lg-12">
+         <div class="card">
+             <div class="card-body">
+                 <div class="table-responsive">
+                      <h3>Pending Jobs</h3>
+                    <table  id="user_table" datatable [dtOptions]="dtOptions[2]" class="hover table table-bordered">
+                            <thead>
+                                <tr>
+                                        <th class="text-center">Company/Individual</th>
+                                        <th class="text-center">Job Name</th>
+                                        <th class="text-center">City</th>
+                                        <th class="text-center">Specialist Type</th>
+                                        <th class="table-status">Status</th>
+                                        <th class="text-center">Created on</th>
+                                        <th class="text-center">Action</th>
+                                </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr *ngFor="let job of ManageNewjobList;let i=index;">
+                                <td *ngIf="job.user_type == 'Company'">{{ job.company_name }}</td>
+                                <td *ngIf="job.user_type == 'Individual' || job.user_type==undefined || job.user_type.trim().length == 0">{{ job.first_name }} {{job.last_name}}</td>
+                                <td><span *ngIf="job.name != null && job.name!= ''"><a routerLink="/jobs-management/view/{{job.uuid}}" target="_blank">{{ job.name }}</a></span><span *ngIf="job.name == null || job.name == '' || job.name == undefined || job.name!=undefined && job.name.trim().length == 0">NA</span></td>                                <td><span *ngIf="job.city != null && job.city != ''">{{ job.city }}</span><span *ngIf="job.city == null || job.city == ''">NA</span></td>
+                                <td class="text-center">{{ job.specialist_type == '0' ? specialistList[0].name : job.specialist_type == '1' ? specialistList[1].name : job.specialist_type == '2' ? specialistList[2].name : specialistList[3].name }}</td>
+                                <td class="table-actions"><span class="badge-warning">Pending</span></td>
+                                <td class="text-center">{{ getDateInMMDDYYformate(job.created_at)  }}</td>
+                                <td>
+                                   <a *ngIf="job.job_status == 5"  (click)="openModal(templateApproveJob, job.uuid);" title="Approve"><i class="fa fa fa-check fa-lg"></i></a> &nbsp;
+			           <a *ngIf="job.job_status == 5" (click)="openModal(templateRejectJob, job.uuid);" title="Reject"><i class="fa fa fa-ban fa-lg"></i></a> &nbsp;
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr *ngIf="ManageNewjobList.length == 0">
+                                <td colspan="7" class="table_footer_border_none no-data-available">No record Found</td>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                 </div>
+             </div>
+         </div>
+ </div>
+</div>
+
+<ng-template #templateFeature>
+		<div class="modal-content">
+			<div class="modal-header bg-primary">
+				<h5 class="modal-title"><i class="fa fa-info-circle modal-icon"></i> Confirmation</h5>
+				<button type="button" class="close" (click)="decline()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body text-center">
+				<p>Are you sure you want to mark job as {{is_featured == 0 ? ' featured' : ' unfeatured'}}?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" (click)="changeJobFeatured()">Yes</button>
+				<button type="button" class="btn btn-default" (click)="decline()">No</button>
+			</div>
+		</div>
+</ng-template>
+
+
+<ng-template #templateDeleteManageJob>
+	<div class="modal-content">
+		<div class="modal-header bg-primary">
+			<h5 class="modal-title"><i class="fa fa-info-circle modal-icon"></i> Confirmation</h5>
+			<button type="button" class="close" (click)="decline()">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body text-center">
+			<p>Are you sure you want to delete this record?</p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary" (click)="deleteManageJob()">Yes</button>
+			<button type="button" class="btn btn-default" (click)="decline()">No</button>
+		</div>
+	</div>
+</ng-template>
+<ng-template #templateApproveJob>
+	<div class="modal-content">
+		<div class="modal-header bg-primary">
+			<h5 class="modal-title"><i class="fa fa-info-circle modal-icon"></i> Confirmation</h5>
+			<button type="button" class="close" (click)="decline()">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body text-center">
+			<p><b>Are you sure you want to approve this job?</b></p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary" (click)="approveJob()">Yes</button>
+			<button type="button" class="btn btn-default" (click)="decline()">No</button>
+		</div>
+	</div>
+</ng-template>
+
+<ng-template #templateRejectJob>
+	<form #rejectionNoteForm="ngForm" name="rejectionNoteForm">
+	<div class="modal-content">
+	  <div class="modal-header bg-primary">
+		<h5 class="modal-title"><i class="fa fa-times-circle modal-icon"></i>  Reject Job</h5>
+		<button type="button" class="close" (click)="declineRejectionNote()">
+		  <span aria-hidden="true">&times;</span>
+		</button>
+	  </div>
+	  <div class="modal-body text-center">
+		<textarea [(ngModel)]="rejection_note" maxlength="255" name="rejection_note" rows="5" class="form-control"  placeholder="Rejection Note" required #note="ngModel" ></textarea>
+	</div>
+	<div class="modal-footer">
+		<button type="button" [disabled]="checkStringEmpty(rejection_note)" class="btn btn-primary" (click)="rejectionNoteSubmitHandler(rejectionNoteForm)">Reject</button>
+		<button type="button" class="btn btn-default" (click)="declineRejectionNote()">Cancel</button>
+	  </div>
+	</div>
+	</form>
+</ng-template>
+
+<ng-template #tempateVarified>
+		<div class="modal-content">
+			<div class="modal-header bg-primary">
+				<h5 class="modal-title"><i class="fa fa-info-circle modal-icon"></i> Confirmation</h5>
+				<button type="button" class="close" (click)="decline()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body text-center">
+				<p *ngIf="actionType=='verify'">Are you sure you want to {{varified_status==0?' Mark as Verified':' Mark as Unverified'}}?</p>
+				<p *ngIf="actionType=='promote'">Are you sure you want to {{varified_status==0?'Mark as Promoted':'Unmark as Promoted'}}?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" (click)="changeVarifiedStatus('verify')">Yes</button>
+				<button type="button" class="btn btn-default" (click)="decline()">No</button>
+			</div>
+		</div>
+</ng-template>
